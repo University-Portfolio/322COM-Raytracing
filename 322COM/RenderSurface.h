@@ -28,6 +28,11 @@ public:
 	*/
 	void SetPixel(int x, int y, Colour colour);
 
+	/**
+	* Draw a rectangle of a given colour
+	*/
+	void SetRect(int x, int y, int width, int height, Colour colour);
+
 
 	/**
 	* Getters and Setters

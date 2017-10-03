@@ -104,10 +104,12 @@ void Scene::Render(Camera* camera, RenderSurface* target)
 		if(bIsWorking)
 			SDL_Delay(1);
 	}
+
+	++renderCounter;
 }
 
 
-Colour Scene::FetchColour(Ray ray)
+Colour Scene::FetchColour(Ray ray) const
 {
 	Object* hit = nullptr;
 	float distance = -1;
@@ -115,7 +117,7 @@ Colour Scene::FetchColour(Ray ray)
 	for (Object* obj : m_objects)
 	{
 		float objDist;
-		if (obj->IntersectsRay(ray, objDist) && (objDist < distance || distance == -1))
+		if (obj->IntersectsRay(ray, objDist) && (objDist < distance || distance == -1) && objDist > 0)
 		{
 			hit = obj;
 			distance = objDist;
@@ -135,13 +137,17 @@ Colour Scene::FetchColour(Ray ray)
 }
 
 
-void Scene::HandleRender(int workerId, void* settingsPtr) 
+void Scene::HandleRender(int workerId, void* settingsPtr) const
 {
 	RenderSettings* settings = (RenderSettings*)settingsPtr;
-	const int totalPixels = settings->width * settings->height;
+	if (settings == nullptr)
+		return;
+	
 
+	const int totalPixels = settings->width * settings->height;
 	float halfWidth = settings->width * 0.5f;
 	float halfHeight = settings->height * 0.5f;
+
 
 	// For each pixel try generate colour
 	for (int i = workerId; i < totalPixels; i += m_workerCount)
@@ -149,8 +155,17 @@ void Scene::HandleRender(int workerId, void* settingsPtr)
 		int x = i / settings->height; 
 		int y = i % settings->height;
 
+		// Perform checkered board render, to free up more processing
+		int l = (renderCounter) % (renderTexelSize * renderTexelSize);
+		int xc = (x + l) % renderTexelSize;
+		int yc = (y + l / renderTexelSize) % renderTexelSize;
+
+		if (xc != 0 || yc != 0)
+			continue;
+
 		vec3 direction = rotateX(rotateY(settings->cameraForward, (x - halfWidth) * settings->stepX), (y - halfHeight) * settings->stepY);
 		Ray ray(settings->cameraLocation, direction);
-		settings->target->SetPixel(x, y, FetchColour(ray));
+		Colour currentColour = FetchColour(ray);
+		settings->target->SetPixel(x, y, currentColour);
 	}
 }

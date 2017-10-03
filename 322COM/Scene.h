@@ -15,6 +15,9 @@ private:
 	std::vector<Object*> m_objects;
 	Colour skyColour;
 
+	int renderCounter;
+	const int renderTexelSize = 8;
+
 public:
 	Scene(int workerCount);
 	~Scene();
@@ -29,10 +32,10 @@ public:
 	/**
 	* Get colour from a single ray
 	*/
-	Colour FetchColour(Ray ray);
+	Colour FetchColour(Ray ray) const;
 
 private:
-	void HandleRender(int workerId, void* settingsPtr);
+	void HandleRender(int workerId, void* settingsPtr) const;
 
 
 	/**
@@ -44,6 +47,6 @@ public:
 	inline void AddObject(Object* obj) { m_objects.emplace_back(obj); }
 
 	inline void SetSkyColour(Colour col) { skyColour = col; }
-	inline Colour GetSkyColour() { return skyColour; }
+	inline Colour GetSkyColour() const { return skyColour; }
 };
 

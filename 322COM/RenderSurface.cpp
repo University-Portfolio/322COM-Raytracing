@@ -31,3 +31,28 @@ void RenderSurface::SetPixel(int x, int y, Colour colour)
 	Uint32* pixel = (Uint32*)m_surface->pixels + y * width + x;
 	*pixel = SDL_MapRGB(m_surface->format, colour.r, colour.g, colour.b);
 }
+
+void RenderSurface::SetRect(int x, int y, int width, int height, Colour colour) 
+{
+	Uint32 col = SDL_MapRGB(m_surface->format, colour.r, colour.g, colour.b);;
+
+
+	for (int dx = 0; dx < width; ++dx)
+	{
+		// Ignore if out of range
+		int xc = x + dx;
+		if (xc < 0 || xc >= this->width)
+			continue;
+
+		for (int dy = 0; dy < height; ++dy)
+		{
+			// Ignore if out of range
+			int yc = y + dy;
+			if (yc < 0 || yc >= this->height)
+				continue;
+
+			Uint32* pixel = (Uint32*)m_surface->pixels + yc * this->width + xc;
+			*pixel = col;
+		}
+	}
+}

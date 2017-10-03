@@ -16,13 +16,13 @@ private:
 	std::string title;
 	int width;
 	int height;
-	const int tickRate = 30;
+	const int tickRate;
 
 	bool bIsRunning;
 
 	
 public:
-	Window(std::string title, int width, int height);
+	Window(std::string title, int width, int height, const int tickRate = 30);
 	~Window();
 
 	/**

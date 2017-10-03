@@ -4,7 +4,7 @@
 #include "Logger.h"
 
 
-Window::Window(std::string title, int width, int height)
+Window::Window(std::string title, int width, int height, const int tickRate) : tickRate(tickRate)
 {
 	this->title = title;
 	this->width = width;
