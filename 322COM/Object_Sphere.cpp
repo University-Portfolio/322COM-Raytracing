@@ -43,7 +43,29 @@ bool Object_Sphere::IntersectsRay(Ray ray, float& outDistance)
 	float t0 = mainHyp - hitDistance;
 	float t1 = mainHyp + hitDistance;
 	
-	// Take nearest
-	outDistance = t0 < t1 ? t0 : t1;
-	return true;
+	// Swap
+	if (t1 < t0)
+	{
+		float temp = t0;
+		t0 = t1;
+		t1 = temp;
+	}
+	
+
+	// t0 too close
+	if (t0 < 0)
+	{
+		// t1 not too close
+		if (t1 >= 0)
+		{
+			outDistance = t1;
+			return true;
+		}
+	}
+	else
+	{
+		outDistance = t0;
+		return true;
+	}
+	return false;
 }
