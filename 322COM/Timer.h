@@ -17,5 +17,6 @@ public:
 	void Stop();
 
 	uint32 GetTimeMilliseconds();
+	inline bool IsRunning() { return bIsRunning; }
 };
 

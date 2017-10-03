@@ -14,6 +14,8 @@ Window::Window(std::string title, int width, int height)
 
 Window::~Window()
 {
+	if(m_renderSurface)
+		delete m_renderSurface;
 }
 
 
@@ -52,7 +54,7 @@ void Window::InitSDL()
 		SDL_WINDOWPOS_UNDEFINED,	// Start Y
 		width,
 		height,
-		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE		// Init flags
+		SDL_WINDOW_SHOWN// | SDL_WINDOW_RESIZABLE		// Init flags
 	);
 
 	if (m_window == nullptr)
@@ -63,7 +65,8 @@ void Window::InitSDL()
 
 	// Fetch surface
 	m_surface = SDL_GetWindowSurface(m_window);
-	
+	m_renderSurface = new RenderSurface(width, height, m_surface->format->format);
+
 	LOG("Window '%s' initialized", title.c_str());
 }
 
@@ -82,7 +85,7 @@ void Window::MainLoop(void(*callback)(Window* context, float deltaTime))
 	while (bIsAPIRunning)
 	{
 		mainTimer.Start();
-
+		
 		// Update events
 		while (SDL_PollEvent(&currentEvent))
 			ProcessEvent(currentEvent);
@@ -97,6 +100,10 @@ void Window::MainLoop(void(*callback)(Window* context, float deltaTime))
 		if (!bIsRunning)
 			break;
 		
+
+		// Draw render surface onto window surface
+		SDL_BlitSurface(m_renderSurface->GetSDLSurface(), nullptr, m_surface, nullptr);
+
 
 		// Update surface then sleep
 		SDL_UpdateWindowSurface(m_window);

@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include <string>
+#include "RenderSurface.h"
 
 /**
 * Container for SDL window
@@ -10,6 +11,7 @@ class Window
 private:
 	SDL_Window* m_window = nullptr;
 	SDL_Surface* m_surface = nullptr;
+	RenderSurface* m_renderSurface = nullptr;
 
 	std::string title;
 	int width;
@@ -52,6 +54,8 @@ private:
 public:
 
 	inline std::string GetTitle() { return title; }
+	inline RenderSurface* GetRenderSurface() { return m_renderSurface; }
+
 	inline int GetWidth() { return width; }
 	inline int GetHeight() { return height; }
 };
