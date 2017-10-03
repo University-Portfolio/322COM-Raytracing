@@ -1,8 +1,25 @@
 #include "Logger.h"
+#include "Window.h"
 
 
-int main(char** argv, int argc)
+static float t = 0;
+
+void Tick(float deltaTime)
 {
-	LOG_ERROR("Dog %s", "HELOO");
+	t += deltaTime;
+
+	if (t >= 1.0f)
+	{
+		t -= 1.0f;
+		LOG("Yett");
+	}
+}
+
+
+int main(int argc, char** argv)
+{
+	Window window("Hello World", 800, 600);
+	window.MainLoop(Tick);
+	
 	return 0;
 }
