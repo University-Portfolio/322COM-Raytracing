@@ -13,7 +13,7 @@ void Timer::Stop()
 	bIsRunning = false;
 }
 
-uint32 Timer::GetTimeMilliseconds()
+uint32 Timer::GetTimeMilliseconds() const
 {
 	if (bIsRunning)
 		return SDL_GetTicks() - startTime;

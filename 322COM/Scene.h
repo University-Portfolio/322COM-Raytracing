@@ -1,14 +1,22 @@
 #pragma once
 #include "Object.h"
+#include "ThreadWorker.h"
+
+#include "SDL_stdinc.h"
 #include <vector>
+
 
 class Scene
 {
 private:
+	std::vector<ThreadWorker*> m_workers;
+	const int m_workerCount;
+
 	std::vector<Object*> m_objects;
 	Colour skyColour;
 
 public:
+	Scene(int workerCount);
 	~Scene();
 
 	/**
@@ -17,6 +25,14 @@ public:
 	* @param target			The desired rendering surface to draw to
 	*/
 	void Render(class Camera* camera, class RenderSurface* target);
+
+	/**
+	* Get colour from a single ray
+	*/
+	Colour FetchColour(Ray ray);
+
+private:
+	void HandleRender(int workerId, void* settingsPtr);
 
 
 	/**

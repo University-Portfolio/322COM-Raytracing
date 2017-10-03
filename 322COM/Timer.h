@@ -16,7 +16,7 @@ public:
 	void Start();
 	void Stop();
 
-	uint32 GetTimeMilliseconds();
-	inline bool IsRunning() { return bIsRunning; }
+	uint32 GetTimeMilliseconds() const;
+	inline bool IsRunning() const { return bIsRunning; }
 };
 

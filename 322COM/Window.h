@@ -53,10 +53,10 @@ private:
 	*/
 public:
 
-	inline std::string GetTitle() { return title; }
-	inline RenderSurface* GetRenderSurface() { return m_renderSurface; }
+	inline std::string GetTitle() const { return title; }
+	inline RenderSurface* GetRenderSurface() const { return m_renderSurface; }
 
-	inline int GetWidth() { return width; }
-	inline int GetHeight() { return height; }
+	inline int GetWidth() const { return width; }
+	inline int GetHeight() const { return height; }
 };
 

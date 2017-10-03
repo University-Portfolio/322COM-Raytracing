@@ -20,9 +20,9 @@ public:
 public:
 
 	inline void SetLocation(vec3 loc) { location = loc; }
-	inline vec3 GetLocation() { return location; }
+	inline vec3 GetLocation() const { return location; }
 
 	inline void SetFOV(float f) { fov = f; }
-	inline float GetFOV() { return fov; }
+	inline float GetFOV() const { return fov; }
 };
 

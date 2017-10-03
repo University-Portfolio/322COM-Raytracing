@@ -25,6 +25,6 @@ public:
 public:
 
 	inline void SetRadius(float rad) { radius = rad; }
-	inline float GetRadius() { return radius; }
+	inline float GetRadius() const { return radius; }
 };
 

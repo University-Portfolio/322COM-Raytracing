@@ -34,9 +34,9 @@ public:
 public:
 
 	inline void SetLocation(vec3 loc) { location = loc; }
-	inline vec3 GetLocation() { return location; }
+	inline vec3 GetLocation() const { return location; }
 
 	inline void SetColour(Colour col) { colour = col; }
-	inline Colour GetColour() { return colour; }
+	inline Colour GetColour() const { return colour; }
 };
 

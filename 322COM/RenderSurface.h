@@ -34,8 +34,8 @@ public:
 	*/
 public:
 
-	inline SDL_Surface* GetSDLSurface() { return m_surface; }
-	inline int GetWidth() { return width; }
-	inline int GetHeight() { return height; }
+	inline SDL_Surface* GetSDLSurface() const { return m_surface; }
+	inline int GetWidth() const { return width; }
+	inline int GetHeight() const { return height; }
 };
 
