@@ -1,7 +1,9 @@
 #include "Logger.h"
 #include "Window.h"
 
+
 #include "Timer.h"
+#include "Object_Sphere.h"
 #include <math.h>
 #include <cmath>
 Timer timer;
@@ -51,12 +53,19 @@ void Tick(Window* context, float deltaTime)
 
 int main(int argc, char** argv)
 {
-	Window::InitAPI();
+	//Window::InitAPI();
 
-	Window window("Hello World", 800, 600);
-	window.MainLoop(Tick);
+	//Window window("Hello World", 800, 600);
+	//window.MainLoop(Tick);
 
-	Window::DestroyAPI();
+	//Window::DestroyAPI();
+
+	Object_Sphere sphere(vec3(0, 0, 0), 1.0f);
+	Ray ray(vec3(0, 0, -10), vec3(0, 0.1, 1));
+
+	float d = 0;
+	bool hit = sphere.IntersectsRay(ray, d);
+	LOG("Hits? %s %f", (hit ? "true" : "false"), d);
 
 #ifdef _DEBUG
 	while (true);
