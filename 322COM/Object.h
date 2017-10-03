@@ -18,6 +18,7 @@ private:
 
 public:
 	Object(vec3 location = vec3(0,0,0));
+	virtual ~Object() {}
 
 	/**
 	* Does this ray interesect with this object?

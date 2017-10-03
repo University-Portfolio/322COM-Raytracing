@@ -93,8 +93,8 @@ void Window::MainLoop(void(*callback)(Window* context, float deltaTime))
 
 		// Run update using delta time
 		deltaTime = (float)deltaTimer.GetTimeMilliseconds() / 1000.0f;
-		callback(this, deltaTime);
 		deltaTimer.Start();
+		callback(this, deltaTime);
 
 
 		if (!bIsRunning)
