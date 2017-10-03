@@ -1,6 +1,6 @@
 #include "Window.h"
 
-#include <chrono>
+#include "Timer.h"
 #include "Logger.h"
 
 
@@ -12,16 +12,36 @@ Window::Window(std::string title, int width, int height)
 	InitSDL();
 }
 
-
 Window::~Window()
 {
 }
 
-void Window::InitSDL() 
+
+static bool bIsAPIRunning = false;
+
+void Window::InitAPI()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		LOG_ERROR("SDL failed to initialize: '%s'", SDL_GetError());
+		return;
+	}
+	bIsAPIRunning = true;
+}
+
+void Window::DestroyAPI()
+{
+	SDL_Quit();
+	bIsAPIRunning = false;
+	LOG("SDL shutdown");
+}
+
+
+void Window::InitSDL() 
+{
+	if (!bIsAPIRunning)
+	{
+		LOG_ERROR("Failed to initialize window: 'Required Window API is not running'");
 		return;
 	}
 
@@ -32,7 +52,7 @@ void Window::InitSDL()
 		SDL_WINDOWPOS_UNDEFINED,	// Start Y
 		width,
 		height,
-		SDL_WINDOW_SHOWN			// Init flags
+		SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE		// Init flags
 	);
 
 	if (m_window == nullptr)
@@ -47,30 +67,32 @@ void Window::InitSDL()
 	LOG("Window '%s' initialized", title.c_str());
 }
 
-void Window::MainLoop(void(*callback)(float deltaTime))
+void Window::MainLoop(void(*callback)(Window* context, float deltaTime))
 {
-	typedef std::chrono::high_resolution_clock Clock;
-	const int sleepTime = (1000.0f / (float)tickRate);
+	Timer mainTimer;
+	const int desiredSleep = (1000.0f / (float)tickRate);
 
-	Clock::time_point lastTime = Clock::now();
+	Timer deltaTimer;
 	float deltaTime = 0;
 	
 	bIsRunning = true;
 	SDL_Event currentEvent;
 
 
-	while (true)
+	while (bIsAPIRunning)
 	{
-		// Update events
-		if (SDL_PollEvent(&currentEvent))
-			ProcessEvents(currentEvent);
+		mainTimer.Start();
 
-		// Calc delta time
-		{
-			int timeDiff = std::chrono::duration_cast<std::chrono::milliseconds>(Clock::now() - lastTime).count();
-			deltaTime = (float)timeDiff / 1000.0f;
-		}
-		callback(deltaTime);
+		// Update events
+		while (SDL_PollEvent(&currentEvent))
+			ProcessEvent(currentEvent);
+
+
+		// Run update using delta time
+		deltaTime = (float)deltaTimer.GetTimeMilliseconds() / 1000.0f;
+		callback(this, deltaTime);
+		deltaTimer.Start();
+
 
 		if (!bIsRunning)
 			break;
@@ -78,25 +100,20 @@ void Window::MainLoop(void(*callback)(float deltaTime))
 
 		// Update surface then sleep
 		SDL_UpdateWindowSurface(m_window);
-		lastTime = Clock::now();
 
+		const int sleepTime = desiredSleep - mainTimer.GetTimeMilliseconds();
 
-		// Sleep for remainder of tick
-		int timeDiff = std::chrono::duration_cast<std::chrono::milliseconds>(Clock::now() - lastTime).count() / 1000.0f;
-
-		if(timeDiff < sleepTime)
-			SDL_Delay(sleepTime - timeDiff);
+		if(sleepTime > 0)
+			SDL_Delay(sleepTime);
 
 	}
 
 
 	LOG("Closing window '%s'", title.c_str());
 	SDL_DestroyWindow(m_window);
-	SDL_Quit();
-	LOG("SDL shutdown");
 }
 
-void Window::ProcessEvents(SDL_Event& currentEvent) 
+void Window::ProcessEvent(SDL_Event& currentEvent) 
 {
 	if (currentEvent.type == SDL_QUIT)
 	{
@@ -104,4 +121,23 @@ void Window::ProcessEvents(SDL_Event& currentEvent)
 		LOG("Recieved quit event");
 	}
 
+
+	if (currentEvent.type == SDL_WINDOWEVENT)
+	{
+		switch (currentEvent.window.event)
+		{
+
+		// Window changed size
+		case SDL_WINDOWEVENT_SIZE_CHANGED:
+		case SDL_WINDOWEVENT_RESIZED:
+		{
+			width = currentEvent.window.data1;
+			height = currentEvent.window.data2;
+			break;
+		}
+
+		default:
+			break;
+		}
+	}
 }
