@@ -1,25 +1,37 @@
 #include "Logger.h"
 #include "Window.h"
 
+#include "Timer.h"
+#include <math.h>
+#include <cmath>
+Timer timer;
 
-static float t = 0;
 
 void Tick(Window* context, float deltaTime)
 {
-	RenderSurface* surface = context->GetRenderSurface();
+	if (!timer.IsRunning())
+		timer.Start();
 
+	RenderSurface* surface = context->GetRenderSurface();
 	surface->Clear(Colour(0, 0, 0));
 	
+
+	const int interval = 5000;
+	float t = (float)(timer.GetTimeMilliseconds() % interval) / (float)interval;
+
+	int offset = sinf(t * 3.14159f * 2.0f) * 100;
+
+
 
 	const int width = surface->GetWidth();
 	const int height = surface->GetHeight();
 
-	int circleCentreX = 200;
+	int circleCentreX = 400 + offset;
 	int circleCentreY = 200;
 	int circleRadius = 100;
 	int secondCircleRadius = 120;
 
-	Colour trueColour(0, 255, 0);
+	Colour trueColour(255 * (1.0f - t), 255 * t, 0);
 	Colour falseColour(255, 0, 0);
 
 	Uint32* currentPixel;
