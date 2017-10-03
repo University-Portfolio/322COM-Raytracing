@@ -18,13 +18,13 @@ void Tick(Window* context, float deltaTime)
 	if (timer < 0.0f)
 	{
 		bMove = !bMove;
-		timer = bMove ? 4.0f : 3.0f;
+		timer = bMove ? 4.0f : 4.0f;
 	}
 
-	if(bMove)
+	//if(bMove)
 		g_camera.SetLocation(g_camera.GetLocation() + vec3(0, 0.0f, 0.5f) * deltaTime);
 
-	g_mainScene->Render(&g_camera, context->GetRenderSurface());
+	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 2);
 }
 
 int main(int argc, char** argv)
@@ -34,6 +34,7 @@ int main(int argc, char** argv)
 	g_mainScene = new Scene(4);
 	g_mainScene->SetSkyColour(Colour(52, 152, 219));
 	g_camera.SetLocation(vec3(0, 1, 0));
+	g_camera.SetFOV(90);
 
 	// Setup scene
 	{
@@ -58,7 +59,7 @@ int main(int argc, char** argv)
 	}
 
 
-	Window window("Hello World", 800, 600, 300);
+	Window window("Hello World", 1280, 720, 300);
 	window.MainLoop(Tick);
 	delete g_mainScene;
 

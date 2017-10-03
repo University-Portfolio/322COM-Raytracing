@@ -21,6 +21,7 @@ public:
 	vec3 cameraLocation;
 	vec3 cameraForward;
 
+	int texelSize;
 	int width;
 	int height;
 
@@ -58,13 +59,14 @@ Scene::~Scene()
 }
 
 
-void Scene::Render(Camera* camera, RenderSurface* target) 
+void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 {
 	RenderSettings settings;
 
 	// Generate desired rendering settings
 	{
 		settings.target = target;
+		settings.texelSize = renderTexelSize;
 		settings.cameraLocation = camera->GetLocation();
 		settings.cameraForward = vec3(0, 0, 1);
 
@@ -78,7 +80,7 @@ void Scene::Render(Camera* camera, RenderSurface* target)
 		float halfWidth = settings.width * 0.5f;
 		float halfHeight = settings.height * 0.5f;
 
-		const float fov = radians(camera->GetFOV());
+		const float fov = radians(camera->GetFOV() * 0.5f);
 		settings.stepX = (fov * aspectRatio) / halfWidth;
 		settings.stepY = fov / halfHeight;
 	}
@@ -156,9 +158,9 @@ void Scene::HandleRender(int workerId, void* settingsPtr) const
 		int y = i % settings->height;
 
 		// Perform checkered board render, to free up more processing
-		int l = (renderCounter) % (renderTexelSize * renderTexelSize);
-		int xc = (x + l) % renderTexelSize;
-		int yc = (y + l / renderTexelSize) % renderTexelSize;
+		int l = (renderCounter) % (settings->texelSize * settings->texelSize);
+		int xc = (x + l) % settings->texelSize;
+		int yc = (y + l / settings->texelSize) % settings->texelSize;
 
 		if (xc != 0 || yc != 0)
 			continue;

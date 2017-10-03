@@ -16,7 +16,6 @@ private:
 	Colour skyColour;
 
 	int renderCounter;
-	const int renderTexelSize = 8;
 
 public:
 	Scene(int workerCount);
@@ -27,7 +26,7 @@ public:
 	* @param camera			The camera settings to use in this render
 	* @param target			The desired rendering surface to draw to
 	*/
-	void Render(class Camera* camera, class RenderSurface* target);
+	void Render(class Camera* camera, class RenderSurface* target, const int texelSize = 8);
 
 	/**
 	* Get colour from a single ray

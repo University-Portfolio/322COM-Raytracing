@@ -8,7 +8,7 @@ class Camera
 {
 private:
 	glm::vec3 location;
-	float fov = 70;
+	float fov = 90;
 
 public:
 	Camera();
