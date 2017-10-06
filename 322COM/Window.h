@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include <string>
+#include "Keyboard.h"
 #include "RenderSurface.h"
 
 /**
@@ -12,6 +13,8 @@ private:
 	SDL_Window* m_window = nullptr;
 	SDL_Surface* m_surface = nullptr;
 	RenderSurface* m_renderSurface = nullptr;
+
+	Keyboard m_keyboard;
 
 	std::string title;
 	int width;
@@ -58,5 +61,7 @@ public:
 
 	inline int GetWidth() const { return width; }
 	inline int GetHeight() const { return height; }
+
+	inline Keyboard* GetKeyboard() { return &m_keyboard; }
 };
 

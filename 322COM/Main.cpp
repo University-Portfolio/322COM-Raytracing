@@ -9,22 +9,23 @@
 Scene* g_mainScene;
 Camera g_camera;
 
-static float timer = 0.0f;
-static bool bMove = false;
 
 void Tick(Window* context, float deltaTime)
 {
-	timer -= deltaTime;
-	if (timer < 0.0f)
-	{
-		bMove = !bMove;
-		timer = bMove ? 4.0f : 4.0f;
-	}
+	const Keyboard* keyboard = context->GetKeyboard();
+	const float speed = 1.0f;
 
-	//if(bMove)
-		g_camera.SetLocation(g_camera.GetLocation() + vec3(0, 0.0f, 0.5f) * deltaTime);
+	if (keyboard->IsKeyDown(Key::KV_W))
+		g_camera.SetLocation(g_camera.GetLocation() + vec3(0, 0, 1) * deltaTime * speed);
+	if (keyboard->IsKeyDown(Key::KV_S))
+		g_camera.SetLocation(g_camera.GetLocation() + vec3(0, 0, -1) * deltaTime * speed);
 
-	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 2);
+	if (keyboard->IsKeyDown(Key::KV_A))
+		g_camera.SetLocation(g_camera.GetLocation() + vec3(-1, 0, 0) * deltaTime * speed);
+	if (keyboard->IsKeyDown(Key::KV_D))
+		g_camera.SetLocation(g_camera.GetLocation() + vec3(1, 0, 0) * deltaTime * speed);
+
+	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 8);
 }
 
 int main(int argc, char** argv)
@@ -34,7 +35,6 @@ int main(int argc, char** argv)
 	g_mainScene = new Scene(4);
 	g_mainScene->SetSkyColour(Colour(52, 152, 219));
 	g_camera.SetLocation(vec3(0, 1, 0));
-	g_camera.SetFOV(90);
 
 	// Setup scene
 	{

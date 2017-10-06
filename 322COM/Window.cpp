@@ -85,6 +85,7 @@ void Window::MainLoop(void(*callback)(Window* context, float deltaTime))
 	while (bIsAPIRunning)
 	{
 		mainTimer.Start();
+		m_keyboard.HandleNewFrame();
 		
 		// Update events
 		while (SDL_PollEvent(&currentEvent))
@@ -128,6 +129,14 @@ void Window::ProcessEvent(SDL_Event& currentEvent)
 		LOG("Recieved quit event");
 	}
 
+	if (currentEvent.type == SDL_KEYUP)
+	{
+		m_keyboard.UpdateKeystate((Key)currentEvent.key.keysym.scancode, false);
+	}
+	if (currentEvent.type == SDL_KEYDOWN)
+	{
+		m_keyboard.UpdateKeystate((Key)currentEvent.key.keysym.scancode, true);
+	}
 
 	if (currentEvent.type == SDL_WINDOWEVENT)
 	{
@@ -142,7 +151,7 @@ void Window::ProcessEvent(SDL_Event& currentEvent)
 			height = currentEvent.window.data2;
 			break;
 		}
-
+		
 		default:
 			break;
 		}
