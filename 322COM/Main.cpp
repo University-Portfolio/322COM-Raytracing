@@ -22,14 +22,14 @@ void Tick(Window* context, float deltaTime)
 		const float rotationSpeed = 45.0f;
 
 		if (keyboard->IsKeyDown(Key::KV_W))
-			location += vec3(0, 0, 1) * deltaTime * speed;
+			location += g_camera.GetForward() * deltaTime * speed;
 		if (keyboard->IsKeyDown(Key::KV_S))
-			location += vec3(0, 0, -1) * deltaTime * speed;
+			location -= g_camera.GetForward() * deltaTime * speed;
 
 		if (keyboard->IsKeyDown(Key::KV_A))
-			location += vec3(-1, 0, 0) * deltaTime * speed;
+			location -= g_camera.GetRight() * deltaTime * speed;
 		if (keyboard->IsKeyDown(Key::KV_D))
-			location += vec3(1, 0, 0) * deltaTime * speed;
+			location += g_camera.GetRight() * deltaTime * speed;
 
 
 		if (keyboard->IsKeyDown(Key::KV_LEFT))

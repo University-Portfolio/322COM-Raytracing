@@ -176,7 +176,7 @@ void Scene::HandleRender(int workerId, void* settingsPtr) const
 
 		// Fetch colour and draw to screen
 		vec3 direction = normalize(
-			rotateZ(rotateY(rotateX(vec3(vx, vy, 1), settings->viewRotation.x), settings->viewRotation.y), settings->viewRotation.z)
+			rotateY(rotateX(rotateZ(vec3(vx, vy, 1), settings->viewRotation.z), settings->viewRotation.x), settings->viewRotation.y)
 		);
 		Ray ray(settings->cameraLocation, direction);
 		Colour currentColour = FetchColour(ray);
