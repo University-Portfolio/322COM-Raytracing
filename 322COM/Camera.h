@@ -8,6 +8,7 @@ class Camera
 {
 private:
 	glm::vec3 location;
+	glm::vec3 rotation;
 	float fov = 90;
 
 public:
@@ -21,6 +22,9 @@ public:
 
 	inline void SetLocation(vec3 loc) { location = loc; }
 	inline vec3 GetLocation() const { return location; }
+
+	inline void SetEularRotation(vec3 rot) { rotation = rot; }
+	inline vec3 GetEularRotation() const { return rotation; }
 
 	inline void SetFOV(float f) { fov = f; }
 	inline float GetFOV() const { return fov; }

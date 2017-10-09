@@ -13,17 +13,38 @@ Camera g_camera;
 void Tick(Window* context, float deltaTime)
 {
 	const Keyboard* keyboard = context->GetKeyboard();
-	const float speed = 1.0f;
 
-	if (keyboard->IsKeyDown(Key::KV_W))
-		g_camera.SetLocation(g_camera.GetLocation() + vec3(0, 0, 1) * deltaTime * speed);
-	if (keyboard->IsKeyDown(Key::KV_S))
-		g_camera.SetLocation(g_camera.GetLocation() + vec3(0, 0, -1) * deltaTime * speed);
+	// Camera movement
+	{
+		vec3 location = g_camera.GetLocation();
+		vec3 rotation = g_camera.GetEularRotation();
+		const float speed = 3.0f;
+		const float rotationSpeed = 45.0f;
 
-	if (keyboard->IsKeyDown(Key::KV_A))
-		g_camera.SetLocation(g_camera.GetLocation() + vec3(-1, 0, 0) * deltaTime * speed);
-	if (keyboard->IsKeyDown(Key::KV_D))
-		g_camera.SetLocation(g_camera.GetLocation() + vec3(1, 0, 0) * deltaTime * speed);
+		if (keyboard->IsKeyDown(Key::KV_W))
+			location += vec3(0, 0, 1) * deltaTime * speed;
+		if (keyboard->IsKeyDown(Key::KV_S))
+			location += vec3(0, 0, -1) * deltaTime * speed;
+
+		if (keyboard->IsKeyDown(Key::KV_A))
+			location += vec3(-1, 0, 0) * deltaTime * speed;
+		if (keyboard->IsKeyDown(Key::KV_D))
+			location += vec3(1, 0, 0) * deltaTime * speed;
+
+
+		if (keyboard->IsKeyDown(Key::KV_LEFT))
+			rotation += vec3(0, -1, 0) * deltaTime * rotationSpeed;
+		if (keyboard->IsKeyDown(Key::KV_RIGHT))
+			rotation += vec3(0, 1, 0) * deltaTime * rotationSpeed;
+
+		if (keyboard->IsKeyDown(Key::KV_DOWN))
+			rotation += vec3(1, 0, 0) * deltaTime * rotationSpeed;
+		if (keyboard->IsKeyDown(Key::KV_UP))
+			rotation += vec3(-1, 0, 0) * deltaTime * rotationSpeed;
+
+		g_camera.SetLocation(location);
+		g_camera.SetEularRotation(rotation);
+	}
 
 	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 8);
 }
@@ -59,7 +80,7 @@ int main(int argc, char** argv)
 	}
 
 
-	Window window("Hello World", 1280, 720, 300);
+	Window window("Hello World", 800, 600, 300);
 	window.MainLoop(Tick);
 	delete g_mainScene;
 

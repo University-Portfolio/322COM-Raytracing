@@ -22,11 +22,15 @@ public:
 	vec3 cameraForward;
 
 	int texelSize;
+
+	/// Size of output
 	int width;
 	int height;
+	float aspectRatio;
 
-	float stepX;
-	float stepY;
+	/// Angle (In radians) 
+	float viewAngle;
+	vec3 viewRotation;
 };
 
 
@@ -70,19 +74,11 @@ void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 		settings.cameraLocation = camera->GetLocation();
 		settings.cameraForward = vec3(0, 0, 1);
 
-
-		// Work out how far to rotate forward vector based on FoV and screen size
-		float aspectRatio = (float)target->GetWidth() / (float)target->GetHeight();
-
 		settings.width = target->GetWidth();
 		settings.height = target->GetHeight();
-
-		float halfWidth = settings.width * 0.5f;
-		float halfHeight = settings.height * 0.5f;
-
-		const float fov = radians(camera->GetFOV() * 0.5f);
-		settings.stepX = (fov * aspectRatio) / halfWidth;
-		settings.stepY = fov / halfHeight;
+		settings.aspectRatio = (float)target->GetWidth() / (float)target->GetHeight();
+		settings.viewAngle = radians(camera->GetFOV());
+		settings.viewRotation = radians(camera->GetEularRotation());
 	}
 
 
@@ -147,6 +143,7 @@ void Scene::HandleRender(int workerId, void* settingsPtr) const
 	
 
 	const int totalPixels = settings->width * settings->height;
+	const float viewTan = tan(settings->viewAngle * 0.5f);
 	float halfWidth = settings->width * 0.5f;
 	float halfHeight = settings->height * 0.5f;
 
@@ -157,15 +154,30 @@ void Scene::HandleRender(int workerId, void* settingsPtr) const
 		int x = i / settings->height; 
 		int y = i % settings->height;
 
-		// Perform checkered board render, to free up more processing
-		int l = (renderCounter) % (settings->texelSize * settings->texelSize);
-		int xc = (x + l) % settings->texelSize;
-		int yc = (y + l / settings->texelSize) % settings->texelSize;
+		// Perform delayed texel render, to free up more processing
+		{
+			int l = (renderCounter) % (settings->texelSize * settings->texelSize);
+			int xc = (x + l) % settings->texelSize;
+			int yc = (y + l / settings->texelSize) % settings->texelSize;
 
-		if (xc != 0 || yc != 0)
-			continue;
+			if (xc != 0 || yc != 0)
+				continue;
+		}
 
-		vec3 direction = rotateX(rotateY(settings->cameraForward, (x - halfWidth) * settings->stepX), (y - halfHeight) * settings->stepY);
+
+		// Remap pixels, so 0,0 is centre of screen
+		float rx = (x - halfWidth);
+		float ry = halfHeight - y;
+
+		// Convert centralized pixels into into direction steps
+		float vx = rx / halfWidth * viewTan * settings->aspectRatio;
+		float vy = ry / halfHeight * viewTan;
+		
+
+		// Fetch colour and draw to screen
+		vec3 direction = normalize(
+			rotateZ(rotateY(rotateX(vec3(vx, vy, 1), settings->viewRotation.x), settings->viewRotation.y), settings->viewRotation.z)
+		);
 		Ray ray(settings->cameraLocation, direction);
 		Colour currentColour = FetchColour(ray);
 		settings->target->SetPixel(x, y, currentColour);
