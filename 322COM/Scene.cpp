@@ -109,29 +109,27 @@ void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 
 Colour Scene::FetchColour(Ray ray) const
 {
-	Object* hit = nullptr;
-	float distance = -1;
+	// Find closest hit
+	PixelHitInfo closestHit;
+	float closestDistance = -1;
 
 	for (Object* obj : m_objects)
 	{
-		float objDist;
-		if (obj->IntersectsRay(ray, objDist) && (objDist < distance || distance == -1) && objDist > 0)
+		PixelHitInfo hit;
+		if (obj->IntersectsRay(ray, hit) && (hit.distance < closestDistance || closestDistance == -1) && hit.distance > 0)
 		{
-			hit = obj;
-			distance = objDist;
+			closestHit = hit;
+			closestDistance = hit.distance;
 		}
 	}
-	
-	if (hit != nullptr)
-	{
-		vec3 hitLocation = ray.origin + ray.direction * distance;
-		vec3 diff = normalize(hitLocation - hit->GetLocation());
 
-		return Colour(diff.x * 255, diff.y * 255, diff.z * 255);
-		//return hit->GetColour();
-	}
-	else
+	
+	// No hit so get sky
+	if (closestDistance == -1)
 		return GetSkyColour();
+
+
+	return Colour(closestHit.uvs.x * 255, closestHit.uvs.y * 255, 0 * 255);
 }
 
 

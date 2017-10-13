@@ -59,14 +59,14 @@ int main(int argc, char** argv)
 
 	// Setup scene
 	{
-		Object_Sphere* sphere = new Object_Sphere(vec3(0, 0, 10), 0.5f);
-		sphere->SetColour(Colour(255, 0, 0));
-		g_mainScene->AddObject(sphere);
+		//Object_Sphere* sphere = new Object_Sphere(vec3(0, 0, 10), 0.5f);
+		//sphere->SetColour(Colour(255, 0, 0));
+		//g_mainScene->AddObject(sphere);
 	}
 	{
-		Object_Sphere* sphere = new Object_Sphere(vec3(1, 0, 10), 0.5f);
-		sphere->SetColour(Colour(0, 255, 0));
-		g_mainScene->AddObject(sphere);
+		//Object_Sphere* sphere = new Object_Sphere(vec3(1, 0, 10), 0.5f);
+		//sphere->SetColour(Colour(0, 255, 0));
+		//g_mainScene->AddObject(sphere);
 	}
 	{
 		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 10), 0.5f);
@@ -74,9 +74,9 @@ int main(int argc, char** argv)
 		g_mainScene->AddObject(sphere);
 	}
 	{
-		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 20), 5.0f);
-		sphere->SetColour(Colour(255, 255, 255));
-		g_mainScene->AddObject(sphere);
+		//Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 20), 5.0f);
+		//sphere->SetColour(Colour(255, 255, 255));
+		//g_mainScene->AddObject(sphere);
 	}
 
 

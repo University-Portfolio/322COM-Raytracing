@@ -1,13 +1,14 @@
 #include "Object_Sphere.h"
+#include "Logger.h"
 
 
-
-Object_Sphere::Object_Sphere(vec3 location, float radius) : Object(location)
+Object_Sphere::Object_Sphere(vec3 location, float radius)
 {
+	SetLocation(location);
 	this->radius = radius;
 }
 
-bool Object_Sphere::IntersectsRay(Ray ray, float& outDistance) 
+bool Object_Sphere::IntersectsRay(Ray ray, PixelHitInfo& hitInfo)
 {
 	// At time t0 and t1 the ray's distance from 
 	// the centre of the sphere will be equal to the radius
@@ -52,20 +53,28 @@ bool Object_Sphere::IntersectsRay(Ray ray, float& outDistance)
 	}
 	
 
-	// t0 too close
-	if (t0 < 0)
+	// Get closest (Ignore if too close)
+	float t = t0;
+
+	if (t < 0)
+		t = t1;
+	if (t < 0)
+		return false;
+
+
+	hitInfo.object = this;
+	hitInfo.distance = t;
+	hitInfo.location = ray.origin + ray.direction * t;
+	hitInfo.normal = normalize(hitInfo.location - centre);
+	
+	// Project uvs
 	{
-		// t1 not too close
-		if (t1 >= 0)
-		{
-			outDistance = t1;
-			return true;
-		}
+		vec3 localPosition = hitInfo.location - centre;
+
+		const float pi = 3.141592f;
+		float theta = -atan2f(localPosition.x, localPosition.z) / pi;
+		float phi = (atanf(localPosition.y / radius) + 1.0f) * 0.5f;
+		hitInfo.uvs = vec2(theta, phi);
 	}
-	else
-	{
-		outDistance = t0;
-		return true;
-	}
-	return false;
+	return true;
 }

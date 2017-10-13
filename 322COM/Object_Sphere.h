@@ -13,10 +13,10 @@ public:
 	/**
 	* Does this ray interesect with this object?
 	* @param ray			The ray in question
-	* @param outDistance	The distance from ray origin to intersection point
+	* @param hitInfo		Information about the ray intersection
 	* @returns True if ray hits, false if misses
 	*/
-	virtual bool IntersectsRay(Ray ray, float& outDistance);
+	virtual bool IntersectsRay(Ray ray, PixelHitInfo& hitInfo);
 
 
 	/**
