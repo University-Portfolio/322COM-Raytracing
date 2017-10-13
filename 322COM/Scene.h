@@ -13,6 +13,7 @@ private:
 	const int m_workerCount;
 
 	std::vector<Object*> m_objects;
+	std::vector<Material*> m_materials;
 	Colour skyColour;
 
 	int renderCounter;
@@ -31,7 +32,7 @@ public:
 	/**
 	* Get colour from a single ray
 	*/
-	Colour FetchColour(Ray ray) const;
+	Colour CalculateColour(Ray ray) const;
 
 private:
 	void HandleRender(int workerId, void* settingsPtr) const;
@@ -44,6 +45,9 @@ public:
 
 	/** Add object to scene (Forfeits memory management rights to scene) */
 	inline void AddObject(Object* obj) { m_objects.emplace_back(obj); }
+
+	/** Add material to scene (Forfeits memory management rights to scene) */
+	inline Material* AddMaterial(Material* mat) { m_materials.emplace_back(mat); return mat; }
 
 	inline void SetSkyColour(Colour col) { skyColour = col; }
 	inline Colour GetSkyColour() const { return skyColour; }

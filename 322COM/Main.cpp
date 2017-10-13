@@ -70,7 +70,11 @@ int main(int argc, char** argv)
 	}
 	{
 		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 10), 0.5f);
-		sphere->SetColour(Colour(0, 0, 255));
+		Material* mat = new Material();
+		mat->SetColour(Colour(255, 0, 0));
+
+		sphere->SetMaterial(g_mainScene->AddMaterial(mat));
+		//sphere->SetColour(Colour(0, 0, 255));
 		g_mainScene->AddObject(sphere);
 	}
 	{

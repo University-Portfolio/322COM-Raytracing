@@ -2,6 +2,7 @@
 #include <glm.hpp>
 #include "Colour.h"
 #include "Ray.h"
+#include "Material.h"
 
 
 using namespace glm;
@@ -12,8 +13,8 @@ using namespace glm;
 */
 struct PixelHitInfo 
 {
-	class Object* object;
-	float distance;
+	class Object* object = nullptr;
+	float distance = 0.0f;
 
 	vec3 location;
 	vec3 normal;
@@ -28,7 +29,7 @@ class Object
 {
 private:
 	vec3 location;
-	Colour colour;
+	Material* material;
 
 public:
 	virtual ~Object() {}
@@ -49,6 +50,6 @@ public:
 	inline void SetLocation(vec3 loc) { location = loc; }
 	inline vec3 GetLocation() const { return location; }
 
-	inline void SetColour(Colour col) { colour = col; }
-	inline Colour GetColour() const { return colour; }
+	inline void SetMaterial(Material* mat) { material = mat; }
+	inline Material* GetMaterial() const { return material; }
 };

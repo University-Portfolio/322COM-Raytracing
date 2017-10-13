@@ -59,6 +59,10 @@ Scene::~Scene()
 	for (Object* obj : m_objects)
 		delete obj;
 
+	// Delete all materials
+	for (Material* mat : m_materials)
+		delete mat;
+
 	LOG("Destroyed scene");
 }
 
@@ -107,7 +111,7 @@ void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 }
 
 
-Colour Scene::FetchColour(Ray ray) const
+Colour Scene::CalculateColour(Ray ray) const
 {
 	// Find closest hit
 	PixelHitInfo closestHit;
@@ -125,11 +129,17 @@ Colour Scene::FetchColour(Ray ray) const
 
 	
 	// No hit so get sky
-	if (closestDistance == -1)
+	if (closestHit.object == nullptr)
 		return GetSkyColour();
 
 
-	return Colour(closestHit.uvs.x * 255, closestHit.uvs.y * 255, 0 * 255);
+	Material* mat = closestHit.object->GetMaterial();
+
+	// Return black for missing material
+	if (mat == nullptr)
+		return Colour(0, 0, 0);
+
+	return mat->FetchColour(this, ray, closestHit);
 }
 
 
@@ -177,7 +187,7 @@ void Scene::HandleRender(int workerId, void* settingsPtr) const
 			rotateY(rotateX(rotateZ(vec3(vx, vy, 1), settings->viewRotation.z), settings->viewRotation.x), settings->viewRotation.y)
 		);
 		Ray ray(settings->cameraLocation, direction);
-		Colour currentColour = FetchColour(ray);
+		Colour currentColour = CalculateColour(ray);
 		settings->target->SetPixel(x, y, currentColour);
 	}
 }
