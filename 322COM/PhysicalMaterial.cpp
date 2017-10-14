@@ -1,7 +1,7 @@
 #include "PhysicalMaterial.h"
 
 
-Colour PhysicalMaterial::FetchBaseColour(const Scene* scene, Ray ray, PixelHitInfo& hit) 
+Colour PhysicalMaterial::FetchBaseColour(const Scene* scene, Ray ray, PixelHitInfo& hit)
 {
 	return GetColour();
 }
@@ -15,41 +15,22 @@ Colour PhysicalMaterial::FetchColour(const Scene* scene, Ray ray, PixelHitInfo& 
 		return colour;
 
 
-	// TODO - REMOVE TEST
+	const std::vector<Light*>& lights = scene->GetLights();
+	Colour totalDiffuse;
+	Colour totalSpecular;
 
-	// Directional light
-	Colour lightColour(255, 255, 255);
-	vec3 lightDir = normalize(vec3(1, -1, 0));
-
-
-	// Diffuse
-	Colour diffuse;
+	for (Light* light : lights)
 	{
-		float intensity = max(0.0f, dot(hit.normal, -lightDir));
+		Colour colour;
+		float specularFactor;
+		light->CalculateLighting(scene, ray, hit, colour, specularFactor);
 
-		if (intensity != 0.0f)
-		{
-
-			// Check for shadow
-			Colour temp;
-			if (scene->CastRay(Ray(hit.location, -lightDir), temp))
-				return Colour(0, 0, 0);
-
-			diffuse = lightColour * intensity;
-		}
-	}
-
-	// Specular
-	vec3 specular;
-	{
-		vec3 reflectedLight = reflect(lightDir, hit.normal);
-		float specularFactor = max(0.0f, dot(reflectedLight, -ray.direction));
-
-		specular = lightColour.ToVector() * pow(specularFactor, 10.0f);
+		totalDiffuse += colour;
+		totalSpecular += colour * pow(specularFactor, m_shininess) * m_smoothness;
 	}
 
 
-	colour.Filter(diffuse);
-	colour += specular;
+	colour.Filter(totalDiffuse);
+	colour += totalSpecular;
 	return colour;
 }

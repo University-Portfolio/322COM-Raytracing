@@ -1,5 +1,6 @@
 #pragma once
 #include "Object.h"
+#include "Light.h"
 #include "ThreadWorker.h"
 
 #include "SDL_stdinc.h"
@@ -17,6 +18,7 @@ private:
 	const int m_workerCount;
 
 	std::vector<Object*> m_objects;
+	std::vector<Light*> m_lights;
 	std::vector<Material*> m_materials;
 	Colour skyColour;
 
@@ -58,9 +60,16 @@ public:
 
 	/** Add object to scene (Forfeits memory management rights to scene) */
 	inline void AddObject(Object* obj) { m_objects.emplace_back(obj); }
+	inline const std::vector<Object*>& GetObjects() const { return m_objects; }
 
 	/** Add material to scene (Forfeits memory management rights to scene) */
 	inline Material* AddMaterial(Material* mat) { m_materials.emplace_back(mat); return mat; }
+	inline const std::vector<Material*>& GetMaterials() const { return m_materials; }
+
+	/** Add light to scene (Forfeits memory management rights to scene) */
+	inline Light* AddLight(Light* light) { m_lights.emplace_back(light); return light; }
+	inline const std::vector<Light*>& GetLights() const { return m_lights; }
+
 
 	inline void SetSkyColour(Colour col) { skyColour = col; }
 	inline Colour GetSkyColour() const { return skyColour; }

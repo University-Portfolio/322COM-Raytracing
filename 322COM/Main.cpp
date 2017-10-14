@@ -10,6 +10,8 @@
 #include "TexturedMaterial.h"
 #include "PhysicalMaterial.h"
 
+#include "DirectionalLight.h"
+
 
 Scene* g_mainScene;
 Camera g_camera;
@@ -72,12 +74,12 @@ int main(int argc, char** argv)
 	g_mainScene->SetSkyColour(Colour(52, 152, 219));
 	g_camera.SetLocation(vec3(0, 1, 0));
 
+
 	// Setup materials
 	Material* basicColour;
 	TexturedMaterial* basicTexture;
 	TexturedMaterial* tileTexture;
 	PhysicalMaterial* physMaterial;
-
 	{
 		basicColour = new Material();
 		basicColour->SetColour(Colour(0, 255, 255));
@@ -98,6 +100,22 @@ int main(int argc, char** argv)
 		g_mainScene->AddMaterial(physMaterial);
 	}
 
+	// Setup lights
+	{
+		DirectionalLight* light = new DirectionalLight(vec3(1, -1, 0));
+		light->SetColour(Colour(255, 0, 0));
+		g_mainScene->AddLight(light);
+	}
+	{
+		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, 0.86602540378f));
+		light->SetColour(Colour(0, 255, 0));
+		g_mainScene->AddLight(light);
+	}
+	{
+		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, -0.86602540378f));
+		light->SetColour(Colour(0, 0, 255));
+		g_mainScene->AddLight(light);
+	}
 
 	// Setup scene
 	{

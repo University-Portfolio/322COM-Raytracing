@@ -1,9 +1,14 @@
 #pragma once
 #include <glm.hpp>
 #include "Colour.h"
+#include "Ray.h"
 
 
 using namespace glm;
+
+class Scene;
+class PixelHitInfo;
+
 
 
 /**
@@ -13,16 +18,21 @@ class Light
 {
 private:
 	vec3 location;
-	Colour colour;
+	Colour colour = Colour(255, 255, 255);
 
 public:
+	Light() {}
+	virtual ~Light() {}
+
 	/**
-	* Does this light affect the object
-	* @param object			The object in question
-	* @param outIntensity	How intense the light should be
-	* @returns True if ray hits, false if misses
+	* Caclulate the lighting for a specific pixel in a scene
+	* @param scene			The scene containing all the objects
+	* @param ray			The camera ray used to pick the pixel
+	* @param hit			The information retrieved about the pixel
+	* @param outColour		The light colour to used for this pixel
+	* @param outSpecular	The specular factor for this pixel
 	*/
-	virtual bool AffectObject(class Object* object, float& outIntensity) = 0;
+	virtual void CalculateLighting(const Scene* scene, Ray ray, PixelHitInfo& hit, Colour& outColour, float& outSpecular) const = 0;
 
 	/**
 	* Getters & Setters
