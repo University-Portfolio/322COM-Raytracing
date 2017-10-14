@@ -83,6 +83,19 @@ void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 	}
 
 
+	// Enable low quality rendering, if camera is moving
+	if (lastRenderPosition != camera->GetLocation() || lastRenderRotation != camera->GetEularRotation())
+	{
+		bSimpleRenderingEnabled = true;
+		renderStillCounter = 0;
+		lastRenderPosition = camera->GetLocation();
+		lastRenderRotation = camera->GetEularRotation();
+	}
+	// If stayed still for long enough use high quality rendering
+	else if (++renderStillCounter >= 15)
+		bSimpleRenderingEnabled = false;
+
+
 	// Queue work for all workers
 	for (ThreadWorker* worker : m_workers)
 		worker->QueueWork(&settings);

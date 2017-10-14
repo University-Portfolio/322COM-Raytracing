@@ -25,6 +25,11 @@ private:
 	int renderCounter;
 	bool bSimpleRenderingEnabled = false;
 
+	int renderStillCounter;
+	vec3 lastRenderPosition;
+	vec3 lastRenderRotation;
+
+
 public:
 	Scene(int workerCount);
 	~Scene();

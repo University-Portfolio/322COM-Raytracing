@@ -144,7 +144,7 @@ int main(int argc, char** argv)
 	}
 	{
 		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 20), 5.0f);
-		sphere->SetCullingMode(CullingMode::Backface);
+		//sphere->SetCullingMode(CullingMode::Backface);
 		sphere->SetMaterial(basicTexture);
 		g_mainScene->AddObject(sphere);
 	}
