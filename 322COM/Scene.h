@@ -21,6 +21,7 @@ private:
 	Colour skyColour;
 
 	int renderCounter;
+	bool bSimpleRenderingEnabled = false;
 
 public:
 	Scene(int workerCount);
@@ -60,5 +61,8 @@ public:
 
 	inline void SetSkyColour(Colour col) { skyColour = col; }
 	inline Colour GetSkyColour() const { return skyColour; }
+
+	/** Should complex rendering be enabled (e.g. lighting, relections etc.) */
+	inline bool IsSimpleRenderingEnabled() const { return bSimpleRenderingEnabled; }
 };
 

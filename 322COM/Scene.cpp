@@ -132,9 +132,9 @@ Colour Scene::CalculateColour(Ray ray) const
 
 	Material* mat = closestHit.object->GetMaterial();
 
-	// Return black for missing material
+	// Missing material so return pink
 	if (mat == nullptr)
-		return Colour(0, 0, 0);
+		return Colour(255, 0, 249);
 
 	return mat->FetchColour(this, ray, closestHit);
 }

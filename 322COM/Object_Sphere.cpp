@@ -43,21 +43,30 @@ bool Object_Sphere::IntersectsRay(Ray ray, PixelHitInfo& hitInfo)
 
 	float t0 = mainHyp - hitDistance;
 	float t1 = mainHyp + hitDistance;
-	
-	// Swap
-	if (t1 < t0)
-	{
-		float temp = t0;
-		t0 = t1;
-		t1 = temp;
-	}
-	
+		
 
 	// Get closest (Ignore if too close)
-	float t = t0;
+	float t = 0;
 
-	if (t < 0)
+	switch (GetCullingMode())
+	{
+	// Get closest of 2 intersections
+	case Nothing:
+		t = t0;
+		if (t < 0)
+			t = t1;
+		break;
+
+	case Backface:
+		t = t0;
+		break;
+
+	case Frontface:
 		t = t1;
+		break;
+	}
+
+	// If too close, ignore hit
 	if (t < 0)
 		return false;
 

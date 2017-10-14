@@ -17,12 +17,12 @@ private:
 
 public:
 	/**
-	* Does this ray interesect with this object?
-	* @param ray			The ray in question
-	* @param outDistance	The distance from ray origin to intersection point
+	* Does this light affect the object
+	* @param object			The object in question
+	* @param outIntensity	How intense the light should be
 	* @returns True if ray hits, false if misses
 	*/
-	virtual bool AffectObject(class Object* object) = 0;
+	virtual bool AffectObject(class Object* object, float& outIntensity) = 0;
 
 	/**
 	* Getters & Setters

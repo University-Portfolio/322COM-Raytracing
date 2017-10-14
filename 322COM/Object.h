@@ -22,6 +22,14 @@ struct PixelHitInfo
 };
 
 
+enum CullingMode
+{
+	Nothing,
+	Frontface,
+	Backface
+};
+
+
 /**
 * Abstract Object represents something which can be placed in the scene
 */
@@ -30,6 +38,8 @@ class Object
 private:
 	vec3 location;
 	Material* material;
+
+	CullingMode m_cullingMode;
 
 public:
 	virtual ~Object() {}
@@ -52,4 +62,7 @@ public:
 
 	inline void SetMaterial(Material* mat) { material = mat; }
 	inline Material* GetMaterial() const { return material; }
+
+	inline void SetCullingMode(CullingMode mode) { m_cullingMode = mode; }
+	inline CullingMode GetCullingMode() const { return m_cullingMode; }
 };

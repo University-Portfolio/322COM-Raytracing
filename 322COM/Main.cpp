@@ -68,31 +68,43 @@ int main(int argc, char** argv)
 	g_mainScene->SetSkyColour(Colour(52, 152, 219));
 	g_camera.SetLocation(vec3(0, 1, 0));
 
+	// Setup materials
+	Material* basicColour;
+	TexturedMaterial* basicTexture;
+
+	{
+		basicColour = new Material();
+		basicColour->SetColour(Colour(0, 255, 255));
+		g_mainScene->AddMaterial(basicColour);
+
+		basicTexture = new TexturedMaterial("H:\\Uni\\322COM - Raytracing\\Resources\\Test Texture.bmp");
+		basicTexture->GetTexture()->SetFilterMode(FilterMode::Nearest);
+		basicTexture->GetTexture()->SetWrapMode(WrapMode::Wrap);
+		g_mainScene->AddMaterial(basicTexture);
+	}
+
+
 	// Setup scene
 	{
 		Object_Sphere* sphere = new Object_Sphere(vec3(0, 0, 10), 0.5f);
-		//sphere->SetColour(Colour(255, 0, 0));
+		sphere->SetMaterial(basicColour);
 		g_mainScene->AddObject(sphere);
 	}
 	{
 		Object_Sphere* sphere = new Object_Sphere(vec3(1, 0, 10), 0.5f);
-		//sphere->SetColour(Colour(0, 255, 0));
+		sphere->SetMaterial(basicColour);
 		g_mainScene->AddObject(sphere);
 	}
 	{
 		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 10), 0.5f);
-		TexturedMaterial* mat = new TexturedMaterial("H:\\Uni\\322COM - Raytracing\\Resources\\Test Texture.bmp");
-		mat->GetTexture()->SetFilterMode(FilterMode::Nearest);
-		mat->GetTexture()->SetWrapMode(WrapMode::Wrap);
-		mat->SetColour(Colour(255, 0, 0));
-
-		sphere->SetMaterial(g_mainScene->AddMaterial(mat));
-		//sphere->SetColour(Colour(0, 0, 255));
+		sphere->SetCullingMode(CullingMode::Backface);
+		sphere->SetMaterial(basicTexture);
 		g_mainScene->AddObject(sphere);
 	}
 	{
 		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 20), 5.0f);
-		//sphere->SetColour(Colour(255, 255, 255));
+		sphere->SetCullingMode(CullingMode::Frontface);
+		sphere->SetMaterial(basicTexture);
 		g_mainScene->AddObject(sphere);
 	}
 

@@ -22,9 +22,14 @@ public:
 	
 	Colour(glm::vec3 vector)
 	{
-		this->r = glm::min(vector.x * 255.0f, 255.0f);
-		this->g = glm::min(vector.y * 255.0f, 255.0f);
-		this->b = glm::min(vector.z * 255.0f, 255.0f);
+		// Clamp each component to 0-1
+		vector.x = glm::max(0.0f, glm::min(1.0f, vector.x));
+		vector.y = glm::max(0.0f, glm::min(1.0f, vector.y));
+		vector.z = glm::max(0.0f, glm::min(1.0f, vector.z));
+
+		this->r = vector.x * 255.0f;
+		this->g = vector.y * 255.0f;
+		this->b = vector.z * 255.0f;
 	}
 
 	void Invert() 
