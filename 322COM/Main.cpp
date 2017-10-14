@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "Camera.h"
 #include "Object_Sphere.h"
+#include "TexturedMaterial.h"
 
 
 Scene* g_mainScene;
@@ -47,6 +48,16 @@ void Tick(Window* context, float deltaTime)
 	}
 
 	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 8);
+
+
+	//Texture& t = g_testTexture;
+	//t.SetWrapMode(WrapMode::Wrap);
+
+	//for (int x = 0; x < t.GetWidth() * 2; ++x)
+	//	for (int y = 0; y < t.GetHeight() * 2; ++y)
+	//	{
+	//		context->GetRenderSurface()->SetPixel(x, y, t.GetColour(x, y));
+	//	}
 }
 
 int main(int argc, char** argv)
@@ -70,7 +81,9 @@ int main(int argc, char** argv)
 	}
 	{
 		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 10), 0.5f);
-		Material* mat = new Material();
+		TexturedMaterial* mat = new TexturedMaterial("H:\\Uni\\322COM - Raytracing\\Resources\\Test Texture.bmp");
+		mat->GetTexture()->SetFilterMode(FilterMode::Nearest);
+		mat->GetTexture()->SetWrapMode(WrapMode::Wrap);
 		mat->SetColour(Colour(255, 0, 0));
 
 		sphere->SetMaterial(g_mainScene->AddMaterial(mat));

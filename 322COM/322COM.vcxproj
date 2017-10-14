@@ -143,6 +143,7 @@
     <ClCompile Include="Object_Sphere.cpp" />
     <ClCompile Include="RenderSurface.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TexturedMaterial.cpp" />
     <ClCompile Include="ThreadWorker.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RenderSurface.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="TexturedMaterial.h" />
     <ClInclude Include="ThreadWorker.h" />
     <ClInclude Include="Timer.h" />

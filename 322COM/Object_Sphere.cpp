@@ -68,13 +68,12 @@ bool Object_Sphere::IntersectsRay(Ray ray, PixelHitInfo& hitInfo)
 	hitInfo.normal = normalize(hitInfo.location - centre);
 	
 	// Project uvs
-	{
-		vec3 localPosition = hitInfo.location - centre;
+	const float pi = 3.141592f;
+	const float tau = 3.141592f * 2.0f;
+	hitInfo.uvs = vec2(
+		atan2f(-hitInfo.normal.x, hitInfo.normal.z) / tau + 0.5f,
+		0.5f + hitInfo.normal.y * -0.5f
+	);
 
-		const float pi = 3.141592f;
-		float theta = -atan2f(localPosition.x, localPosition.z) / pi;
-		float phi = (atanf(localPosition.y / radius) + 1.0f) * 0.5f;
-		hitInfo.uvs = vec2(theta, phi);
-	}
 	return true;
 }

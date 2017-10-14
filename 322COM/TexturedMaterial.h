@@ -1,21 +1,20 @@
 #pragma once
-#include "Colour.h"
-#include "Ray.h"
+#include "Material.h"
+#include "Object.h"
+#include "Texture.h"
 
-
-class Scene;
-struct PixelHitInfo;
 
 /**
-* Represents some form of visual/physical material with any amount of settings
+* Material for applying a single material to an object
 */
-class Material
+class TexturedMaterial : public Material
 {
 private:
-	Colour colour = Colour(255, 255, 255);
+	Texture m_texture;
 
 public:
-	virtual ~Material() {}
+	TexturedMaterial(std::string texturePath);
+	virtual ~TexturedMaterial();
 
 
 	/**
@@ -25,15 +24,12 @@ public:
 	* @param hit			The hit information about the object/pixel to colour
 	* @returns The correct colour that this pixel should be
 	*/
-	virtual Colour FetchColour(const Scene* scene, Ray ray, PixelHitInfo& hit);
-
+	virtual Colour FetchColour(const Scene* scene, Ray ray, PixelHitInfo& hit) override;
 
 	/**
 	* Getters & Setters
 	*/
 public:
-
-	inline void SetColour(Colour col) { colour = col; }
-	inline Colour GetColour() const { return colour; }
+	inline Texture* GetTexture() { return &m_texture; }
 };
 

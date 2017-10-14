@@ -20,11 +20,11 @@ public:
 		this->b = b;
 	}
 	
-	Colour(vec3 vector)
+	Colour(glm::vec3 vector)
 	{
-		this->r = min(vector.x * 255.0f, 255.0f);
-		this->g = min(vector.y * 255.0f, 255.0f);
-		this->b = min(vector.z * 255.0f, 255.0f);
+		this->r = glm::min(vector.x * 255.0f, 255.0f);
+		this->g = glm::min(vector.y * 255.0f, 255.0f);
+		this->b = glm::min(vector.z * 255.0f, 255.0f);
 	}
 
 	void Invert() 
@@ -34,8 +34,19 @@ public:
 		b = 255 - b;
 	}
 
-	inline vec3 ToVector()
+	inline glm::vec3 ToVector()
 	{
-		return vec3(r / 255.0, g / 255.0, b / 255.0);
+		return glm::vec3(r / 255.0, g / 255.0, b / 255.0);
+	}
+
+	/**
+	* Apply colour filter to this colour
+	*/
+	inline void Filter(Colour c) 
+	{
+		glm::vec3 f = c.ToVector();
+		r = f.x * r;
+		g = f.y * g;
+		b = f.z * b;
 	}
 };
