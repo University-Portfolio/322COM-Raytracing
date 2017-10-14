@@ -43,11 +43,12 @@ public:
 
 	/**
 	* Get colour from a single ray
-	* @param ray		The ray to cast
-	* @param outColour	The colour that this pixel should be
+	* @param ray			The ray to cast
+	* @param outColour		The colour that this pixel should be
+	* @param recursionCount	How many recursive rays have been casted
 	* @returns Whether the ray hit anything or not
 	*/
-	bool CastRay(Ray ray, Colour& outColour) const;
+	bool CastRay(Ray ray, Colour& outColour, int recursionCount) const;
 
 private:
 	/**

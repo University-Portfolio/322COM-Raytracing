@@ -6,7 +6,7 @@ DirectionalLight::DirectionalLight(vec3 direction)
 	this->direction = normalize(direction);
 }
 
-void DirectionalLight::CalculateLighting(const Scene* scene, Ray ray, PixelHitInfo& hit, Colour& outColour, float& outSpecular) const
+void DirectionalLight::CalculateLighting(const Scene* scene, Ray ray, PixelHitInfo& hit, int recursionCount, Colour& outColour, float& outSpecular) const
 {
 	outColour = Colour(0, 0, 0);
 
@@ -21,7 +21,7 @@ void DirectionalLight::CalculateLighting(const Scene* scene, Ray ray, PixelHitIn
 
 	// Check to see if obscured by any object (Should be in shadow)
 	Colour temp;
-	if (scene->CastRay(Ray(hit.location - direction * 0.01f, -direction), temp))
+	if (scene->CastRay(Ray(hit.location - direction * 0.01f, -direction), temp, recursionCount))
 		return; // TODO - Transparency checks
 
 	outColour = GetColour() * intensity;

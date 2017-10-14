@@ -85,6 +85,7 @@ int main(int argc, char** argv)
 	PhysicalMaterial* basicTexture;
 	PhysicalMaterial* tileTexture;
 	PhysicalMaterial* physMaterial;
+	PhysicalMaterial* reflMaterial;
 	{
 		basicColour = new Material();
 		basicColour->SetColour(Colour(0, 255, 255));
@@ -105,7 +106,12 @@ int main(int argc, char** argv)
 
 		physMaterial = new PhysicalMaterial();
 		physMaterial->SetColour(Colour(255, 134, 86));
+		physMaterial->SetReflectivity(0.5f);
 		g_mainScene->AddMaterial(physMaterial);
+
+		reflMaterial = new PhysicalMaterial();
+		reflMaterial->SetReflectivity(1.0f);
+		g_mainScene->AddMaterial(reflMaterial);
 	}
 
 	// Setup lights
@@ -143,32 +149,32 @@ int main(int argc, char** argv)
 		g_mainScene->AddObject(sphere);
 	}
 	{
-		//Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 10), 0.5f);
-		//sphere->SetCullingMode(CullingMode::Backface);
-		//sphere->SetMaterial(physMaterial);
-		//g_mainScene->AddObject(sphere);
+		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 10), 0.5f);
+		sphere->SetCullingMode(CullingMode::Backface);
+		sphere->SetMaterial(reflMaterial);
+		g_mainScene->AddObject(sphere);
 	}
 	{
-		//Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 20), 5.0f);
-		//sphere->SetCullingMode(CullingMode::Backface);
-		//sphere->SetMaterial(basicTexture);
-		//g_mainScene->AddObject(sphere);
+		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 20), 5.0f);
+		sphere->SetCullingMode(CullingMode::Backface);
+		sphere->SetMaterial(basicTexture);
+		g_mainScene->AddObject(sphere);
 	}
 
 	Mesh mesh;
 	Mesh::ImportObj("H:\\Uni\\322COM - Raytracing\\Resources\\torus_low.obj", &mesh, 0.1f);
 	{
-		Object_Mesh* obj = new Object_Mesh(vec3(0, 0, 4));
-		obj->SetCullingMode(CullingMode::Backface);
-		obj->SetMesh(&mesh);
-		obj->SetMaterial(basicTexture);
-		g_mainScene->AddObject(obj);
+		//Object_Mesh* obj = new Object_Mesh(vec3(0, 0, 4));
+		//obj->SetCullingMode(CullingMode::Backface);
+		//obj->SetMesh(&mesh);
+		//obj->SetMaterial(basicTexture);
+		//g_mainScene->AddObject(obj);
 	}
 	{
-		//Object_Sphere* sphere = new Object_Sphere(vec3(0, 0, 4), 0.1f);
-		//sphere->SetCullingMode(CullingMode::Backface);
-		//sphere->SetMaterial(basicColour);
-		//g_mainScene->AddObject(sphere);
+		Object_Sphere* sphere = new Object_Sphere(vec3(0, 0, 4), 0.1f);
+		sphere->SetCullingMode(CullingMode::Backface);
+		sphere->SetMaterial(basicColour);
+		g_mainScene->AddObject(sphere);
 	}
 
 

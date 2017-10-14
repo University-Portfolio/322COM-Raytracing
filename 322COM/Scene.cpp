@@ -121,8 +121,16 @@ void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 }
 
 
-bool Scene::CastRay(Ray ray, Colour& outColour) const
+bool Scene::CastRay(Ray ray, Colour& outColour, int recursionCount) const
 {
+	// Reached recursion limit
+	if (recursionCount++ >= 4)
+	{
+		outColour = Colour(0, 0, 0);
+		return false;
+	}
+
+
 	// Find closest hit
 	PixelHitInfo closestHit;
 	float closestDistance = -1;
@@ -139,8 +147,10 @@ bool Scene::CastRay(Ray ray, Colour& outColour) const
 
 	// No hit 
 	if (closestHit.object == nullptr)
+	{
+		outColour = skyColour;
 		return false;
-
+	}
 
 	Material* mat = closestHit.object->GetMaterial();
 
@@ -148,7 +158,7 @@ bool Scene::CastRay(Ray ray, Colour& outColour) const
 	if (mat == nullptr)
 		outColour = Colour(255, 0, 249);
 	else
-		outColour = mat->FetchColour(this, ray, closestHit);
+		outColour = mat->FetchColour(this, ray, closestHit, recursionCount);
 	return true;
 }
 
@@ -198,7 +208,7 @@ void Scene::ExecuteWork(int workerId, void* data)
 		Ray ray(settings->cameraLocation, direction);
 		Colour currentColour;
 
-		if(CastRay(ray, currentColour))
+		if(CastRay(ray, currentColour, 0))
 			settings->target->SetPixel(x, y, currentColour);
 		else
 			// Misses so put sky colour

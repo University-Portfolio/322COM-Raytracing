@@ -17,10 +17,11 @@ public:
 	* @param scene			The scene containing all the objects
 	* @param ray			The camera ray used to pick the pixel
 	* @param hit			The information retrieved about the pixel
+	* @param recursionCount	How many recursive lookups have occured
 	* @param outColour		The light colour to used for this pixel
 	* @param outSpecular	The specular factor for this pixel
 	*/
-	virtual void CalculateLighting(const Scene* scene, Ray ray, PixelHitInfo& hit, Colour& outColour, float& outSpecular) const;
+	virtual void CalculateLighting(const Scene* scene, Ray ray, PixelHitInfo& hit, int recursionCount, Colour& outColour, float& outSpecular) const;
 
 	/**
 	* Getters & Setters
