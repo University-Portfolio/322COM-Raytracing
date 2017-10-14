@@ -159,6 +159,7 @@ int main(int argc, char** argv)
 	Mesh::ImportObj("H:\\Uni\\322COM - Raytracing\\Resources\\torus_low.obj", &mesh, 0.1f);
 	{
 		Object_Mesh* obj = new Object_Mesh(vec3(0, 0, 4));
+		obj->SetCullingMode(CullingMode::Backface);
 		obj->SetMesh(&mesh);
 		obj->SetMaterial(basicTexture);
 		g_mainScene->AddObject(obj);

@@ -46,18 +46,37 @@ bool Object_Mesh::IntersectsRay(Ray ray, PixelHitInfo& hitInfo)
 		vec3 c = location + vertices[tri.z];
 
 
-		vec3 eAB = b - a;
-		vec3 eAC = c - a;
+		// Ignore face if it should be culled
+		if (GetCullingMode() == CullingMode::Backface)
+		{
+			vec3 normal = cross(b - a, c - a);
+			if (dot(ray.direction, normal) > 0)
+				continue;
+		}
+		else if (GetCullingMode() == CullingMode::Frontface)
+		{
+			vec3 normal = cross(b - a, c - a);
+			if (dot(ray.direction, normal) < 0)
+				continue;
+		}
 
-		float u = dot(ray.origin - a, cross(ray.direction, eAC)) / dot(eAB, cross(ray.direction, eAC));
-		float v = dot(ray.direction, cross(ray.origin - a, eAB)) / dot(eAB, cross(ray.direction, eAC));
-		float w = 1.0f - u - v;
 
+		const vec3 eAB = b - a;
+		const vec3 eAC = c - a;
+		const vec3 origin = ray.origin - a;
+		const vec3 dir_c_eAC = cross(ray.direction, eAC);
+		const float eAB_d_dir_c_AC = dot(eAB, dir_c_eAC);
+
+
+		const float u = dot(origin, dir_c_eAC) / eAB_d_dir_c_AC;
+		const float v = dot(ray.direction, cross(origin, eAB)) / eAB_d_dir_c_AC;
+
+		// If any area is incorrect then the point must lay outside the triangle
 		if (u < 0 || u > 1 || v < 0 || u + v > 1)
 			continue;
 
 
-		float t = dot(eAC, cross(ray.origin - a, eAB)) / dot(eAB, cross(ray.direction, eAC));
+		const float t = dot(eAC, cross(origin, eAB)) / eAB_d_dir_c_AC;
 
 
 		if (closestHitDistance != -1 && t >= closestHitDistance)
@@ -65,7 +84,7 @@ bool Object_Mesh::IntersectsRay(Ray ray, PixelHitInfo& hitInfo)
 
 		closestHitDistance = t;
 		closestTriangle = tri;
-		closestUVW = vec3(u, v, w);
+		closestUVW = vec3(u, v, 1.0f - u - v);
 	}
 
 	// Didn't hit any triangles
