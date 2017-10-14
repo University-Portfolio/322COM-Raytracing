@@ -21,7 +21,7 @@ void DirectionalLight::CalculateLighting(const Scene* scene, Ray ray, PixelHitIn
 
 	// Check to see if obscured by any object (Should be in shadow)
 	Colour temp;
-	if (scene->CastRay(Ray(hit.location, -direction), temp))
+	if (scene->CastRay(Ray(hit.location - direction * 0.01f, -direction), temp))
 		return; // TODO - Transparency checks
 
 	outColour = GetColour() * intensity;

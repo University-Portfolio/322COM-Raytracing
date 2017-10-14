@@ -28,7 +28,7 @@ Mesh::Mesh()
 {
 }
 
-bool Mesh::ImportObj(std::string path, Mesh* outTarget)
+bool Mesh::ImportObj(std::string path, Mesh* outTarget, float scale)
 {
 	std::vector<vec3> rawPositions;
 	std::vector<vec3> rawNormals;
@@ -143,8 +143,8 @@ bool Mesh::ImportObj(std::string path, Mesh* outTarget)
 		// Add a new entry
 		else
 		{
-			uint index = triangles.size();
-			positions.emplace_back(rawPositions[tri.x - 1]);
+			uint index = positions.size();
+			positions.emplace_back(rawPositions[tri.x - 1] * scale);
 			uvs.emplace_back(rawUvs[tri.y - 1]);
 			normals.emplace_back(rawNormals[tri.z - 1]);
 

@@ -22,9 +22,10 @@ public:
 	* Attempt to import an obj model at the given path
 	* @param path			The URL for the obj model
 	* @param outTarget		The mesh to import the data onto
+	* @param scale			How much to scale the mesh by
 	* @returns True if import is successful
 	*/
-	static bool ImportObj(std::string path, Mesh* outTarget);
+	static bool ImportObj(std::string path, Mesh* outTarget, float scale = 1.0f);
 
 
 	/**

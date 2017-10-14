@@ -7,6 +7,7 @@
 
 #include "Object_Sphere.h"
 #include "Object_Plane.h"
+#include "Object_Mesh.h"
 
 #include "PhysicalMaterial.h"
 
@@ -53,7 +54,11 @@ void Tick(Window* context, float deltaTime)
 		g_camera.SetEularRotation(rotation);
 	}
 
-	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 3);
+#ifdef _DEBUG
+	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 8);
+#else
+	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 4);
+#endif
 
 
 	//Texture& t = g_testTexture;
@@ -106,18 +111,18 @@ int main(int argc, char** argv)
 	// Setup lights
 	{
 		DirectionalLight* light = new DirectionalLight(vec3(1, -1, 0));
-		light->SetColour(Colour(255, 0, 0));
+		//light->SetColour(Colour(255, 0, 0));
 		g_mainScene->AddLight(light);
 	}
 	{
-		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, 0.86602540378f));
-		light->SetColour(Colour(0, 255, 0));
-		g_mainScene->AddLight(light);
+		//DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, 0.86602540378f));
+		//light->SetColour(Colour(0, 255, 0));
+		//g_mainScene->AddLight(light);
 	}
 	{
-		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, -0.86602540378f));
-		light->SetColour(Colour(0, 0, 255));
-		g_mainScene->AddLight(light);
+		//DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, -0.86602540378f));
+		//light->SetColour(Colour(0, 0, 255));
+		//g_mainScene->AddLight(light);
 	}
 
 	// Setup scene
@@ -138,20 +143,31 @@ int main(int argc, char** argv)
 		g_mainScene->AddObject(sphere);
 	}
 	{
-		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 10), 0.5f);
-		sphere->SetCullingMode(CullingMode::Backface);
-		sphere->SetMaterial(physMaterial);
-		g_mainScene->AddObject(sphere);
-	}
-	{
-		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 20), 5.0f);
+		//Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 10), 0.5f);
 		//sphere->SetCullingMode(CullingMode::Backface);
-		sphere->SetMaterial(basicTexture);
-		g_mainScene->AddObject(sphere);
+		//sphere->SetMaterial(physMaterial);
+		//g_mainScene->AddObject(sphere);
 	}
 	{
-		Mesh mesh;
-		Mesh::ImportObj("H:\\Uni\\322COM - Raytracing\\Resources\\cube_tri.obj", &mesh);
+		//Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 20), 5.0f);
+		//sphere->SetCullingMode(CullingMode::Backface);
+		//sphere->SetMaterial(basicTexture);
+		//g_mainScene->AddObject(sphere);
+	}
+
+	Mesh mesh;
+	Mesh::ImportObj("H:\\Uni\\322COM - Raytracing\\Resources\\torus_low.obj", &mesh, 0.1f);
+	{
+		Object_Mesh* obj = new Object_Mesh(vec3(0, 0, 4));
+		obj->SetMesh(&mesh);
+		obj->SetMaterial(basicTexture);
+		g_mainScene->AddObject(obj);
+	}
+	{
+		//Object_Sphere* sphere = new Object_Sphere(vec3(0, 0, 4), 0.1f);
+		//sphere->SetCullingMode(CullingMode::Backface);
+		//sphere->SetMaterial(basicColour);
+		//g_mainScene->AddObject(sphere);
 	}
 
 
