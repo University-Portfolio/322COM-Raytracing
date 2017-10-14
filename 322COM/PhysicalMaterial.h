@@ -2,6 +2,7 @@
 #include "Material.h"
 #include "Scene.h"
 #include "Object.h"
+#include "Texture.h"
 
 
 /**
@@ -13,7 +14,11 @@ private:
 	float m_shininess = 10.0f;
 	float m_smoothness = 1.0f;
 
+	Texture* m_texture = nullptr;
+
 public:
+	virtual ~PhysicalMaterial();
+
 	/**
 	* Fetch the desired base colour (Not affected by physics) for an object's pixel in a scene
 	* @param scene			The scene that is currently being tested with
@@ -36,6 +41,9 @@ public:
 	* Getters and Setters
 	*/
 public:
+	inline void SetTexture(std::string texturePath) { m_texture = new Texture(texturePath); }
+	inline Texture* GetTexture() { return m_texture; }
+
 	inline void SetSmoothness(float val) { m_smoothness = val; }
 	inline float GetSmoothness() const { return m_smoothness; }
 

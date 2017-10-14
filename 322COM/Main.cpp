@@ -7,7 +7,6 @@
 #include "Object_Sphere.h"
 #include "Object_Plane.h"
 
-#include "TexturedMaterial.h"
 #include "PhysicalMaterial.h"
 
 #include "DirectionalLight.h"
@@ -53,7 +52,7 @@ void Tick(Window* context, float deltaTime)
 		g_camera.SetEularRotation(rotation);
 	}
 
-	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 8);
+	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 3);
 
 
 	//Texture& t = g_testTexture;
@@ -77,22 +76,25 @@ int main(int argc, char** argv)
 
 	// Setup materials
 	Material* basicColour;
-	TexturedMaterial* basicTexture;
-	TexturedMaterial* tileTexture;
+	PhysicalMaterial* basicTexture;
+	PhysicalMaterial* tileTexture;
 	PhysicalMaterial* physMaterial;
 	{
 		basicColour = new Material();
 		basicColour->SetColour(Colour(0, 255, 255));
 		g_mainScene->AddMaterial(basicColour);
 
-		basicTexture = new TexturedMaterial("H:\\Uni\\322COM - Raytracing\\Resources\\Test Texture.bmp");
+		basicTexture = new PhysicalMaterial();
+		basicTexture->SetTexture("H:\\Uni\\322COM - Raytracing\\Resources\\Test Texture.bmp");
 		basicTexture->GetTexture()->SetFilterMode(FilterMode::Linear);
 		basicTexture->GetTexture()->SetWrapMode(WrapMode::Wrap);
 		g_mainScene->AddMaterial(basicTexture);
 
-		tileTexture = new TexturedMaterial("H:\\Uni\\322COM - Raytracing\\Resources\\Tile Test.bmp");
-		tileTexture->GetTexture()->SetFilterMode(FilterMode::Linear);
+		tileTexture = new PhysicalMaterial();
+		tileTexture->SetTexture("H:\\Uni\\322COM - Raytracing\\Resources\\Tile Test.bmp");
+		tileTexture->GetTexture()->SetFilterMode(FilterMode::Nearest);
 		tileTexture->GetTexture()->SetWrapMode(WrapMode::Wrap);
+		tileTexture->SetSmoothness(0.0f);
 		g_mainScene->AddMaterial(tileTexture);
 
 		physMaterial = new PhysicalMaterial();
@@ -120,7 +122,7 @@ int main(int argc, char** argv)
 	// Setup scene
 	{
 		Object_Plane* plane = new Object_Plane(vec3(0, -5, 0), vec3(0, 1, 0));
-		plane->SetMaterial(physMaterial);
+		plane->SetMaterial(tileTexture);
 		plane->SetCullingMode(CullingMode::Backface);
 		g_mainScene->AddObject(plane);
 	}

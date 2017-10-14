@@ -1,9 +1,20 @@
 #include "PhysicalMaterial.h"
 
 
+PhysicalMaterial::~PhysicalMaterial() 
+{
+	if (m_texture != nullptr)
+		delete m_texture;
+}
+
 Colour PhysicalMaterial::FetchBaseColour(const Scene* scene, Ray ray, PixelHitInfo& hit)
 {
-	return GetColour();
+	if(m_texture == nullptr)
+		return GetColour();
+
+	Colour c = m_texture->GetColour(hit.uvs.x, hit.uvs.y);
+	c.Filter(GetColour());
+	return c;
 }
 
 Colour PhysicalMaterial::FetchColour(const Scene* scene, Ray ray, PixelHitInfo& hit)
