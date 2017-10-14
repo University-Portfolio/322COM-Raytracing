@@ -8,15 +8,17 @@ ThreadWorker::ThreadWorker(IWorkable* workable, int workerId)
 	id = workerId;
 
 	m_thread = new std::thread(&ThreadWorker::ThreadFunction, this);
-	m_thread->detach();
 }
 
 
 ThreadWorker::~ThreadWorker()
 {
 	bThreadActive = false;
+	activeWork = nullptr;
+
 	if(m_thread->joinable())
 		m_thread->join();
+
 	delete m_thread;
 }
 
