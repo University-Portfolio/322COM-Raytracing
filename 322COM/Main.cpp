@@ -3,6 +3,7 @@
 
 #include "Scene.h"
 #include "Camera.h"
+#include "Mesh.h"
 
 #include "Object_Sphere.h"
 #include "Object_Plane.h"
@@ -147,6 +148,10 @@ int main(int argc, char** argv)
 		//sphere->SetCullingMode(CullingMode::Backface);
 		sphere->SetMaterial(basicTexture);
 		g_mainScene->AddObject(sphere);
+	}
+	{
+		Mesh mesh;
+		Mesh::ImportObj("H:\\Uni\\322COM - Raytracing\\Resources\\cube_tri.obj", &mesh);
 	}
 
 
