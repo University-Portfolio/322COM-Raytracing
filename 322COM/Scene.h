@@ -6,7 +6,11 @@
 #include <vector>
 
 
-class Scene
+/**
+* Stores all objects, lights and resources pertaining to a scene
+* Also rendering will be handled through this
+*/
+class Scene : public IWorkable
 {
 private:
 	std::vector<ThreadWorker*> m_workers;
@@ -35,7 +39,12 @@ public:
 	Colour CalculateColour(Ray ray) const;
 
 private:
-	void HandleRender(int workerId, void* settingsPtr) const;
+	/**
+	* Callback for when a work request comes in (Render request)
+	* @param workerId		The id of the worker this is being executed by
+	* @param data			The data to process (Rendering settings)
+	*/
+	virtual void ExecuteWork(int workerId, void* data);
 
 
 	/**

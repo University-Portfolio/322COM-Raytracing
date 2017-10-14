@@ -41,10 +41,7 @@ Scene::Scene(int workerCount) : m_workerCount(workerCount)
 
 	// Create enough workers
 	for (int i = 0; i < m_workerCount; ++i)
-	{
-		ThreadWorker* worker = new ThreadWorker([this, i](void* ptr) { this->HandleRender(i, ptr); });
-		m_workers.emplace_back(worker);
-	}
+		m_workers.emplace_back(new ThreadWorker(this, i));
 
 	LOG("Created %i workers for Scene rendering", m_workerCount);
 }
@@ -142,10 +139,9 @@ Colour Scene::CalculateColour(Ray ray) const
 	return mat->FetchColour(this, ray, closestHit);
 }
 
-
-void Scene::HandleRender(int workerId, void* settingsPtr) const
+void Scene::ExecuteWork(int workerId, void* data)
 {
-	RenderSettings* settings = (RenderSettings*)settingsPtr;
+	RenderSettings* settings = (RenderSettings*)data;
 	if (settings == nullptr)
 		return;
 	

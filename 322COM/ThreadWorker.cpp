@@ -2,8 +2,11 @@
 #include <SDL.h>
 
 
-ThreadWorker::ThreadWorker(WorkerCallback callback) : m_callback(callback)
+ThreadWorker::ThreadWorker(IWorkable* workable, int workerId)
 {
+	m_workable = workable;
+	id = workerId;
+
 	m_thread = new std::thread(&ThreadWorker::ThreadFunction, this);
 	m_thread->detach();
 }
@@ -25,8 +28,7 @@ void ThreadWorker::ThreadFunction()
 	{
 		if (activeWork != nullptr)
 		{
-			if(m_callback)
-				m_callback(activeWork);
+			m_workable->ExecuteWork(id, activeWork);
 			activeWork = nullptr;
 		}
 		else

@@ -3,13 +3,29 @@
 #include <functional>
 
 
-typedef std::function<void(void*)> WorkerCallback;
+/**
+* Interface for something which can queue and execute work amongst multiple threads
+*/
+class IWorkable 
+{
+public:
+	/**
+	* Callback for when a work request comes in
+	* @param workerId		The id of the worker this is being executed by
+	* @param data			The data to process
+	*/
+	virtual void ExecuteWork(int workerId, void* data) = 0;
+};
 
 
+/**
+* Worker who will queue up any work and execute is on it's thread
+*/
 class ThreadWorker
 {
 private:
-	WorkerCallback m_callback;
+	IWorkable* m_workable;
+	int id;
 
 	std::thread* m_thread = nullptr;
 	bool bThreadActive;
@@ -21,7 +37,7 @@ private:
 
 
 public:
-	ThreadWorker(WorkerCallback callback);
+	ThreadWorker(IWorkable* workable, int workerId);
 	~ThreadWorker(); 
 	
 	/**
