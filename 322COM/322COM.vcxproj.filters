@@ -63,9 +63,6 @@
     <ClCompile Include="Material.cpp">
       <Filter>Source Files\Materials</Filter>
     </ClCompile>
-    <ClCompile Include="TexturedMaterial.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -74,6 +71,12 @@
     </ClCompile>
     <ClCompile Include="Object_Plane.cpp">
       <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicalMaterial.cpp">
+      <Filter>Source Files\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="TexturedMaterial.cpp">
+      <Filter>Source Files\Materials</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="Object_Plane.h">
       <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicalMaterial.h">
+      <Filter>Header Files\Materials</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

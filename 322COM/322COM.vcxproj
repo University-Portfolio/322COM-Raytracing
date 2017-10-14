@@ -142,6 +142,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Object_Plane.cpp" />
     <ClCompile Include="Object_Sphere.cpp" />
+    <ClCompile Include="PhysicalMaterial.cpp" />
     <ClCompile Include="RenderSurface.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="Object_Plane.h" />
     <ClInclude Include="Object_Sphere.h" />
+    <ClInclude Include="PhysicalMaterial.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RenderSurface.h" />
     <ClInclude Include="Scene.h" />

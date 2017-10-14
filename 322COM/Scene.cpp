@@ -108,7 +108,7 @@ void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 }
 
 
-Colour Scene::CalculateColour(Ray ray) const
+bool Scene::CastRay(Ray ray, Colour& outColour) const
 {
 	// Find closest hit
 	PixelHitInfo closestHit;
@@ -124,19 +124,19 @@ Colour Scene::CalculateColour(Ray ray) const
 		}
 	}
 
-	
-	// No hit so get sky
+	// No hit 
 	if (closestHit.object == nullptr)
-		return GetSkyColour();
+		return false;
 
 
 	Material* mat = closestHit.object->GetMaterial();
 
-	// Missing material so return pink
+	// Missing material so use pink
 	if (mat == nullptr)
-		return Colour(255, 0, 249);
-
-	return mat->FetchColour(this, ray, closestHit);
+		outColour = Colour(255, 0, 249);
+	else
+		outColour = mat->FetchColour(this, ray, closestHit);
+	return true;
 }
 
 void Scene::ExecuteWork(int workerId, void* data)
@@ -183,7 +183,12 @@ void Scene::ExecuteWork(int workerId, void* data)
 			rotateY(rotateX(rotateZ(vec3(vx, vy, 1), settings->viewRotation.z), settings->viewRotation.x), settings->viewRotation.y)
 		);
 		Ray ray(settings->cameraLocation, direction);
-		Colour currentColour = CalculateColour(ray);
-		settings->target->SetPixel(x, y, currentColour);
+		Colour currentColour;
+
+		if(CastRay(ray, currentColour))
+			settings->target->SetPixel(x, y, currentColour);
+		else
+			// Misses so put sky colour
+			settings->target->SetPixel(x, y, GetSkyColour());
 	}
 }

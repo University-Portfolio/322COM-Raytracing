@@ -16,7 +16,6 @@ public:
 	TexturedMaterial(std::string texturePath);
 	virtual ~TexturedMaterial();
 
-
 	/**
 	* Fetch the desired colour for an object's pixel in a scene
 	* @param scene			The scene that is currently being tested with

@@ -1,4 +1,5 @@
 #include "TexturedMaterial.h"
+#include "Scene.h"
 
 
 

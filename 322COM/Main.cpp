@@ -8,6 +8,7 @@
 #include "Object_Plane.h"
 
 #include "TexturedMaterial.h"
+#include "PhysicalMaterial.h"
 
 
 Scene* g_mainScene;
@@ -50,7 +51,7 @@ void Tick(Window* context, float deltaTime)
 		g_camera.SetEularRotation(rotation);
 	}
 
-	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 4);
+	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 8);
 
 
 	//Texture& t = g_testTexture;
@@ -75,6 +76,7 @@ int main(int argc, char** argv)
 	Material* basicColour;
 	TexturedMaterial* basicTexture;
 	TexturedMaterial* tileTexture;
+	PhysicalMaterial* physMaterial;
 
 	{
 		basicColour = new Material();
@@ -90,13 +92,17 @@ int main(int argc, char** argv)
 		tileTexture->GetTexture()->SetFilterMode(FilterMode::Linear);
 		tileTexture->GetTexture()->SetWrapMode(WrapMode::Wrap);
 		g_mainScene->AddMaterial(tileTexture);
+
+		physMaterial = new PhysicalMaterial();
+		physMaterial->SetColour(Colour(255, 134, 86));
+		g_mainScene->AddMaterial(physMaterial);
 	}
 
 
 	// Setup scene
 	{
 		Object_Plane* plane = new Object_Plane(vec3(0, -5, 0), vec3(0, 1, 0));
-		plane->SetMaterial(tileTexture);
+		plane->SetMaterial(physMaterial);
 		plane->SetCullingMode(CullingMode::Backface);
 		g_mainScene->AddObject(plane);
 	}
@@ -107,13 +113,13 @@ int main(int argc, char** argv)
 	}
 	{
 		Object_Sphere* sphere = new Object_Sphere(vec3(1, 0, 10), 0.5f);
-		sphere->SetMaterial(basicColour);
+		sphere->SetMaterial(physMaterial);
 		g_mainScene->AddObject(sphere);
 	}
 	{
 		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 10), 0.5f);
 		sphere->SetCullingMode(CullingMode::Backface);
-		sphere->SetMaterial(basicTexture);
+		sphere->SetMaterial(physMaterial);
 		g_mainScene->AddObject(sphere);
 	}
 	{
@@ -124,8 +130,7 @@ int main(int argc, char** argv)
 	}
 
 
-	//Window window("Raytracing - Samuel Potter", 800, 600, 300);
-	Window window("Raytracing - Samuel Potter", 1280, 720, 300);
+	Window window("Raytracing - Samuel Potter", 800, 600, 300);
 	window.MainLoop(Tick);
 	delete g_mainScene;
 

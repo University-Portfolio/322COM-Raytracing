@@ -54,4 +54,36 @@ public:
 		g = f.y * g;
 		b = f.z * b;
 	}
+
+	inline Colour operator*(float scale)
+	{
+		return Colour
+		(
+			(byte)glm::max(0.0f, glm::min(255.0f, r * scale)),
+			(byte)glm::max(0.0f, glm::min(255.0f, g * scale)),
+			(byte)glm::max(0.0f, glm::min(255.0f, b * scale))
+		);
+	}
+	inline void operator*=(float scale)
+	{
+		r = glm::max(0.0f, glm::min(1.0f, r * scale));
+		g = glm::max(0.0f, glm::min(1.0f, g * scale));
+		b = glm::max(0.0f, glm::min(1.0f, b * scale));
+	}
+	
+	inline Colour operator+(Colour other)
+	{
+		return Colour
+		(
+			(byte)glm::clamp(0, 255, (int)r + (int)other.r),
+			(byte)glm::clamp(0, 255, (int)g + (int)other.g),
+			(byte)glm::clamp(0, 255, (int)b + (int)other.b)
+		);
+	}
+	inline void operator+=(Colour other)
+	{
+		r = (byte)glm::clamp(0, 255, (int)r + (int)other.r);
+		g = (byte)glm::clamp(0, 255, (int)g + (int)other.g);
+		b = (byte)glm::clamp(0, 255, (int)b + (int)other.b);
+	}
 };

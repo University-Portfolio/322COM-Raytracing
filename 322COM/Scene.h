@@ -36,8 +36,11 @@ public:
 
 	/**
 	* Get colour from a single ray
+	* @param ray		The ray to cast
+	* @param outColour	The colour that this pixel should be
+	* @returns Whether the ray hit anything or not
 	*/
-	Colour CalculateColour(Ray ray) const;
+	bool CastRay(Ray ray, Colour& outColour) const;
 
 private:
 	/**
