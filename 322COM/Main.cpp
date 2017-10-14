@@ -3,7 +3,10 @@
 
 #include "Scene.h"
 #include "Camera.h"
+
 #include "Object_Sphere.h"
+#include "Object_Plane.h"
+
 #include "TexturedMaterial.h"
 
 
@@ -47,7 +50,7 @@ void Tick(Window* context, float deltaTime)
 		g_camera.SetEularRotation(rotation);
 	}
 
-	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 8);
+	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 4);
 
 
 	//Texture& t = g_testTexture;
@@ -71,6 +74,7 @@ int main(int argc, char** argv)
 	// Setup materials
 	Material* basicColour;
 	TexturedMaterial* basicTexture;
+	TexturedMaterial* tileTexture;
 
 	{
 		basicColour = new Material();
@@ -78,13 +82,24 @@ int main(int argc, char** argv)
 		g_mainScene->AddMaterial(basicColour);
 
 		basicTexture = new TexturedMaterial("H:\\Uni\\322COM - Raytracing\\Resources\\Test Texture.bmp");
-		basicTexture->GetTexture()->SetFilterMode(FilterMode::Nearest);
+		basicTexture->GetTexture()->SetFilterMode(FilterMode::Linear);
 		basicTexture->GetTexture()->SetWrapMode(WrapMode::Wrap);
 		g_mainScene->AddMaterial(basicTexture);
+
+		tileTexture = new TexturedMaterial("H:\\Uni\\322COM - Raytracing\\Resources\\Tile Test.bmp");
+		tileTexture->GetTexture()->SetFilterMode(FilterMode::Linear);
+		tileTexture->GetTexture()->SetWrapMode(WrapMode::Wrap);
+		g_mainScene->AddMaterial(tileTexture);
 	}
 
 
 	// Setup scene
+	{
+		Object_Plane* plane = new Object_Plane(vec3(0, -5, 0), vec3(0, 1, 0));
+		plane->SetMaterial(tileTexture);
+		plane->SetCullingMode(CullingMode::Backface);
+		g_mainScene->AddObject(plane);
+	}
 	{
 		Object_Sphere* sphere = new Object_Sphere(vec3(0, 0, 10), 0.5f);
 		sphere->SetMaterial(basicColour);
@@ -103,13 +118,14 @@ int main(int argc, char** argv)
 	}
 	{
 		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 20), 5.0f);
-		sphere->SetCullingMode(CullingMode::Frontface);
+		sphere->SetCullingMode(CullingMode::Backface);
 		sphere->SetMaterial(basicTexture);
 		g_mainScene->AddObject(sphere);
 	}
 
 
-	Window window("Hello World", 800, 600, 300);
+	//Window window("Raytracing - Samuel Potter", 800, 600, 300);
+	Window window("Raytracing - Samuel Potter", 1280, 720, 300);
 	window.MainLoop(Tick);
 	delete g_mainScene;
 
