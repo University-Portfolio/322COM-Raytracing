@@ -23,6 +23,7 @@ private:
 	Colour skyColour;
 
 	int renderCounter;
+	int maxRecursionLevel = 4;
 	bool bSimpleRenderingEnabled = false;
 
 	int renderStillCounter;
@@ -42,13 +43,22 @@ public:
 	void Render(class Camera* camera, class RenderSurface* target, const int texelSize = 8);
 
 	/**
-	* Get colour from a single ray
-	* @param ray			The ray to cast
-	* @param outColour		The colour that this pixel should be
-	* @param recursionCount	How many recursive rays have been casted
+	* Detect whether the ray hits anything or not
+	* @param ray				The ray to cast
+	* @param hit				The information about the closest hit
+	* @param recursionCount		How many recursive rays have been casted
 	* @returns Whether the ray hit anything or not
 	*/
-	bool CastRay(Ray ray, Colour& outColour, int recursionCount) const;
+	bool CastRay(Ray ray, PixelHitInfo& hit, int recursionCount) const;
+
+	/**
+	* Get colour for a single ray
+	* @param ray				The ray to cast
+	* @param recursionCount		How many recursive rays have been casted
+	* @param missColour			What colour to use in the event of a miss
+	* @returns The colour that this ray will produce
+	*/
+	Colour CalculateRayColour(Ray ray, int recursionCount, Colour missColour) const;
 
 private:
 	/**
@@ -78,7 +88,7 @@ public:
 
 
 	inline void SetSkyColour(Colour col) { skyColour = col; }
-	inline Colour GetSkyColour() const { return skyColour; }
+	inline const Colour& GetSkyColour() const { return skyColour; }
 
 	/** Should complex rendering be enabled (e.g. lighting, relections etc.) */
 	inline bool IsSimpleRenderingEnabled() const { return bSimpleRenderingEnabled; }

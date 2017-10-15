@@ -7,33 +7,30 @@ PhysicalMaterial::~PhysicalMaterial()
 		delete m_texture;
 }
 
-Colour PhysicalMaterial::FetchBaseColour(const Scene* scene, Ray ray, PixelHitInfo& hit)
+Colour PhysicalMaterial::FetchBaseColour(const Scene* scene, Ray ray, PixelHitInfo& hit, int recursionCount)
 {
+	Colour colour;
 	if(m_texture == nullptr)
 		return GetColour();
-
-	Colour c = m_texture->GetColour(hit.uvs.x, hit.uvs.y);
-	c.Filter(GetColour());
-	return c;
+	else
+		return m_texture->GetColour(hit.uvs.x, hit.uvs.y) * GetColour();
 }
 
 Colour PhysicalMaterial::FetchColour(const Scene* scene, Ray ray, PixelHitInfo& hit, int recursionCount)
 {
-	Colour colour = FetchBaseColour(scene, ray, hit);
+	Colour baseColour = FetchBaseColour(scene, ray, hit, recursionCount);;
 
 	// Don't do complex checks if only simple rendering
 	if (scene->IsSimpleRenderingEnabled())
-		return colour;
+		return baseColour;
 
 
 	// Get reflection colour
 	if (m_reflectivity != 0.0f)
 	{
-		vec3 reflRay = reflect(ray.direction, hit.normal);
-		Colour reflColour;
-		scene->CastRay(Ray(hit.location + reflRay * 0.01f, reflRay), reflColour, recursionCount);
-		reflColour.Filter(colour);
-		colour = colour * (1.0f - m_reflectivity) + reflColour * m_reflectivity;
+		//vec3 reflRay = reflect(ray.direction, hit.normal);
+		//Colour reflColour = scene->CalculateRayColour(Ray(hit.location + reflRay * 0.01f, reflRay), recursionCount);
+		//colour = colour * (1.0f - m_reflectivity) + reflColour * m_reflectivity;
 	}
 
 
@@ -50,10 +47,10 @@ Colour PhysicalMaterial::FetchColour(const Scene* scene, Ray ray, PixelHitInfo& 
 		totalDiffuse += colour;
 		totalSpecular += colour * pow(specularFactor, m_shininess) * m_smoothness;
 	}
+	
 
-
-	colour.Filter(totalDiffuse);
+	// Apply specular
+	Colour colour = baseColour * (1.0f - baseColour.a) + (baseColour * totalDiffuse * (baseColour.a));
 	colour += totalSpecular;
-
-	return colour;
+	return ResolveTransparency(colour, scene, ray, hit, recursionCount);
 }

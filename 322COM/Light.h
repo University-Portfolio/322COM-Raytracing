@@ -18,7 +18,7 @@ class Light
 {
 private:
 	vec3 location;
-	Colour colour = Colour(255, 255, 255);
+	Colour colour = Colour(1.0f, 1.0f, 1.0f);
 
 public:
 	Light() {}
@@ -41,9 +41,9 @@ public:
 public:
 
 	inline void SetLocation(vec3 loc) { location = loc; }
-	inline vec3 GetLocation() const { return location; }
+	inline const vec3& GetLocation() const { return location; }
 
 	inline void SetColour(Colour col) { colour = col; }
-	inline Colour GetColour() const { return colour; }
+	inline const Colour& GetColour() const { return colour; }
 };
 

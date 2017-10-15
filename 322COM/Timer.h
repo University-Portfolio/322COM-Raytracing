@@ -1,6 +1,5 @@
 #pragma once
-
-typedef unsigned int uint32;
+#include <SDL_config.h>
 
 
 /**
@@ -9,14 +8,14 @@ typedef unsigned int uint32;
 class Timer
 {
 private:
-	uint32 startTime;
+	uint32_t startTime;
 	bool bIsRunning = false;
 
 public:
 	void Start();
 	void Stop();
 
-	uint32 GetTimeMilliseconds() const;
+	uint32_t GetTimeMilliseconds() const;
 	inline bool IsRunning() const { return bIsRunning; }
 };
 

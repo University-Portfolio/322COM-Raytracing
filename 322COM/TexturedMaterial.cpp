@@ -15,7 +15,5 @@ TexturedMaterial::~TexturedMaterial()
 
 Colour TexturedMaterial::FetchColour(const Scene* scene, Ray ray, PixelHitInfo& hit, int recursionCount)
 {
-	Colour c = m_texture.GetColour(hit.uvs.x, hit.uvs.y);
-	c.Filter(GetColour());
-	return c;
+	return m_texture.GetColour(hit.uvs.x, hit.uvs.y) * GetColour();
 }

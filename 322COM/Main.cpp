@@ -57,11 +57,11 @@ void Tick(Window* context, float deltaTime)
 #ifdef _DEBUG
 	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 8);
 #else
-	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 4);
+	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 3);
 #endif
 
 
-	//Texture& t = g_testTexture;
+	//Texture t ("H:\\Uni\\322COM - Raytracing\\Resources\\Test Texture.bmp");
 	//t.SetWrapMode(WrapMode::Wrap);
 
 	//for (int x = 0; x < t.GetWidth() * 2; ++x)
@@ -88,7 +88,7 @@ int main(int argc, char** argv)
 	PhysicalMaterial* reflMaterial;
 	{
 		basicColour = new Material();
-		basicColour->SetColour(Colour(0, 255, 255));
+		basicColour->SetColour(Colour(0, 255, 255, 150));
 		g_mainScene->AddMaterial(basicColour);
 
 		basicTexture = new PhysicalMaterial();
@@ -110,25 +110,26 @@ int main(int argc, char** argv)
 		g_mainScene->AddMaterial(physMaterial);
 
 		reflMaterial = new PhysicalMaterial();
-		reflMaterial->SetReflectivity(1.0f);
+		reflMaterial->SetColour(Colour(1.0f, 0.0f, 1.0f));
+		//reflMaterial->SetReflectivity(1.0f);
 		g_mainScene->AddMaterial(reflMaterial);
 	}
 
 	// Setup lights
 	{
 		DirectionalLight* light = new DirectionalLight(vec3(1, -1, 0));
-		//light->SetColour(Colour(255, 0, 0));
+		light->SetColour(Colour(255, 0, 0));
 		g_mainScene->AddLight(light);
 	}
 	{
-		//DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, 0.86602540378f));
-		//light->SetColour(Colour(0, 255, 0));
-		//g_mainScene->AddLight(light);
+		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, 0.86602540378f));
+		light->SetColour(Colour(0, 255, 0));
+		g_mainScene->AddLight(light);
 	}
 	{
-		//DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, -0.86602540378f));
-		//light->SetColour(Colour(0, 0, 255));
-		//g_mainScene->AddLight(light);
+		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, -0.86602540378f));
+		light->SetColour(Colour(0, 0, 255));
+		g_mainScene->AddLight(light);
 	}
 
 	// Setup scene

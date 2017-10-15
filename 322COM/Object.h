@@ -39,7 +39,7 @@ private:
 	vec3 location;
 	Material* material;
 
-	CullingMode m_cullingMode;
+	CullingMode m_cullingMode = CullingMode::Backface;
 
 public:
 	virtual ~Object() {}

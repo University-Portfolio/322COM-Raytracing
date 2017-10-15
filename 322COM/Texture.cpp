@@ -32,7 +32,7 @@ Colour Texture::GetColour(int x, int y) const
 {
 	// Send black, if invalid request
 	if (m_image == nullptr)
-		return Colour(0, 0, 0);
+		return Colour(0.0f, 0.0f, 0.0f);
 
 
 	// Convert normalized position to pixel coord
@@ -49,7 +49,7 @@ Colour Texture::GetColour(int x, int y) const
 
 	// Out of bounds so return black
 	else if(x < 0 || x >= width || y < 0 || y >= height)
-		return Colour(0, 0, 0);
+		return Colour(0.0f, 0.0f, 0.0f);
 
 
 
@@ -83,15 +83,15 @@ Colour Texture::GetColour(int x, int y) const
 
 
 	// Split colour into rgb based on format
-	Colour c;
-	SDL_GetRGB(pixel, m_image->format, &c.r, &c.g, &c.b);
-	return c;
+	byte r, g, b;
+	SDL_GetRGB(pixel, m_image->format, &r, &g, &b);
+	return Colour(r, g, b);
 }
 
 Colour Texture::GetColour(float x, float y) const 
 {
 	if (m_image == nullptr)
-		return Colour(0, 0, 0);
+		return Colour(0.0f, 0.0f, 0.0f);
 
 
 	switch (m_filterMode)
@@ -114,23 +114,22 @@ Colour Texture::GetColour(float x, float y) const
 			float yFrac = py - yWhole;
 
 			// Check adjacent pixels and blur together based on query distance from pixels
-			const vec3 v00 = GetColour(xWhole, yWhole).ToVector();
-			const vec3 v10 = GetColour(xWhole + 1, yWhole).ToVector();
-			const vec3 v01 = GetColour(xWhole, yWhole + 1).ToVector();
-			const vec3 v11 = GetColour(xWhole + 1, yWhole + 1).ToVector();
+			const Colour v00 = GetColour(xWhole, yWhole);
+			const Colour v10 = GetColour(xWhole + 1, yWhole);
+			const Colour v01 = GetColour(xWhole, yWhole + 1);
+			const Colour v11 = GetColour(xWhole + 1, yWhole + 1);
 
 			// Check blend x small and x big for y small and y big
-			const vec3 vx0 = v00 * (1.0f - xFrac) + v10 * xFrac;
-			const vec3 vx1 = v01 * (1.0f - xFrac) + v11 * xFrac;
+			const Colour vx0 = v00 * (1.0f - xFrac) + v10 * xFrac;
+			const Colour vx1 = v01 * (1.0f - xFrac) + v11 * xFrac;
 
 			// Blend x blended vales for y small and y big
-			const vec3 v = vx0 * (1.0f - yFrac) + vx1 * yFrac;
-			return Colour(v);
+			return vx0 * (1.0f - yFrac) + vx1 * yFrac;
 		}
 
 		default:
 			break;
 	}
 
-	return Colour(0, 0, 0);
+	return Colour(0.0f, 0.0f, 0.0f);
 }

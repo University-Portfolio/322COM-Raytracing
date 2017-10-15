@@ -2,88 +2,82 @@
 #include <glm.hpp>
 
 
-typedef unsigned __int8 byte;
+using namespace glm;
+typedef uint8 byte;
+typedef tvec4<byte> byte4;
+typedef tvec3<byte> byte3;
 
 
-struct Colour
+class Colour : public vec4
 {
 public:
-	byte r;
-	byte g;
-	byte b;
+	Colour(float r = 0, float g = 0, float b = 0, float a = 1.0f) : vec4(r, g, b, a) {}
+	Colour(int r, int g = 0, int b = 0, int a = 255) : vec4(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f) {}
+	Colour(const vec3& vec) : vec4(vec.x, vec.y, vec.z, 1.0f) {}
+	Colour(const vec4& vec) : vec4(vec) {}
+	Colour(const Colour& other) : vec4(other) {}
 
-
-	Colour(byte r = 0, byte g = 0, byte b = 0)
+	inline Colour Inverted() const
 	{
-		this->r = r;
-		this->g = g;
-		this->b = b;
+		return Colour(
+			1.0f - r,
+			1.0f - g,
+			1.0f - b,
+			1.0f - a
+			);
+	}
+
+	inline byte4 ToRGBA() const
+	{
+		return byte4(
+			255 * clamp(0.0f, 1.0f, r),
+			255 * clamp(0.0f, 1.0f, g),
+			255 * clamp(0.0f, 1.0f, b),
+			255 * clamp(0.0f, 1.0f, a)
+			);
+	}
+
+	inline byte3 ToRGB() const
+	{
+		return byte3(
+			255 * clamp(0.0f, 1.0f, r),
+			255 * clamp(0.0f, 1.0f, g),
+			255 * clamp(0.0f, 1.0f, b)
+			);
 	}
 	
-	Colour(glm::vec3 vector)
+	inline Colour& operator*=(vec3 col)
 	{
-		// Clamp each component to 0-1
-		vector.x = glm::max(0.0f, glm::min(1.0f, vector.x));
-		vector.y = glm::max(0.0f, glm::min(1.0f, vector.y));
-		vector.z = glm::max(0.0f, glm::min(1.0f, vector.z));
-
-		this->r = vector.x * 255.0f;
-		this->g = vector.y * 255.0f;
-		this->b = vector.z * 255.0f;
+		r *= col.r;
+		g *= col.g;
+		b *= col.b;
+		return *this;
+	}
+	inline Colour operator*(vec3 col)
+	{
+		return Colour(
+			r * col.r,
+			g * col.g,
+			b * col.b,
+			a
+			);
 	}
 
-	void Invert() 
+	inline Colour& operator*=(vec4 col)
 	{
-		r = 255 - r;
-		g = 255 - g;
-		b = 255 - b;
+		r *= col.r;
+		g *= col.g;
+		b *= col.b;
+		a *= col.a;
+		return *this;
 	}
-
-	inline glm::vec3 ToVector()
+	inline Colour operator*(vec4 col)
 	{
-		return glm::vec3(r / 255.0, g / 255.0, b / 255.0);
-	}
-
-	/**
-	* Apply colour filter to this colour
-	*/
-	inline void Filter(Colour c) 
-	{
-		glm::vec3 f = c.ToVector();
-		r = f.x * r;
-		g = f.y * g;
-		b = f.z * b;
-	}
-
-	inline Colour operator*(float scale)
-	{
-		return Colour
-		(
-			(byte)glm::max(0.0f, glm::min(255.0f, r * scale)),
-			(byte)glm::max(0.0f, glm::min(255.0f, g * scale)),
-			(byte)glm::max(0.0f, glm::min(255.0f, b * scale))
-		);
-	}
-	inline void operator*=(float scale)
-	{
-		r = glm::max(0.0f, glm::min(1.0f, r * scale));
-		g = glm::max(0.0f, glm::min(1.0f, g * scale));
-		b = glm::max(0.0f, glm::min(1.0f, b * scale));
-	}
-	
-	inline Colour operator+(Colour other)
-	{
-		return Colour
-		(
-			(byte)glm::clamp(0, 255, (int)r + (int)other.r),
-			(byte)glm::clamp(0, 255, (int)g + (int)other.g),
-			(byte)glm::clamp(0, 255, (int)b + (int)other.b)
-		);
-	}
-	inline void operator+=(Colour other)
-	{
-		r = (byte)glm::clamp(0, 255, (int)r + (int)other.r);
-		g = (byte)glm::clamp(0, 255, (int)g + (int)other.g);
-		b = (byte)glm::clamp(0, 255, (int)b + (int)other.b);
+		return Colour(
+			r * col.r,
+			g * col.g,
+			b * col.b,
+			a * col.a
+			);
 	}
 };

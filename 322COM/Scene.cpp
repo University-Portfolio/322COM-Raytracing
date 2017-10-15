@@ -121,14 +121,11 @@ void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 }
 
 
-bool Scene::CastRay(Ray ray, Colour& outColour, int recursionCount) const
+bool Scene::CastRay(Ray ray, PixelHitInfo& hit, int recursionCount) const
 {
 	// Reached recursion limit
-	if (recursionCount++ >= 4)
-	{
-		outColour = Colour(0, 0, 0);
+	if (recursionCount++ >= maxRecursionLevel)
 		return false;
-	}
 
 
 	// Find closest hit
@@ -147,19 +144,25 @@ bool Scene::CastRay(Ray ray, Colour& outColour, int recursionCount) const
 
 	// No hit 
 	if (closestHit.object == nullptr)
-	{
-		outColour = skyColour;
 		return false;
-	}
 
-	Material* mat = closestHit.object->GetMaterial();
+	hit = closestHit;
+	return true;
+}
+
+Colour Scene::CalculateRayColour(Ray ray, int recursionCount, Colour missColour) const
+{
+	PixelHitInfo hit;
+	if (!CastRay(ray, hit, recursionCount))
+		return missColour;
+
+	Material* mat = hit.object->GetMaterial();
 
 	// Missing material so use pink
 	if (mat == nullptr)
-		outColour = Colour(255, 0, 249);
+		return Material::GetDefaultColour();
 	else
-		outColour = mat->FetchColour(this, ray, closestHit, recursionCount);
-	return true;
+		return mat->FetchColour(this, ray, hit, recursionCount);
 }
 
 void Scene::ExecuteWork(int workerId, void* data)
@@ -206,12 +209,7 @@ void Scene::ExecuteWork(int workerId, void* data)
 			rotateY(rotateX(rotateZ(vec3(vx, vy, 1), settings->viewRotation.z), settings->viewRotation.x), settings->viewRotation.y)
 		);
 		Ray ray(settings->cameraLocation, direction);
-		Colour currentColour;
 
-		if(CastRay(ray, currentColour, 0))
-			settings->target->SetPixel(x, y, currentColour);
-		else
-			// Misses so put sky colour
-			settings->target->SetPixel(x, y, GetSkyColour());
+		settings->target->SetPixel(x, y, CalculateRayColour(ray, 0, skyColour));
 	}
 }

@@ -29,12 +29,14 @@ void RenderSurface::Clear(Colour colour)
 void RenderSurface::SetPixel(int x, int y, Colour colour) 
 {
 	Uint32* pixel = (Uint32*)m_surface->pixels + y * width + x;
-	*pixel = SDL_MapRGB(m_surface->format, colour.r, colour.g, colour.b);
+	byte3 col = colour.ToRGB();
+	*pixel = SDL_MapRGB(m_surface->format, col.r, col.g, col.b);
 }
 
 void RenderSurface::SetRect(int x, int y, int width, int height, Colour colour) 
 {
-	Uint32 col = SDL_MapRGB(m_surface->format, colour.r, colour.g, colour.b);;
+	byte3 tcol = colour.ToRGB();
+	Uint32 col = SDL_MapRGB(m_surface->format, tcol.r, tcol.g, tcol.b);
 
 
 	for (int dx = 0; dx < width; ++dx)
