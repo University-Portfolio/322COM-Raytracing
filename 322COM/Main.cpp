@@ -95,23 +95,25 @@ int main(int argc, char** argv)
 		basicTexture->SetTexture("H:\\Uni\\322COM - Raytracing\\Resources\\Test Texture.bmp");
 		basicTexture->GetTexture()->SetFilterMode(FilterMode::Linear);
 		basicTexture->GetTexture()->SetWrapMode(WrapMode::Wrap);
+		basicTexture->SetReflectivity(0.5f);
 		g_mainScene->AddMaterial(basicTexture);
 
 		tileTexture = new PhysicalMaterial();
 		tileTexture->SetTexture("H:\\Uni\\322COM - Raytracing\\Resources\\Tile Test.bmp");
 		tileTexture->GetTexture()->SetFilterMode(FilterMode::Nearest);
 		tileTexture->GetTexture()->SetWrapMode(WrapMode::Wrap);
+		tileTexture->SetReflectivity(0.1f);
 		tileTexture->SetSmoothness(0.0f);
 		g_mainScene->AddMaterial(tileTexture);
 
 		physMaterial = new PhysicalMaterial();
-		physMaterial->SetColour(Colour(255, 134, 86));
-		physMaterial->SetReflectivity(0.5f);
+		physMaterial->SetColour(Colour(1.0f, 1.0f, 1.0f));
+		physMaterial->SetReflectivity(0.7f);
 		g_mainScene->AddMaterial(physMaterial);
 
 		reflMaterial = new PhysicalMaterial();
 		reflMaterial->SetColour(Colour(1.0f, 0.0f, 1.0f));
-		//reflMaterial->SetReflectivity(1.0f);
+		reflMaterial->SetReflectivity(0.5f);
 		g_mainScene->AddMaterial(reflMaterial);
 	}
 
@@ -165,11 +167,11 @@ int main(int argc, char** argv)
 	Mesh mesh;
 	Mesh::ImportObj("H:\\Uni\\322COM - Raytracing\\Resources\\torus_low.obj", &mesh, 0.1f);
 	{
-		//Object_Mesh* obj = new Object_Mesh(vec3(0, 0, 4));
-		//obj->SetCullingMode(CullingMode::Backface);
-		//obj->SetMesh(&mesh);
-		//obj->SetMaterial(basicTexture);
-		//g_mainScene->AddObject(obj);
+		Object_Mesh* obj = new Object_Mesh(vec3(0, 0, 4));
+		obj->SetCullingMode(CullingMode::Backface);
+		obj->SetMesh(&mesh);
+		obj->SetMaterial(basicTexture);
+		g_mainScene->AddObject(obj);
 	}
 	{
 		Object_Sphere* sphere = new Object_Sphere(vec3(0, 0, 4), 0.1f);
