@@ -18,6 +18,11 @@ public:
 	*/
 	virtual bool IntersectsRay(Ray ray, PixelHitInfo& hitInfo);
 
+	/**
+	* Get the AABB for this specific object
+	* @return Object centred bounding box
+	*/
+	virtual BoundingBox GetAABB() const;
 
 	/**
 	* Getters & Setters

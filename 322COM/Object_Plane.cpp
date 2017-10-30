@@ -8,6 +8,11 @@ Object_Plane::Object_Plane(vec3 location, vec3 normal)
 	this->normal = normalize(normal);
 }
 
+BoundingBox Object_Plane::GetAABB() const
+{
+	return BoundingBox(GetLocation(), vec3(extent, extent, extent));
+}
+
 bool Object_Plane::IntersectsRay(Ray ray, PixelHitInfo& hitInfo) 
 {
 	vec3 origin = GetLocation() - ray.origin;

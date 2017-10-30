@@ -11,11 +11,11 @@ void DirectionalLight::CalculateLighting(const Scene* scene, Ray ray, PixelHitIn
 	outColour = Colour(0.0f, 0.0f, 0.0f);
 
 
-	float intensity = clamp(0.0f, 1.0f, dot(hit.normal, -direction));
+	float intensity = clamp(scene->GetMinimumBrightness(), 1.0f, dot(hit.normal, -direction));
 
 
 	// Don't bother with lighting attempts if too dim anyway
-	if (intensity <= 0.0f)
+	if (intensity <= scene->GetMinimumBrightness())
 		return;
 
 

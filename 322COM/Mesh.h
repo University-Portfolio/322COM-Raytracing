@@ -3,6 +3,8 @@
 #include <glm.hpp>
 #include <vector>
 
+#include "BoundingBox.h"
+
 
 using namespace glm;
 
@@ -14,6 +16,7 @@ private:
 	std::vector<vec3> m_normals;
 	std::vector<vec2> m_uvs;
 	std::vector<uint> m_triangles;
+	BoundingBox m_aabb;
 
 public:
 	Mesh();
@@ -51,5 +54,7 @@ public:
 
 	inline void SetTriangles(std::vector<uint> triangles) { m_triangles = triangles; }
 	inline const std::vector<uint>& GetTriangles() const { return m_triangles; }
+
+	inline const BoundingBox& GetAABB() { return m_aabb; }
 };
 

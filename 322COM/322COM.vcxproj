@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{C4A78B83-4600-4F5D-B43A-D20B385FDBCD}</ProjectGuid>
     <RootNamespace>My322COM</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -144,6 +145,7 @@
     <ClCompile Include="Object_Mesh.cpp" />
     <ClCompile Include="Object_Plane.cpp" />
     <ClCompile Include="Object_Sphere.cpp" />
+    <ClCompile Include="Octree.cpp" />
     <ClCompile Include="PhysicalMaterial.cpp" />
     <ClCompile Include="RenderSurface.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -154,6 +156,7 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Colour.h" />
     <ClInclude Include="DirectionalLight.h" />
@@ -166,6 +169,7 @@
     <ClInclude Include="Object_Mesh.h" />
     <ClInclude Include="Object_Plane.h" />
     <ClInclude Include="Object_Sphere.h" />
+    <ClInclude Include="Octree.h" />
     <ClInclude Include="PhysicalMaterial.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RenderSurface.h" />

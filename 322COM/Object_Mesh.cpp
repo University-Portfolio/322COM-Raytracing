@@ -1,5 +1,7 @@
 #include "Object_Mesh.h"
+#include "Scene.h"
 #include "Logger.h"
+
 
 
 Object_Mesh::Object_Mesh(vec3 location)
@@ -7,15 +9,39 @@ Object_Mesh::Object_Mesh(vec3 location)
 	SetLocation(location);
 }
 
-
 Object_Mesh::~Object_Mesh()
 {
+}
+
+BoundingBox Object_Mesh::GetAABB() const
+{
+	if (m_mesh == nullptr)
+		return BoundingBox(GetLocation(), vec3(0, 0, 0));
+
+	BoundingBox box = m_mesh->GetAABB();
+	box.SetCentreSize(box.GetCentre() + GetLocation(), box.GetSize());
+	return box;
 }
 
 bool Object_Mesh::IntersectsRay(Ray ray, PixelHitInfo& hitInfo) 
 {
 	if (m_mesh == nullptr)
 		return false;
+	
+	float aabbDistance;
+	if (!GetAABB().Intersects(ray, aabbDistance))
+		return false;
+
+	// Don't render full mesh if moving
+	if (GetScene()->IsSimpleRenderingEnabled())
+	{
+		hitInfo.object = this;
+		hitInfo.distance = aabbDistance;
+		hitInfo.normal = vec3(0, 0, 0);
+		hitInfo.uvs = vec2(0, 0);
+		hitInfo.location = ray.origin + ray.direction * aabbDistance;
+		return true;
+	}
 
 
 	// Information about closest triangle hit
@@ -67,7 +93,7 @@ bool Object_Mesh::IntersectsRay(Ray ray, PixelHitInfo& hitInfo)
 		const vec3 dir_c_eAC = cross(ray.direction, eAC);
 		const float eAB_d_dir_c_AC = dot(eAB, dir_c_eAC);
 
-
+		// Due to cross product containing sin() it ends up cancelling out to form equation for area of triangle
 		const float u = dot(origin, dir_c_eAC) / eAB_d_dir_c_AC;
 		const float v = dot(ray.direction, cross(origin, eAB)) / eAB_d_dir_c_AC;
 

@@ -15,7 +15,7 @@
 
 
 Scene* g_mainScene;
-Camera g_camera;
+Camera g_camera; 
 
 
 void Tick(Window* context, float deltaTime)
@@ -26,8 +26,12 @@ void Tick(Window* context, float deltaTime)
 	{
 		vec3 location = g_camera.GetLocation();
 		vec3 rotation = g_camera.GetEularRotation();
-		const float speed = 3.0f;
-		const float rotationSpeed = 45.0f;
+		float speed = 3.0f;
+		float rotationSpeed = 45.0f;
+
+		if (keyboard->IsKeyDown(Key::KV_LSHIFT))
+			speed *= 8.0f;
+
 
 		if (keyboard->IsKeyDown(Key::KV_W))
 			location += g_camera.GetForward() * deltaTime * speed;
@@ -38,6 +42,11 @@ void Tick(Window* context, float deltaTime)
 			location -= g_camera.GetRight() * deltaTime * speed;
 		if (keyboard->IsKeyDown(Key::KV_D))
 			location += g_camera.GetRight() * deltaTime * speed;
+
+		if (keyboard->IsKeyDown(Key::KV_SPACE))
+			location += vec3(0, 1, 0) * deltaTime * speed;
+		if (keyboard->IsKeyDown(Key::KV_LCTRL))
+			location -= vec3(0, 1, 0) * deltaTime * speed;
 
 
 		if (keyboard->IsKeyDown(Key::KV_LEFT))
@@ -71,9 +80,11 @@ void Tick(Window* context, float deltaTime)
 	//	}
 }
 
+
 int main(int argc, char** argv)
 {
 	Window::InitAPI();
+
 
 	g_mainScene = new Scene(4);
 	g_mainScene->SetSkyColour(Colour(52, 152, 219));
@@ -92,89 +103,88 @@ int main(int argc, char** argv)
 		g_mainScene->AddMaterial(basicColour);
 
 		basicTexture = new PhysicalMaterial();
-		basicTexture->SetTexture("H:\\Uni\\322COM - Raytracing\\Resources\\Test Texture.bmp");
+		basicTexture->SetTexture("..\\Resources\\Test Texture.bmp");
 		basicTexture->GetTexture()->SetFilterMode(FilterMode::Linear);
 		basicTexture->GetTexture()->SetWrapMode(WrapMode::Wrap);
 		basicTexture->SetReflectivity(0.5f);
 		g_mainScene->AddMaterial(basicTexture);
 
 		tileTexture = new PhysicalMaterial();
-		tileTexture->SetTexture("H:\\Uni\\322COM - Raytracing\\Resources\\Tile Test.bmp");
-		tileTexture->GetTexture()->SetFilterMode(FilterMode::Nearest);
+		tileTexture->SetTexture("..\\Resources\\Tile Test.bmp");
+		tileTexture->GetTexture()->SetFilterMode(FilterMode::Linear);
 		tileTexture->GetTexture()->SetWrapMode(WrapMode::Wrap);
-		tileTexture->SetReflectivity(0.1f);
+		tileTexture->SetReflectivity(0.0f);
 		tileTexture->SetSmoothness(0.0f);
 		g_mainScene->AddMaterial(tileTexture);
 
 		physMaterial = new PhysicalMaterial();
-		physMaterial->SetColour(Colour(1.0f, 1.0f, 1.0f));
+		physMaterial->SetColour(Colour(1.0f, 0.0f, 0.0f));
 		physMaterial->SetReflectivity(0.7f);
 		g_mainScene->AddMaterial(physMaterial);
 
 		reflMaterial = new PhysicalMaterial();
-		reflMaterial->SetColour(Colour(1.0f, 0.0f, 1.0f));
-		reflMaterial->SetReflectivity(0.5f);
+		reflMaterial->SetColour(Colour(1.0f, 0.0f, 1.0f, 0.5f));
+		//reflMaterial->SetReflectivity(0.5f);
 		g_mainScene->AddMaterial(reflMaterial);
 	}
 
 	// Setup lights
 	{
 		DirectionalLight* light = new DirectionalLight(vec3(1, -1, 0));
-		light->SetColour(Colour(255, 0, 0));
+		//light->SetColour(Colour(255, 0, 0));
 		g_mainScene->AddLight(light);
 	}
 	{
-		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, 0.86602540378f));
-		light->SetColour(Colour(0, 255, 0));
-		g_mainScene->AddLight(light);
+		//DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, 0.86602540378f));
+		//light->SetColour(Colour(0, 255, 0));
+		//g_mainScene->AddLight(light);
 	}
 	{
-		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, -0.86602540378f));
-		light->SetColour(Colour(0, 0, 255));
-		g_mainScene->AddLight(light);
+		//DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, -0.86602540378f));
+		//light->SetColour(Colour(0, 0, 255));
+		//g_mainScene->AddLight(light);
 	}
 
 	// Setup scene
 	{
-		Object_Plane* plane = new Object_Plane(vec3(0, -5, 0), vec3(0, 1, 0));
+		Object_Plane* plane = new Object_Plane(vec3(0, 0, 0), vec3(0, 1, 0));
 		plane->SetMaterial(tileTexture);
 		plane->SetCullingMode(CullingMode::Backface);
 		g_mainScene->AddObject(plane);
 	}
 	{
-		Object_Sphere* sphere = new Object_Sphere(vec3(0, 0, 10), 0.5f);
+		Object_Sphere* sphere = new Object_Sphere(vec3(0, 0.5f, 10), 0.5f);
 		sphere->SetMaterial(basicColour);
 		g_mainScene->AddObject(sphere);
 	}
 	{
-		Object_Sphere* sphere = new Object_Sphere(vec3(1, 0, 10), 0.5f);
+		Object_Sphere* sphere = new Object_Sphere(vec3(1, 0.5f, 10), 0.5f);
 		sphere->SetMaterial(physMaterial);
 		g_mainScene->AddObject(sphere);
 	}
 	{
-		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 10), 0.5f);
-		sphere->SetCullingMode(CullingMode::Backface);
+		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0.5f, 10), 0.5f);
 		sphere->SetMaterial(reflMaterial);
 		g_mainScene->AddObject(sphere);
 	}
 	{
-		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 0, 20), 5.0f);
-		sphere->SetCullingMode(CullingMode::Backface);
+		Object_Sphere* sphere = new Object_Sphere(vec3(-1, 5.0f, 20), 5.0f);
 		sphere->SetMaterial(basicTexture);
 		g_mainScene->AddObject(sphere);
 	}
 
 	Mesh mesh;
-	Mesh::ImportObj("H:\\Uni\\322COM - Raytracing\\Resources\\torus_low.obj", &mesh, 0.1f);
+	//Mesh::ImportObj("..\\Resources\\teapot.obj", &mesh, 0.1f);
+	Mesh::ImportObj("..\\Resources\\stanford bunny-100.obj", &mesh, 0.1f);
 	{
-		Object_Mesh* obj = new Object_Mesh(vec3(0, 0, 4));
+		Object_Mesh* obj = new Object_Mesh(vec3(20, 0, 4));
 		obj->SetCullingMode(CullingMode::Backface);
 		obj->SetMesh(&mesh);
 		obj->SetMaterial(basicTexture);
 		g_mainScene->AddObject(obj);
 	}
 	{
-		Object_Sphere* sphere = new Object_Sphere(vec3(0, 0, 4), 0.1f);
+		Object_Sphere* sphere = new Object_Sphere(vec3(0, 0.1f, 4), 0.1f);
 		sphere->SetCullingMode(CullingMode::Backface);
 		sphere->SetMaterial(basicColour);
 		g_mainScene->AddObject(sphere);

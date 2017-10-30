@@ -31,7 +31,7 @@ Colour PhysicalMaterial::FetchColour(const Scene* scene, Ray ray, PixelHitInfo& 
 		vec3 reflRay = reflect(ray.direction, hit.normal);
 		Colour reflColour = scene->CalculateRayColour(Ray(hit.location + reflRay * 0.01f, reflRay), recursionCount + 1, scene->GetSkyColour());
 		reflColour.a = baseColour.a;
-		baseColour = baseColour * (1.0f - m_reflectivity) + reflColour * m_reflectivity;
+		baseColour = baseColour * (1.0f - m_reflectivity) + (baseColour * reflColour) * m_reflectivity;
 	}
 
 

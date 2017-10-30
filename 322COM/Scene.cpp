@@ -213,3 +213,9 @@ void Scene::ExecuteWork(int workerId, void* data)
 		settings->target->SetPixel(x, y, CalculateRayColour(ray, 0, skyColour));
 	}
 }
+
+void Scene::AddObject(Object* obj) 
+{
+	obj->SetScene(this);
+	m_objects.emplace_back(obj); 
+}

@@ -3,6 +3,7 @@
 #include "Colour.h"
 #include "Ray.h"
 #include "Material.h"
+#include "BoundingBox.h"
 
 
 using namespace glm;
@@ -36,6 +37,8 @@ enum CullingMode
 class Object
 {
 private:
+	class Scene* scene;
+
 	vec3 location;
 	Material* material;
 
@@ -53,9 +56,17 @@ public:
 	virtual bool IntersectsRay(Ray ray, PixelHitInfo& hitInfo) = 0;
 
 	/**
+	* Get the AABB for this specific object
+	* @return Object centred bounding box
+	*/
+	virtual BoundingBox GetAABB() const = 0;
+
+	/**
 	* Getters & Setters
 	*/
 public:
+	inline void SetScene(Scene* s) { scene = s; }
+	inline Scene* GetScene() const { return scene; }
 
 	inline void SetLocation(vec3 loc) { location = loc; }
 	inline vec3 GetLocation() const { return location; }

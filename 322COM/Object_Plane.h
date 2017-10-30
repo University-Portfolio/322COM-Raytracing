@@ -6,6 +6,7 @@ class Object_Plane : public Object
 {
 private:
 	vec3 normal;
+	float extent = 1000000.0f;
 	vec2 uvScale = vec2(1, 1);
 
 public:
@@ -20,9 +21,17 @@ public:
 	virtual bool IntersectsRay(Ray ray, PixelHitInfo& hitInfo);
 
 	/**
+	* Get the AABB for this specific object
+	* @return Object centred bounding box
+	*/
+	virtual BoundingBox GetAABB() const;
+
+	/**
 	* Getters & Setters
 	*/
 public:
+	inline void SetExtent(float e) { extent = e; }
+	inline float GetExtent() const { return extent; }
 
 	inline void SetNormal(vec3 n) { normal = normalize(n); }
 	inline vec3 GetNormal() const { return normal; }

@@ -7,7 +7,7 @@
 using namespace glm;
 
 class Scene;
-class PixelHitInfo;
+struct PixelHitInfo;
 
 
 

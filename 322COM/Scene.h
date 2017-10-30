@@ -21,6 +21,7 @@ private:
 	std::vector<Light*> m_lights;
 	std::vector<Material*> m_materials;
 	Colour skyColour;
+	float minimumBrightness;
 
 	int renderCounter;
 	int maxRecursionLevel = 4;
@@ -75,7 +76,7 @@ private:
 public:
 
 	/** Add object to scene (Forfeits memory management rights to scene) */
-	inline void AddObject(Object* obj) { m_objects.emplace_back(obj); }
+	void AddObject(Object* obj);
 	inline const std::vector<Object*>& GetObjects() const { return m_objects; }
 
 	/** Add material to scene (Forfeits memory management rights to scene) */
@@ -92,5 +93,8 @@ public:
 
 	/** Should complex rendering be enabled (e.g. lighting, relections etc.) */
 	inline bool IsSimpleRenderingEnabled() const { return bSimpleRenderingEnabled; }
+
+	inline void SetMinimumBrightness(float value) { minimumBrightness = clamp(0.0f, 1.0f, minimumBrightness); }
+	inline float GetMinimumBrightness() const { return minimumBrightness; }
 };
 

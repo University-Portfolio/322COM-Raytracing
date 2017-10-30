@@ -6,6 +6,12 @@ Object_Sphere::Object_Sphere(vec3 location, float radius)
 {
 	SetLocation(location);
 	this->radius = radius;
+	SetCullingMode(CullingMode::Nothing);
+}
+
+BoundingBox Object_Sphere::GetAABB() const 
+{
+	return BoundingBox(GetLocation(), vec3(radius, radius, radius));
 }
 
 bool Object_Sphere::IntersectsRay(Ray ray, PixelHitInfo& hitInfo)

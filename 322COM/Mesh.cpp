@@ -126,10 +126,15 @@ bool Mesh::ImportObj(std::string path, Mesh* outTarget, float scale)
 	std::vector<vec2> uvs;
 	std::vector<uint> triangles;
 
+	bool bSetMinMax = false;
+	vec3 maxPosition;
+	vec3 minPosition;
+
 	positions.reserve(rawPositions.size());
 	normals.reserve(rawNormals.size());
 	uvs.reserve(rawUvs.size());
 	triangles.reserve(rawTriangles.size());
+
 
 	// Use map for compression
 	std::unordered_map<ivec3, uint, MapKeyFunctions, MapKeyFunctions> compressionTable;
@@ -144,7 +149,28 @@ bool Mesh::ImportObj(std::string path, Mesh* outTarget, float scale)
 		else
 		{
 			uint index = positions.size();
-			positions.emplace_back(rawPositions[tri.x - 1] * scale);
+
+			vec3 pos = rawPositions[tri.x - 1] * scale;
+			positions.emplace_back(pos);
+
+			// Update min max
+			if (!bSetMinMax)
+			{
+				minPosition = pos;
+				maxPosition = pos;
+				bSetMinMax = true;
+			}
+			else
+			{
+				if (pos.x < minPosition.x) minPosition.x = pos.x;
+				if (pos.y < minPosition.y) minPosition.y = pos.y;
+				if (pos.z < minPosition.z) minPosition.z = pos.z;
+
+				if (pos.x > maxPosition.x) maxPosition.x = pos.x;
+				if (pos.y > maxPosition.y) maxPosition.y = pos.y;
+				if (pos.z > maxPosition.z) maxPosition.z = pos.z;
+			}
+
 			uvs.emplace_back(rawUvs[tri.y - 1]);
 			normals.emplace_back(rawNormals[tri.z - 1]);
 
@@ -163,6 +189,7 @@ bool Mesh::ImportObj(std::string path, Mesh* outTarget, float scale)
 	outTarget->SetNormals(normals);
 	outTarget->SetUVs(uvs);
 	outTarget->SetTriangles(triangles);
+	outTarget->m_aabb.SetMinMax(minPosition, maxPosition);
 	LOG("Loaded obj mesh from path '%s'", path.c_str());
 	return true;
 }
