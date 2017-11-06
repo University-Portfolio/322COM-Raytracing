@@ -94,7 +94,7 @@ public:
 	/** Should complex rendering be enabled (e.g. lighting, relections etc.) */
 	inline bool IsSimpleRenderingEnabled() const { return bSimpleRenderingEnabled; }
 
-	inline void SetMinimumBrightness(float value) { minimumBrightness = clamp(0.0f, 1.0f, minimumBrightness); }
+	inline void SetMinimumBrightness(float value) { minimumBrightness = clamp(0.0f, 1.0f, value); }
 	inline float GetMinimumBrightness() const { return minimumBrightness; }
 };
 

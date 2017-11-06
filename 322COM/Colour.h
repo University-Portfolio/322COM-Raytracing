@@ -27,6 +27,16 @@ public:
 			);
 	}
 
+	inline Colour Clamp(const float min = 0.0f, const float max = 1.0f) const
+	{
+		return Colour(
+			clamp(min, max, r),
+			clamp(min, max, g),
+			clamp(min, max, b),
+			clamp(min, max, a)
+			);
+	}
+
 	inline byte4 ToRGBA() const
 	{
 		return byte4(

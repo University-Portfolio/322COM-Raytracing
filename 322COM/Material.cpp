@@ -15,10 +15,10 @@ Colour Material::ResolveTransparency(Colour baseColour, const Scene* scene, Ray 
 	if (colour.a >= 1.0f)
 		return baseColour;
 
-	const float alpha = clamp(0.0f, 1.0f, colour.a);
+	const float alpha = clamp(colour.a, 0.0f, 1.0f);
 	const Colour behindColour = scene->CalculateRayColour(Ray(hit.location + ray.direction * 0.001f, ray.direction), recursionCount, Colour(1.0f, 1.0f, 1.0f, 1.0f));
 
-	Colour mixed = baseColour * (1.0f - alpha) + behindColour * alpha;
+	Colour mixed = baseColour * (alpha) + behindColour * (1.0f - alpha);
 	mixed.a = 1.0f;
 	return mixed;
 }

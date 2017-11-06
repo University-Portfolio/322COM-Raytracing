@@ -38,6 +38,7 @@ public:
 Scene::Scene(int workerCount) : m_workerCount(workerCount)
 {
 	m_workers.reserve(m_workerCount);
+	minimumBrightness = 0;//0.1f;
 
 	// Create enough workers
 	for (int i = 0; i < m_workerCount; ++i)

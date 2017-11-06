@@ -87,6 +87,7 @@ int main(int argc, char** argv)
 
 
 	g_mainScene = new Scene(4);
+	g_mainScene->SetMinimumBrightness(0.0f);
 	g_mainScene->SetSkyColour(Colour(52, 152, 219));
 	g_camera.SetLocation(vec3(0, 1, 0));
 
@@ -124,25 +125,25 @@ int main(int argc, char** argv)
 
 		reflMaterial = new PhysicalMaterial();
 		reflMaterial->SetColour(Colour(1.0f, 0.0f, 1.0f, 0.5f));
-		//reflMaterial->SetReflectivity(0.5f);
+		reflMaterial->SetReflectivity(0.5f);
 		g_mainScene->AddMaterial(reflMaterial);
 	}
 
 	// Setup lights
 	{
 		DirectionalLight* light = new DirectionalLight(vec3(1, -1, 0));
-		//light->SetColour(Colour(255, 0, 0));
+		light->SetColour(Colour(255, 0, 0));
 		g_mainScene->AddLight(light);
 	}
 	{
-		//DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, 0.86602540378f));
-		//light->SetColour(Colour(0, 255, 0));
-		//g_mainScene->AddLight(light);
+		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, 0.86602540378f));
+		light->SetColour(Colour(0, 255, 0));
+		g_mainScene->AddLight(light);
 	}
 	{
-		//DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, -0.86602540378f));
-		//light->SetColour(Colour(0, 0, 255));
-		//g_mainScene->AddLight(light);
+		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, -0.86602540378f));
+		light->SetColour(Colour(0, 0, 255));
+		g_mainScene->AddLight(light);
 	}
 
 	// Setup scene
@@ -173,14 +174,23 @@ int main(int argc, char** argv)
 		g_mainScene->AddObject(sphere);
 	}
 
-	Mesh mesh;
-	//Mesh::ImportObj("..\\Resources\\teapot.obj", &mesh, 0.1f);
-	Mesh::ImportObj("..\\Resources\\stanford bunny-100.obj", &mesh, 0.1f);
+	Mesh bunnyMesh;
+	Mesh teapotMesh;
+	Mesh::ImportObj("..\\Resources\\stanford bunny.obj", &bunnyMesh, 0.1f);
+	Mesh::ImportObj("..\\Resources\\teapot.obj", &teapotMesh, 0.1f);
+
 	{
-		Object_Mesh* obj = new Object_Mesh(vec3(20, 0, 4));
+		Object_Mesh* obj = new Object_Mesh(vec3(10, 0, 15));
 		obj->SetCullingMode(CullingMode::Backface);
-		obj->SetMesh(&mesh);
-		obj->SetMaterial(basicTexture);
+		obj->SetMesh(&bunnyMesh);
+		obj->SetMaterial(physMaterial);
+		g_mainScene->AddObject(obj);
+	}
+	{
+		Object_Mesh* obj = new Object_Mesh(vec3(-10, 0, 15));
+		obj->SetCullingMode(CullingMode::Backface);
+		obj->SetMesh(&teapotMesh);
+		obj->SetMaterial(reflMaterial);
 		g_mainScene->AddObject(obj);
 	}
 	{
