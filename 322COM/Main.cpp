@@ -62,19 +62,8 @@ void Tick(Window* context, float deltaTime)
 		g_camera.SetLocation(location);
 		g_camera.SetEularRotation(rotation);
 	}
-
-
+	
 	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 8);
-
-
-	//Texture t ("H:\\Uni\\322COM - Raytracing\\Resources\\Test Texture.bmp");
-	//t.SetWrapMode(WrapMode::Wrap);
-
-	//for (int x = 0; x < t.GetWidth() * 2; ++x)
-	//	for (int y = 0; y < t.GetHeight() * 2; ++y)
-	//	{
-	//		context->GetRenderSurface()->SetPixel(x, y, t.GetColour(x, y));
-	//	}
 }
 
 
@@ -129,18 +118,18 @@ int main(int argc, char** argv)
 	// Setup lights
 	{
 		DirectionalLight* light = new DirectionalLight(vec3(1, -1, 0));
-		//light->SetColour(Colour(255, 0, 0));
+		light->SetColour(Colour(255, 0, 0));
 		g_mainScene->AddLight(light);
 	}
 	{
-		//DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, 0.86602540378f));
-		//light->SetColour(Colour(0, 255, 0));
-		//g_mainScene->AddLight(light);
+		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, 0.86602540378f));
+		light->SetColour(Colour(0, 255, 0));
+		g_mainScene->AddLight(light);
 	}
 	{
-		//DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, -0.86602540378f));
-		//light->SetColour(Colour(0, 0, 255));
-		//g_mainScene->AddLight(light);
+		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, -0.86602540378f));
+		light->SetColour(Colour(0, 0, 255));
+		g_mainScene->AddLight(light);
 	}
 
 	// Setup scene
@@ -177,11 +166,11 @@ int main(int argc, char** argv)
 	Mesh::ImportObj("..\\Resources\\teapot.obj", &teapotMesh, 0.1f);
 
 	{
-		Object_Mesh* obj = new Object_Mesh(vec3(10, 0, 15));
-		obj->SetCullingMode(CullingMode::Backface);
-		obj->SetMesh(&bunnyMesh);
-		obj->SetMaterial(physMaterial);
-		g_mainScene->AddObject(obj);
+		//Object_Mesh* obj = new Object_Mesh(vec3(10, 0, 15));
+		//obj->SetCullingMode(CullingMode::Backface);
+		//obj->SetMesh(&bunnyMesh);
+		//obj->SetMaterial(physMaterial);
+		//g_mainScene->AddObject(obj);
 	}
 	{
 		Object_Mesh* obj = new Object_Mesh(vec3(-10, 0, 15));

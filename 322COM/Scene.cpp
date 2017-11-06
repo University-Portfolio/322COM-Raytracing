@@ -71,24 +71,51 @@ void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 	const int currentRenderTime = SDL_GetTicks();
 	float deltaTime = (float)(currentRenderTime - lastRenderTime) / 1000.0f;
 
+
 	// Enable low quality rendering, if camera is moving
 	if (lastRenderPosition != camera->GetLocation() || lastRenderRotation != camera->GetEularRotation())
 	{
 		m_qualityTimer = 0;
 		lastRenderPosition = camera->GetLocation();
 		lastRenderRotation = camera->GetEularRotation();
+
+		// Reset pixel counters
+		m_completedRenderCount = 0;
+		m_totalRenderCount = target->GetWidth() * target->GetHeight();
 	}
+	// Count up quality timer to 10
 	else if (m_qualityTimer < 10.0f)
 	{
-		m_qualityTimer += deltaTime * 1.1f;
+		const int prevQuality = GetRenderingQualityLevel();
+		m_qualityTimer += deltaTime * 0.8f;
 
 		if (m_qualityTimer > 10.0f)
 			m_qualityTimer = 10.0f;
+
+		// If rendering quality changed reset pixel counters
+		if (prevQuality != GetRenderingQualityLevel())
+		{
+			m_completedRenderCount = 0;
+			m_totalRenderCount = target->GetWidth() * target->GetHeight();
+		}
 	}
 
 
-	RenderSettings settings;
+	// Don't re-render pixels if frame has finished, unless at low level
+	if(GetRenderingQualityLevel() >= 4 && m_completedRenderCount >= m_totalRenderCount)
+	{
+		if (m_completedRenderCount == m_totalRenderCount)
+		{
+			LOG("Completed full render for lod %i, pausing render", GetRenderingQualityLevel());
+			++m_completedRenderCount;
+		}
+		return;
+	}
+
+
+
 	// Generate desired rendering settings
+	RenderSettings settings;
 	{
 		settings.target = target;
 		settings.texelSize = GetRenderingQualityLevel() >= 3 ? renderTexelSize : 3;
@@ -101,6 +128,7 @@ void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 		settings.viewAngle = radians(camera->GetFOV());
 		settings.viewRotation = radians(camera->GetEularRotation());
 	}
+
 
 
 	// Queue work for all workers
@@ -126,6 +154,24 @@ void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 	}
 
 
+	// Render counter (Box counter int top corner)
+	if (GetRenderingQualityLevel() >= 4)
+	{
+		const int w = 100;
+		const int h = 10;
+		const int progress = (m_completedRenderCount * w * h) / m_totalRenderCount;
+
+		for (int i = 0; i < w * h; ++i)
+		{
+			int x = i / h;
+			int y = i % h;
+			
+			target->SetPixel(10 + x, 10 + y, i < progress ? Colour(0.0f, 1.0f, 0.0f) : Colour(0.0f, 0.0f, 0.0f));
+		}
+	}
+
+
+	// Increment counters
 	++renderCounter;
 	lastRenderTime = currentRenderTime;
 }
@@ -221,6 +267,7 @@ void Scene::ExecuteWork(int workerId, void* data)
 		Ray ray(settings->cameraLocation, direction);
 
 		settings->target->SetPixel(x, y, CalculateRayColour(ray, 0, skyColour));
+		++m_completedRenderCount;
 	}
 }
 

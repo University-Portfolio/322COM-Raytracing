@@ -23,10 +23,18 @@ private:
 	Colour skyColour;
 	float minimumBrightness;
 
+	/// Used to decide whether to render or skip a pixel this frame
 	int renderCounter;
+	/// Used to cap recursive ray casts
 	int maxRecursionLevel = 4;
+
+	/// Used to adjust the quality level over time
 	uint lastRenderTime;
-	float m_qualityTimer;
+	float m_qualityTimer = -1;
+
+	// Used for counting how many pixels need to be rendererd
+	uint m_completedRenderCount = 0;
+	uint m_totalRenderCount = 0;
 
 	vec3 lastRenderPosition;
 	vec3 lastRenderRotation;
@@ -96,10 +104,10 @@ public:
 	* Get the current level of quality at which to render
 	* Each level adds new rendering modes from the prior
 	* 0 - Boxed, Flat colour
-	* 1 - Texture
+	* 1 - (Optional disable) Texturing
 	* 2 - Transparency
 	* 3 - Phong, Texel rendering starts
-	* 4 - Complex shapes
+	* 4 - Complex shapes, Pause render after completed frame
 	* 5 - Hard shadows
 	* 6 - Reflection
 	* 7 - Soft shadows
