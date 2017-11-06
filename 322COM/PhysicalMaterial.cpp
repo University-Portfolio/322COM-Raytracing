@@ -21,12 +21,14 @@ Colour PhysicalMaterial::FetchColour(const Scene* scene, Ray ray, PixelHitInfo& 
 	Colour baseColour = FetchBaseColour(scene, ray, hit, recursionCount);;
 
 	// Don't do complex checks if only simple rendering
-	if (scene->IsSimpleRenderingEnabled())
+	if (scene->GetRenderingQualityLevel() < 2)
 		return baseColour;
+	else if(scene->GetRenderingQualityLevel() < 3)
+		return ResolveTransparency(baseColour, scene, ray, hit, recursionCount);
 
 
 	// Get reflection colour
-	if (m_reflectivity != 0.0f)
+	if (scene->GetRenderingQualityLevel() >= 6 && m_reflectivity != 0.0f)
 	{
 		vec3 reflRay = reflect(ray.direction, hit.normal);
 		Colour reflColour = scene->CalculateRayColour(Ray(hit.location + reflRay * 0.01f, reflRay), recursionCount + 1, scene->GetSkyColour());
@@ -35,23 +37,29 @@ Colour PhysicalMaterial::FetchColour(const Scene* scene, Ray ray, PixelHitInfo& 
 	}
 
 
-	const std::vector<Light*>& lights = scene->GetLights();
-	Colour totalDiffuse;
-	Colour totalSpecular;
-
-	for (Light* light : lights)
+	// Calc lighting
+	if (scene->GetRenderingQualityLevel() >= 3)
 	{
-		Colour colour;
-		float specularFactor;
-		light->CalculateLighting(scene, ray, hit, recursionCount, colour, specularFactor);
+		const std::vector<Light*>& lights = scene->GetLights();
+		Colour totalDiffuse;
+		Colour totalSpecular;
 
-		totalDiffuse += colour;
-		totalSpecular += colour * pow(specularFactor, m_shininess) * m_smoothness;
+		for (Light* light : lights)
+		{
+			Colour colour;
+			float specularFactor;
+			light->CalculateLighting(scene, ray, hit, recursionCount, colour, specularFactor);
+
+			totalDiffuse += colour;
+			totalSpecular += colour * pow(specularFactor, m_shininess) * m_smoothness;
+		}
+
+
+		// Apply specular
+		Colour colour = baseColour * (1.0f - baseColour.a) + (baseColour * totalDiffuse * (baseColour.a));
+		colour += totalSpecular;
+		baseColour = colour;
 	}
-	
 
-	// Apply specular
-	Colour colour = baseColour * (1.0f - baseColour.a) + (baseColour * totalDiffuse * (baseColour.a));
-	colour += totalSpecular;
-	return ResolveTransparency(colour, scene, ray, hit, recursionCount);
+	return ResolveTransparency(baseColour, scene, ray, hit, recursionCount);
 }

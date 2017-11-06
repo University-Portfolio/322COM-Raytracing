@@ -63,11 +63,8 @@ void Tick(Window* context, float deltaTime)
 		g_camera.SetEularRotation(rotation);
 	}
 
-#ifdef _DEBUG
+
 	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 8);
-#else
-	g_mainScene->Render(&g_camera, context->GetRenderSurface(), 3);
-#endif
 
 
 	//Texture t ("H:\\Uni\\322COM - Raytracing\\Resources\\Test Texture.bmp");
@@ -87,7 +84,7 @@ int main(int argc, char** argv)
 
 
 	g_mainScene = new Scene(4);
-	g_mainScene->SetMinimumBrightness(0.0f);
+	g_mainScene->SetMinimumBrightness(0.1f);
 	g_mainScene->SetSkyColour(Colour(52, 152, 219));
 	g_camera.SetLocation(vec3(0, 1, 0));
 
@@ -132,18 +129,18 @@ int main(int argc, char** argv)
 	// Setup lights
 	{
 		DirectionalLight* light = new DirectionalLight(vec3(1, -1, 0));
-		light->SetColour(Colour(255, 0, 0));
+		//light->SetColour(Colour(255, 0, 0));
 		g_mainScene->AddLight(light);
 	}
 	{
-		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, 0.86602540378f));
-		light->SetColour(Colour(0, 255, 0));
-		g_mainScene->AddLight(light);
+		//DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, 0.86602540378f));
+		//light->SetColour(Colour(0, 255, 0));
+		//g_mainScene->AddLight(light);
 	}
 	{
-		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, -0.86602540378f));
-		light->SetColour(Colour(0, 0, 255));
-		g_mainScene->AddLight(light);
+		//DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, -0.86602540378f));
+		//light->SetColour(Colour(0, 0, 255));
+		//g_mainScene->AddLight(light);
 	}
 
 	// Setup scene

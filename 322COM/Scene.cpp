@@ -67,12 +67,31 @@ Scene::~Scene()
 
 void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 {
-	RenderSettings settings;
+	// Calc render delta time
+	const int currentRenderTime = SDL_GetTicks();
+	float deltaTime = (float)(currentRenderTime - lastRenderTime) / 1000.0f;
 
+	// Enable low quality rendering, if camera is moving
+	if (lastRenderPosition != camera->GetLocation() || lastRenderRotation != camera->GetEularRotation())
+	{
+		m_qualityTimer = 0;
+		lastRenderPosition = camera->GetLocation();
+		lastRenderRotation = camera->GetEularRotation();
+	}
+	else if (m_qualityTimer < 10.0f)
+	{
+		m_qualityTimer += deltaTime * 1.1f;
+
+		if (m_qualityTimer > 10.0f)
+			m_qualityTimer = 10.0f;
+	}
+
+
+	RenderSettings settings;
 	// Generate desired rendering settings
 	{
 		settings.target = target;
-		settings.texelSize = renderTexelSize;
+		settings.texelSize = GetRenderingQualityLevel() >= 3 ? renderTexelSize : 3;
 		settings.cameraLocation = camera->GetLocation();
 		settings.cameraForward = vec3(0, 0, 1);
 
@@ -84,22 +103,10 @@ void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 	}
 
 
-	// Enable low quality rendering, if camera is moving
-	if (lastRenderPosition != camera->GetLocation() || lastRenderRotation != camera->GetEularRotation())
-	{
-		bSimpleRenderingEnabled = true;
-		renderStillCounter = 0;
-		lastRenderPosition = camera->GetLocation();
-		lastRenderRotation = camera->GetEularRotation();
-	}
-	// If stayed still for long enough use high quality rendering
-	else if (++renderStillCounter >= 15)
-		bSimpleRenderingEnabled = false;
-
-
 	// Queue work for all workers
 	for (ThreadWorker* worker : m_workers)
 		worker->QueueWork(&settings);
+
 
 	// Wait until all workers are finished
 	bool bIsWorking = true;
@@ -118,14 +125,16 @@ void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 			SDL_Delay(1);
 	}
 
+
 	++renderCounter;
+	lastRenderTime = currentRenderTime;
 }
 
 
 bool Scene::CastRay(Ray ray, PixelHitInfo& hit, int recursionCount) const
 {
 	// Reached recursion limit
-	if (recursionCount++ >= maxRecursionLevel)
+	if (recursionCount++ >= (GetRenderingQualityLevel() >= 10 ? maxRecursionLevel : 1))
 		return false;
 
 

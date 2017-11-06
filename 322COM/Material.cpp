@@ -4,7 +4,7 @@
 
 Colour Material::FetchColour(const Scene* scene, Ray ray, PixelHitInfo& hit, int recursionCount)
 {
-	if(scene->IsSimpleRenderingEnabled())
+	if(scene->GetRenderingQualityLevel() < 2)
 		return colour;
 	else
 		return ResolveTransparency(colour, scene, ray, hit, recursionCount);

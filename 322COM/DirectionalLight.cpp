@@ -17,13 +17,14 @@ void DirectionalLight::CalculateLighting(const Scene* scene, Ray ray, PixelHitIn
 
 
 	// Check to see if obscured by any object (Should be in shadow)
+	if(scene->GetRenderingQualityLevel() >= 5)
 	{
 		PixelHitInfo shadowHit;
 
 		Colour totalShadowColour;
 		uint totalShadowHits = 0;
 
-		const int checkRad = 2;
+		const int checkRad = scene->GetRenderingQualityLevel() >= 7 ? 2 : 0;
 		const int totalChecks = (checkRad * checkRad + 1) * (checkRad * checkRad + 1);
 		const float checkSize = 1.0f / (float)totalChecks;
 
@@ -73,6 +74,8 @@ void DirectionalLight::CalculateLighting(const Scene* scene, Ray ray, PixelHitIn
 		else
 			outColour = GetColour() * intensity;
 	}
+	else
+		outColour = GetColour() * intensity;
 
 
 	// Calculate specular

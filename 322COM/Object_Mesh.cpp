@@ -32,8 +32,8 @@ bool Object_Mesh::IntersectsRay(Ray ray, PixelHitInfo& hitInfo)
 	if (!GetAABB().Intersects(ray, aabbDistance))
 		return false;
 
-	// Don't render full mesh if moving
-	if (GetScene()->IsSimpleRenderingEnabled())
+	// Don't render full mesh at low quality
+	if (GetScene()->GetRenderingQualityLevel() < 4)
 	{
 		hitInfo.object = this;
 		hitInfo.distance = aabbDistance;
