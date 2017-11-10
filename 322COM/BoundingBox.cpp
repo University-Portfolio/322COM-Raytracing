@@ -88,7 +88,7 @@ bool BoundingBox::Intersects(Ray ray, float& outDistance) const
 		t1 = t1z;
 
 	outDistance = t0 < 0.0f ? t1 : t0;
-	return true;
+	return outDistance >= 0.0f;
 }
 
 bool BoundingBox::Intersects(const BoundingBox& other) const

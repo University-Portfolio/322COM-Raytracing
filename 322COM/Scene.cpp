@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "RenderSurface.h"
 #include "Logger.h"
+#include "Octree.h"
 
 
 #ifdef GLM_ENABLE_EXPERIMENTAL
@@ -53,6 +54,9 @@ Scene::Scene(int workerCount) : m_workerCount(workerCount)
 
 Scene::~Scene() 
 {
+	if (m_octree != nullptr)
+		delete m_octree;
+
 	// Delete all workers
 	for (ThreadWorker* worker : m_workers)
 		delete worker;
@@ -71,6 +75,10 @@ Scene::~Scene()
 
 void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 {
+	// Make sure octree is built
+	if (m_octree == nullptr)
+		m_octree = new Octree(5, this);
+
 	// Calc render delta time
 	const int currentRenderTime = SDL_GetTicks();
 	float deltaTime = (float)(currentRenderTime - lastRenderTime) / 1000.0f;
@@ -187,27 +195,14 @@ bool Scene::CastRay(Ray ray, PixelHitInfo& hit, int recursionCount) const
 	if (recursionCount++ >= (GetRenderingQualityLevel() >= 10 ? maxRecursionLevel : 1))
 		return false;
 
-
-	// Find closest hit
-	PixelHitInfo closestHit;
-	float closestDistance = -1;
-
-	for (Object* obj : m_objects)
+	
+	if (m_octree == nullptr)
 	{
-		PixelHitInfo hit;
-		if (obj->IntersectsRay(ray, hit) && (hit.distance < closestDistance || closestDistance == -1) && hit.distance > 0)
-		{
-			closestHit = hit;
-			closestDistance = hit.distance;
-		}
+		LOG_ERROR("Cannot cast ray into scene, as octree has not been built.");
+		return false;
 	}
 
-	// No hit 
-	if (closestHit.object == nullptr)
-		return false;
-
-	hit = closestHit;
-	return true;
+	return m_octree->CastRay(ray, hit);
 }
 
 Colour Scene::CalculateRayColour(Ray ray, int recursionCount, Colour missColour) const

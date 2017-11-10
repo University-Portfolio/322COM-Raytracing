@@ -1,5 +1,6 @@
 #include "Object_Sphere.h"
 #include "Logger.h"
+#include "Scene.h"
 
 
 Object_Sphere::Object_Sphere(vec3 location, float radius)
@@ -11,11 +12,17 @@ Object_Sphere::Object_Sphere(vec3 location, float radius)
 
 BoundingBox Object_Sphere::GetAABB() const 
 {
-	return BoundingBox(GetLocation(), vec3(radius, radius, radius));
+	return BoundingBox(GetLocation(), vec3(radius * 2.0f, radius * 2.0f, radius * 2.0f));
 }
 
 bool Object_Sphere::IntersectsRay(Ray ray, PixelHitInfo& hitInfo)
 {
+	//if (GetScene()->GetRenderingQualityLevel() == 0)
+	//{
+	//	hitInfo.object = this;
+	//	return true;
+	//}
+
 	// At time t0 and t1 the ray's distance from 
 	// the centre of the sphere will be equal to the radius
 

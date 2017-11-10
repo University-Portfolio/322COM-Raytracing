@@ -5,6 +5,7 @@
 Object_Plane::Object_Plane(vec3 location, vec3 normal)
 {
 	SetLocation(location);
+	bIsOctreeSafe = false;
 	this->normal = normalize(normal);
 }
 

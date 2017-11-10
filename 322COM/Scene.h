@@ -17,9 +17,12 @@ private:
 	std::vector<ThreadWorker*> m_workers;
 	const int m_workerCount;
 
+	class Octree* m_octree = nullptr;
+
 	std::vector<Object*> m_objects;
 	std::vector<Light*> m_lights;
 	std::vector<Material*> m_materials;
+
 	Colour skyColour;
 	float minimumBrightness;
 
@@ -104,7 +107,7 @@ public:
 	* Get the current level of quality at which to render
 	* Each level adds new rendering modes from the prior
 	* 0 - Boxed, Flat colour
-	* 1 - (Optional disable) Texturing
+	* 1 - Basic geometry (Optional disable) Texturing
 	* 2 - Transparency
 	* 3 - Phong, Texel rendering starts
 	* 4 - Complex shapes, Pause render after completed frame

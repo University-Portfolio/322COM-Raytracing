@@ -64,8 +64,8 @@ std::vector<Object_Triangle*> Object_Triangle::BreakMesh(const Mesh& mesh, const
 		if (tri->C.position.y > max.y) max.y = tri->C.position.y;
 		if (tri->C.position.z > max.z) max.z = tri->C.position.z;
 
+		tri->SetLocation(offset);
 		tri->m_aabb.SetMinMax(min, max);
-		
 		output.emplace_back(tri);
 	}
 
@@ -74,20 +74,28 @@ std::vector<Object_Triangle*> Object_Triangle::BreakMesh(const Mesh& mesh, const
 
 bool Object_Triangle::IntersectsRay(Ray ray, PixelHitInfo& hitInfo) 
 {
-	float aabbDistance;
-	if (!m_aabb.Intersects(ray, aabbDistance))
-		return false;
-
-	// Don't render at low quality
+	// Box out at low quality
+	if (GetScene()->GetRenderingQualityLevel() == 0)
+	{
+		hitInfo.object = this;
+		hitInfo.normal = vec3(0, 0, 0);
+		hitInfo.uvs = vec2(0, 0);
+		return true;
+	}
+	
+	// Only render AABB, at lower quality
 	if (GetScene()->GetRenderingQualityLevel() < 4)
 	{
-		//hitInfo.object = this;
-		//hitInfo.distance = aabbDistance;
-		//hitInfo.normal = vec3(0, 0, 0);
-		//hitInfo.uvs = vec2(0, 0);
-		//hitInfo.location = ray.origin + ray.direction * aabbDistance;
-		//return true;
-		return false;
+		float aabbDistance;
+		if (!m_aabb.Intersects(ray, aabbDistance))
+			return false;
+
+		hitInfo.object = this;
+		hitInfo.distance = aabbDistance;
+		hitInfo.normal = vec3(0, 0, 0);
+		hitInfo.uvs = vec2(0, 0);
+		hitInfo.location = ray.origin + ray.direction * aabbDistance;
+		return true;
 	}
 
 

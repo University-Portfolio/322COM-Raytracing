@@ -143,18 +143,18 @@ int main(int argc, char** argv)
 	// Setup lights
 	{
 		DirectionalLight* light = new DirectionalLight(vec3(1, -1, 0));
-		//light->SetColour(Colour(255, 0, 0));
+		light->SetColour(Colour(255, 0, 0));
 		g_mainScene->AddLight(light);
 	}
 	{
-		//DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, 0.86602540378f));
-		//light->SetColour(Colour(0, 255, 0));
-		//g_mainScene->AddLight(light);
+		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, 0.86602540378f));
+		light->SetColour(Colour(0, 255, 0));
+		g_mainScene->AddLight(light);
 	}
 	{
-		//DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, -0.86602540378f));
-		//light->SetColour(Colour(0, 0, 255));
-		//g_mainScene->AddLight(light);
+		DirectionalLight* light = new DirectionalLight(vec3(-0.5f, -1, -0.86602540378f));
+		light->SetColour(Colour(0, 0, 255));
+		g_mainScene->AddLight(light);
 	}
 
 	// Setup scene
@@ -189,29 +189,21 @@ int main(int argc, char** argv)
 	Mesh teapotMesh;
 	Mesh::ImportObj("..\\Resources\\stanford bunny.obj", &bunnyMesh, 0.1f);
 	Mesh::ImportObj("..\\Resources\\teapot.obj", &teapotMesh, 0.1f);
-
 	{
-		std::vector<Object_Triangle*> tris = Object_Triangle::BreakMesh(teapotMesh, vec3(10, 0, 15));
+		std::vector<Object_Triangle*> tris = Object_Triangle::BreakMesh(bunnyMesh, vec3(10, 0, 15));
 		for (Object_Triangle* tri : tris)
 		{
 			tri->SetMaterial(testMaterial);
 			g_mainScene->AddObject(tri);
 		}
-
-		//Object_Mesh* obj = new Object_Mesh(vec3(10, 0, 15));
-		//obj->SetCullingMode(CullingMode::Nothing);
-		//obj->SetMesh(&bunnyMesh);
-		//obj->SetMaterial(testMaterial);
-		//g_mainScene->AddObject(obj);
 	}
 	{
-
-
-		//Object_Mesh* obj = new Object_Mesh(vec3(-10, 0, 15));
-		//obj->SetCullingMode(CullingMode::Backface);
-		//obj->SetMesh(&teapotMesh);
-		//obj->SetMaterial(reflMaterial);
-		//g_mainScene->AddObject(obj);
+		std::vector<Object_Triangle*> tris = Object_Triangle::BreakMesh(teapotMesh, vec3(-10, 0, 15));
+		for (Object_Triangle* tri : tris)
+		{
+			tri->SetMaterial(reflMaterial);
+			g_mainScene->AddObject(tri);
+		}
 	}
 	{
 		Object_Sphere* sphere = new Object_Sphere(vec3(0, 0.1f, 4), 0.1f);

@@ -37,12 +37,17 @@ enum CullingMode
 class Object
 {
 private:
+	friend class Octree;
+	bool bInOctree;
 	class Scene* scene;
 
 	vec3 location;
 	Material* material;
 
 	CullingMode m_cullingMode = CullingMode::Backface;
+
+protected:
+	bool bIsOctreeSafe = true;
 
 public:
 	virtual ~Object() {}
@@ -76,4 +81,7 @@ public:
 
 	inline void SetCullingMode(CullingMode mode) { m_cullingMode = mode; }
 	inline CullingMode GetCullingMode() const { return m_cullingMode; }
+
+	inline const bool& InOctree() const { return bInOctree; }
+	inline const bool& IsOctreeSafe() const { return bIsOctreeSafe; }
 };
