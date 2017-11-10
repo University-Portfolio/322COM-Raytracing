@@ -53,6 +53,7 @@ bool Object_Sphere::IntersectsRay(Ray ray, PixelHitInfo& hitInfo)
 
 	// Get closest (Ignore if too close)
 	float t = 0;
+	bool flipNormal = false;
 
 	switch (GetCullingMode())
 	{
@@ -60,7 +61,10 @@ bool Object_Sphere::IntersectsRay(Ray ray, PixelHitInfo& hitInfo)
 	case Nothing:
 		t = t0;
 		if (t < 0)
+		{
 			t = t1;
+			flipNormal = true;
+		}
 		break;
 
 	case Backface:
@@ -69,6 +73,7 @@ bool Object_Sphere::IntersectsRay(Ray ray, PixelHitInfo& hitInfo)
 
 	case Frontface:
 		t = t1;
+		flipNormal = true;
 		break;
 	}
 
@@ -80,7 +85,7 @@ bool Object_Sphere::IntersectsRay(Ray ray, PixelHitInfo& hitInfo)
 	hitInfo.object = this;
 	hitInfo.distance = t;
 	hitInfo.location = ray.origin + ray.direction * t;
-	hitInfo.normal = normalize(hitInfo.location - centre);
+	hitInfo.normal = normalize(hitInfo.location - centre) * (flipNormal ? -1.0f : 1.0f);
 	
 	// Project uvs
 	const float pi = 3.141592f;

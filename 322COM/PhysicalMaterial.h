@@ -14,6 +14,9 @@ private:
 	float m_shininess = 10.0f;
 	float m_smoothness = 1.0f;
 	float m_reflectivity = 0.0f;
+	float m_refractionIndex = 1.0f;
+
+	float m_refractionRatio = 1.0f;
 
 	Texture* m_texture = nullptr;
 
@@ -55,5 +58,8 @@ public:
 
 	inline void SetReflectivity(float val) { m_reflectivity = clamp(0.0f, 1.0f, val); }
 	inline float GetReflectivity() const { return m_reflectivity; }
+
+	inline void SetRefractionIndex(float val) { m_refractionIndex = clamp(0.0f, 100.0f, val); m_refractionRatio = 1.0003f / m_refractionIndex; }
+	inline float GetRefractionIndex() const { return m_refractionIndex; }
 };
 

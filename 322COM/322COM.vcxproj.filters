@@ -90,6 +90,9 @@
     <ClCompile Include="BoundingBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Object_Triangle.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Logger.h">
@@ -160,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="BoundingBox.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Object_Triangle.h">
+      <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

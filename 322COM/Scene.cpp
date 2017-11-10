@@ -14,6 +14,10 @@
 
 
 
+/**
+* A collection of the settings used in a current render request
+* (Used in multiple threads by workers)
+*/
 struct RenderSettings
 {
 public:
@@ -87,7 +91,7 @@ void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 	else if (m_qualityTimer < 10.0f)
 	{
 		const int prevQuality = GetRenderingQualityLevel();
-		m_qualityTimer += deltaTime * 0.8f;
+		m_qualityTimer += deltaTime * (m_qualityTimer < 5.0f ? 1.0f : 1.5f);
 
 		if (m_qualityTimer > 10.0f)
 			m_qualityTimer = 10.0f;
@@ -106,8 +110,8 @@ void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 	{
 		if (m_completedRenderCount == m_totalRenderCount)
 		{
-			LOG("Completed full render for lod %i, pausing render", GetRenderingQualityLevel());
-			++m_completedRenderCount;
+			LOG("Completed full render for LoD %i, pausing render", GetRenderingQualityLevel());
+			++m_completedRenderCount; // Increment counter to prevent log spam
 		}
 		return;
 	}
@@ -211,6 +215,7 @@ Colour Scene::CalculateRayColour(Ray ray, int recursionCount, Colour missColour)
 	PixelHitInfo hit;
 	if (!CastRay(ray, hit, recursionCount))
 		return missColour;
+	++recursionCount;
 
 	Material* mat = hit.object->GetMaterial();
 

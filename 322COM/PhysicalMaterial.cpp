@@ -23,7 +23,7 @@ Colour PhysicalMaterial::FetchColour(const Scene* scene, Ray ray, PixelHitInfo& 
 	// Don't do complex checks if only simple rendering
 	if (scene->GetRenderingQualityLevel() < 2)
 		return baseColour;
-	else if(scene->GetRenderingQualityLevel() < 3)
+	else if (scene->GetRenderingQualityLevel() < 3)
 		return ResolveTransparency(baseColour, scene, ray, hit, recursionCount);
 
 
@@ -61,5 +61,12 @@ Colour PhysicalMaterial::FetchColour(const Scene* scene, Ray ray, PixelHitInfo& 
 		baseColour = colour;
 	}
 
-	return ResolveTransparency(baseColour, scene, ray, hit, recursionCount);
+
+	if (m_refractionIndex != 1.0f)
+	{
+		Ray refractedRay = Ray(ray.origin, refract(ray.direction, hit.normal, m_refractionRatio));
+		return ResolveTransparency(baseColour, scene, refractedRay, hit, recursionCount);
+	}
+	else
+		return ResolveTransparency(baseColour, scene, ray, hit, recursionCount);
 }
