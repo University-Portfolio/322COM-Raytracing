@@ -556,7 +556,7 @@ bool SceneImporter::ImportScene(const JsonDoc& json, Scene*& scene)
 				if (!TryGet(val, "Type", type))
 				{
 					LOG_ERROR("You must provide a type in order to import an object");
-					continue;
+					return false;
 				}
 
 				TryGet(val, "Location", location);
@@ -608,6 +608,11 @@ bool SceneImporter::ImportScene(const JsonDoc& json, Scene*& scene)
 							scene->AddObject(tri);
 						}
 					}
+					else
+					{
+						LOG_ERROR("You must provide a model in order to import an mesh");
+						return false;
+					}
 
 					// Don't continue with normal logic, as we've added many rather than one
 					continue;
@@ -622,6 +627,11 @@ bool SceneImporter::ImportScene(const JsonDoc& json, Scene*& scene)
 					{
 						Mesh* mesh = meshTable[meshName];
 						mo->SetMesh(mesh);
+					}
+					else
+					{
+						LOG_ERROR("You must provide a model in order to import an mesh");
+						return false;
 					}
 
 					object = mo;

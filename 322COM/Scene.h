@@ -31,7 +31,7 @@ private:
 	/// Used to decide whether to render or skip a pixel this frame
 	int renderCounter;
 	/// Used to cap recursive ray casts
-	int maxRecursionLevel = 4;
+	int maxRecursionLevel = 8;
 
 	/// Used to adjust the quality level over time
 	uint lastRenderTime;

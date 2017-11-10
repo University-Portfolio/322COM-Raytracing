@@ -1,8 +1,8 @@
 {
   "Assets": {
     "Models": {
-      "Bunny": {
-        "URL": "Resources/Stanford/Bunny.obj",
+      "Teapot": {
+        "URL": "Resources/teapot.obj",
         "Scale": 0.1
       }
     },
@@ -35,19 +35,36 @@
       },
       "Glass": {
         "Type": "PHYSICAL",
-        "Colour": [
-          1,
-          1,
-          1,
-          0.5
-        ],
+        "Colour": [ 1.0, 1.0, 1.0, 0.1 ],
         "Smoothness": 1.0,
         "Shininess": 10,
         "RefractionIndex": 1.52
+      },
+	  "Ice": {
+        "Type": "PHYSICAL",
+        "Colour": [ 1.0, 0.980, 0.980, 0.5 ],
+        "Smoothness": 1.0,
+        "Shininess": 10,
+        "RefractionIndex": 1.31
+      },
+	  "Diamond": {
+        "Type": "PHYSICAL",
+        "Colour": [ 0.725, 0.949, 1.0, 0.5 ],
+        "Smoothness": 1.0,
+        "Shininess": 10,
+        "RefractionIndex": 2.42
+      },
+	  "Metal": {
+        "Type": "PHYSICAL",
+        "Colour": [ 1.0, 1.0, 1.0, 1.0 ],
+        "Smoothness": 1.0,
+        "Shininess": 100,
+		"Reflectivity": 1.0
       }
     }
   },
   "Scene": {
+	"SkyColour": [ 0.529, 0.808, 0.980 ],
     "Lights": [
       {
         "Type": "DIRECTIONAL",
@@ -83,16 +100,55 @@
           2
         ]
       },
-      {
-        "Type": "SPHERE",
-        "Material": "Glass",
-        "Location": [
-          0,
-          1,
-          10
-        ],
-        "Radius": 1
-      }
+	  {
+		"Type": "MESH",
+		"Model": "Teapot",
+		"Material": "Glass",
+		"Location": [ 0,1,25 ]
+	  },
+	  {
+		"Type": "MESH",
+		"Model": "Teapot",
+		"Material": "Ice",
+		"Location": [ -10,1,10 ]
+	  },
+	  {
+		"Type": "MESH",
+		"Model": "Teapot",
+		"Material": "Diamond",
+		"Location": [ 10,1,10 ]
+	  },
+	  
+	  {
+		"Type": "MESH",
+		"Model": "Teapot",
+		"Material": "Metal",
+		"Location": [ 0,1,15 ]
+	  },
+	  {
+		"Type": "SPHERE",
+		"Radius": 3.0,
+		"Material": "Glass",
+		"Location": [ 0,3,-25 ]
+	  },
+	  {
+		"Type": "SPHERE",
+		"Radius": 3.0,
+		"Material": "Ice",
+		"Location": [ -10,3,-10 ]
+	  },
+	  {
+		"Type": "SPHERE",
+		"Radius": 3.0,
+		"Material": "Diamond",
+		"Location": [ 10,3,-10 ]
+	  },
+	  {
+		"Type": "SPHERE",
+		"Radius": 3.0,
+		"Material": "Metal",
+		"Location": [ 0,3,-15 ]
+	  }
     ]
   }
 }

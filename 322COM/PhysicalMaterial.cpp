@@ -51,12 +51,18 @@ Colour PhysicalMaterial::FetchColour(const Scene* scene, Ray ray, PixelHitInfo& 
 			totalDiffuse += colour;
 			totalSpecular += colour * pow(specularFactor, m_shininess) * m_smoothness;
 		}
-
-
-		// Apply specular
+		
+		// Work out end colour
 		Colour colour = baseColour * (1.0f - baseColour.a) + (baseColour * totalDiffuse * (baseColour.a));
-		colour += totalSpecular;
-		baseColour = colour;
+
+		// Apply specular after resolved transparency
+		if (m_refractionIndex != 1.0f)
+		{
+			Ray refractedRay = Ray(ray.origin, refract(ray.direction, hit.normal, m_refractionRatio));
+			return ResolveTransparency(colour, scene, refractedRay, hit, recursionCount) + totalSpecular;
+		}
+		else
+			return ResolveTransparency(colour, scene, ray, hit, recursionCount) + totalSpecular;
 	}
 
 
