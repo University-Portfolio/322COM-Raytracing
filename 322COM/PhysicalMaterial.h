@@ -47,7 +47,7 @@ public:
 	* Getters and Setters
 	*/
 public:
-	inline void SetTexture(std::string texturePath) { m_texture = new Texture(texturePath); }
+	inline void SetTexture(Texture* tex) { m_texture = tex; }
 	inline Texture* GetTexture() { return m_texture; }
 
 	inline void SetSmoothness(float val) { m_smoothness = val; }

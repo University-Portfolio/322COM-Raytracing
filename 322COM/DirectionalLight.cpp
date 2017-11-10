@@ -24,14 +24,14 @@ void DirectionalLight::CalculateLighting(const Scene* scene, Ray ray, PixelHitIn
 		Colour totalShadowColour;
 		uint totalShadowHits = 0;
 
-		const int checkRad = scene->GetRenderingQualityLevel() >= 7 ? 2 : 0;
-		const int totalChecks = (checkRad * checkRad + 1) * (checkRad * checkRad + 1);
+		const int checkHalfSize = scene->GetRenderingQualityLevel() >= 7 ? 2 : 0;
+		const int totalChecks = (checkHalfSize * checkHalfSize + 1) * (checkHalfSize * checkHalfSize + 1);
 		const float checkSize = 1.0f / (float)totalChecks;
 
 
 		// Apply soft shadows
-		for (int dx = -checkRad; dx <= checkRad; ++dx)
-			for (int dy = -checkRad; dy <= checkRad; ++dy)
+		for (int dx = -checkHalfSize; dx <= checkHalfSize; ++dx)
+			for (int dy = -checkHalfSize; dy <= checkHalfSize; ++dy)
 			{
 				// Do check by offsetting as point light
 				vec3 dir = dx == 0 && dy == 0 ? -direction : rotateX(rotateZ(-direction, dy * checkSize), dx * checkSize);

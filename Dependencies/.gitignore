@@ -1,3 +1,4 @@
 ## Ignore all dependency folders
 glm/
 SDL2/
+rapidjson/

@@ -2,6 +2,7 @@
 #include "Object.h"
 #include "Light.h"
 #include "ThreadWorker.h"
+#include "Texture.h"
 
 #include "SDL_stdinc.h"
 #include <vector>
@@ -22,6 +23,7 @@ private:
 	std::vector<Object*> m_objects;
 	std::vector<Light*> m_lights;
 	std::vector<Material*> m_materials;
+	std::vector<Texture*> m_textures;
 
 	Colour skyColour;
 	float minimumBrightness;
@@ -93,6 +95,10 @@ public:
 	/** Add material to scene (Forfeits memory management rights to scene) */
 	inline Material* AddMaterial(Material* mat) { m_materials.emplace_back(mat); return mat; }
 	inline const std::vector<Material*>& GetMaterials() const { return m_materials; }
+
+	/** Add texture to scene (Forfeits memory management rights to scene) */
+	inline Texture* AddTexture(Texture* tex) { m_textures.emplace_back(tex); return tex; }
+	inline const std::vector<Texture*>& GetTextures() const { return m_textures; }
 
 	/** Add light to scene (Forfeits memory management rights to scene) */
 	inline Light* AddLight(Light* light) { m_lights.emplace_back(light); return light; }

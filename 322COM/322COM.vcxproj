@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{C4A78B83-4600-4F5D-B43A-D20B385FDBCD}</ProjectGuid>
     <RootNamespace>My322COM</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -75,7 +75,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glm\glm\;$(SolutionDir)Dependencies\SDL2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glm\glm\;$(SolutionDir)Dependencies\SDL2\include\;$(SolutionDir)Dependencies\rapidjson\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -89,7 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glm\glm\;$(SolutionDir)Dependencies\SDL2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glm\glm\;$(SolutionDir)Dependencies\SDL2\include\;$(SolutionDir)Dependencies\rapidjson\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -105,7 +105,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glm\glm\;$(SolutionDir)Dependencies\SDL2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glm\glm\;$(SolutionDir)Dependencies\SDL2\include\;$(SolutionDir)Dependencies\rapidjson\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -123,7 +123,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glm\glm\;$(SolutionDir)Dependencies\SDL2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glm\glm\;$(SolutionDir)Dependencies\SDL2\include\;$(SolutionDir)Dependencies\rapidjson\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -150,6 +150,7 @@
     <ClCompile Include="PhysicalMaterial.cpp" />
     <ClCompile Include="RenderSurface.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneImporter.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TexturedMaterial.cpp" />
     <ClCompile Include="ThreadWorker.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RenderSurface.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneImporter.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TexturedMaterial.h" />
     <ClInclude Include="ThreadWorker.h" />

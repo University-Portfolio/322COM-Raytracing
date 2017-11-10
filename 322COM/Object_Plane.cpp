@@ -16,6 +16,10 @@ BoundingBox Object_Plane::GetAABB() const
 
 bool Object_Plane::IntersectsRay(Ray ray, PixelHitInfo& hitInfo) 
 {
+	// Check plane against it's extents
+	if (!GetAABB().Intersects(ray))
+		return false;
+
 	vec3 origin = GetLocation() - ray.origin;
 	float den = dot(ray.direction, normal);
 

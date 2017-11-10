@@ -3,8 +3,6 @@
 
 PhysicalMaterial::~PhysicalMaterial() 
 {
-	if (m_texture != nullptr)
-		delete m_texture;
 }
 
 Colour PhysicalMaterial::FetchBaseColour(const Scene* scene, Ray ray, PixelHitInfo& hit, int recursionCount)

@@ -1,0 +1,140 @@
+{
+  "Assets": {
+    "Models": {
+      "Teapot": 
+	  {	
+		"URL": "Resources/Stanford/Bunny.obj",
+		"Scale": 0.1
+	  },
+      "Dragon": {	
+		"URL": "Resources/torus_mid.obj",
+		"Scale": 0.1
+	  }
+    },
+    "Textures": {
+      "Tile": {
+        "URL": "Resources/Tile Test.bmp",
+        "Filter": "LINEAR",
+        "Wrap": false
+      },
+      "Test": {
+        "URL": "Resources/Test Texture.bmp",
+        "Filter": "NEAREST",
+        "Wrap": true
+      }
+    },
+	
+    "Materials": {
+      "BasicUnlitMaterial": {
+        "Type": "FLAT",
+        "Colour": [
+          1,
+          0.234,
+          0,
+          1
+        ]
+      },
+      "LitTexturedMaterial": {
+        "Type": "TEXTURED",
+        "Colour": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "Texture": "Tile"
+      },
+      "PhysicalMaterial": {
+        "Type": "PHYSICAL",
+        "Colour": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "Texture": "Test",
+        "Smoothness": 0,
+        "Shininess": 100,
+        "Reflectivity": 0.5,
+        "RefractionIndex": 1.3
+      }
+    }
+	
+  },
+  
+  "Scene": {
+	"SkyColour": [ 1,1,1,1 ],  
+	"Lights": [
+      {
+        "Type": "DIRECTIONAL",
+        "Location": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "Direction": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "Colour": [
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    ],
+    "Objects": [
+      {
+        "Type": "PLANE",
+        "Material": "BasicUnlitMaterial",
+        "Location": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "Normal": [
+          0,
+          1,
+          0
+        ],
+        "UVScale": [
+          2,
+          2
+        ],
+        "Extent": 100000
+      },
+      {
+        "Type": "SPHERE",
+        "Material": "BasicUnlitMaterial",
+        "Location": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "Radius": 1
+      },
+      {
+        "Type": "MESH",
+        "Material": "BasicUnlitMaterial",
+        "Model": "Dragon",
+        "Location": [
+          0.1,
+          0.1,
+          0.1
+        ]
+      },
+      {
+        "Type": "SLOW_MESH",
+        "Material": "BasicUnlitMaterial",
+        "Model": "Dragon",
+        "Location": [
+          0.1,
+          0.1,
+          0.1
+        ]
+      }
+    ]
+  }
+}

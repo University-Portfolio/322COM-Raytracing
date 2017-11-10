@@ -69,9 +69,12 @@ Scene::~Scene()
 	for (Material* mat : m_materials)
 		delete mat;
 
+	// Delete all textures
+	for (Texture* tex : m_textures)
+		delete tex;
+
 	LOG("Destroyed scene");
 }
-
 
 void Scene::Render(Camera* camera, RenderSurface* target, int renderTexelSize)
 {

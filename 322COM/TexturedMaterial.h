@@ -10,10 +10,10 @@
 class TexturedMaterial : public Material
 {
 private:
-	Texture m_texture;
+	Texture* m_texture;
 
 public:
-	TexturedMaterial(std::string texturePath);
+	TexturedMaterial();
 	virtual ~TexturedMaterial();
 
 	/**
@@ -30,6 +30,7 @@ public:
 	* Getters & Setters
 	*/
 public:
-	inline Texture* GetTexture() { return &m_texture; }
+	inline void SetTexture(Texture* tex) { m_texture = tex; }
+	inline Texture* GetTexture() const { return m_texture; }
 };
 
