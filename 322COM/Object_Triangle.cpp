@@ -105,6 +105,8 @@ bool Object_Triangle::IntersectsRay(Ray ray, PixelHitInfo& hitInfo)
 	else if (GetCullingMode() == CullingMode::Frontface && dot(ray.direction, m_normal) < 0)
 			return false;
 
+	const bool flipNormal = dot(ray.direction, m_normal) > 0;
+
 
 	// Calculate actual collision
 	const vec3 eAB = B.position - A.position;
@@ -135,6 +137,9 @@ bool Object_Triangle::IntersectsRay(Ray ray, PixelHitInfo& hitInfo)
 		B.normal * u +
 		C.normal * v
 		);
+	if (flipNormal)
+		hitInfo.normal *= -1.0f;
+
 	hitInfo.uvs = 
 		A.uv * w +
 		B.uv * u +

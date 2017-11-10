@@ -201,6 +201,7 @@ int main(int argc, char** argv)
 		std::vector<Object_Triangle*> tris = Object_Triangle::BreakMesh(teapotMesh, vec3(-10, 0, 15));
 		for (Object_Triangle* tri : tris)
 		{
+			tri->SetCullingMode(CullingMode::Nothing);
 			tri->SetMaterial(reflMaterial);
 			g_mainScene->AddObject(tri);
 		}
