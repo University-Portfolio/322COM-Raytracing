@@ -70,8 +70,6 @@ void Tick(Window* context, float deltaTime)
 
 int main(int argc, char** argv)
 {
-	rapidjson::Document json;
-
 	Window::InitAPI();
 
 	LOG("Controls:");
@@ -87,17 +85,27 @@ int main(int argc, char** argv)
 	g_mainScene->SetMinimumBrightness(0.1f);
 	g_camera.SetLocation(vec3(0, 1, 0));
 
-	std::string scenePath = "Scenes\\material-testing.scene.json";
 
-	if (!SceneImporter::ImportScene(scenePath, g_mainScene))
+	// Attempt to open scene
+	if (argc >= 2)
 	{
-		LOG_WARNING("Failed to import '%s', loading default", scenePath.c_str());
+		std::string scenePath = argv[1];
+
+		if (!SceneImporter::ImportScene(scenePath, g_mainScene))
+		{
+			LOG_WARNING("Failed to import '%s', loading default", scenePath.c_str());
+			SceneImporter::BuildDefaultScene(g_mainScene);
+		}
+	}
+	else
+	{
+		LOG("No scene file give, loading default");
 		SceneImporter::BuildDefaultScene(g_mainScene);
 	}
 
 
-	Window window("Raytracing - Samuel Potter", 800, 600, 300);
-	//Window window("Raytracing - Samuel Potter", 1280, 720, 300);
+	//Window window("Raytracing - Samuel Potter", 800, 600, 300);
+	Window window("Raytracing - Samuel Potter", 1280, 720, 300);
 	window.MainLoop(Tick);
 	delete g_mainScene;
 
