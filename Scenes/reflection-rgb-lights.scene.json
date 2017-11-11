@@ -1,0 +1,94 @@
+{
+  "Assets": {
+    "Models": {
+      "Bunny": {
+        "URL": "Resources/Stanford/bunny.obj",
+        "Scale": 0.1
+      }
+    },
+    "Textures": {
+		"Metal": {
+			"URL": "Resources/OpenGameArt/Metal.bmp",
+			"Filter": "LINEAR",
+			"Wrap": true
+		  }
+    },
+    "Materials": {
+      "Reflective": {
+        "Type": "PHYSICAL",
+		"Texture": "Metal",
+        "Colour": [ 1.0, 1.0, 1.0, 1.0 ],
+        "Smoothness": 0.5,
+        "Shininess": 100,
+		"Reflectivity": 0.9
+      },
+      "Flat": {
+        "Type": "PHYSICAL",
+        "Colour": [ 0.5, 0.5, 0.5, 1.0 ],
+        "Smoothness": 0.5,
+        "Shininess": 0
+      },
+      "Glass": {
+        "Type": "PHYSICAL",
+        "Colour": [ 1.0, 1.0, 1.0, 0.3 ],
+        "Smoothness": 1.0,
+        "Shininess": 10,
+        "RefractionIndex": 1.52
+      },
+      "Yellow Glass": {
+        "Type": "PHYSICAL",
+        "Colour": [ 1.0, 1.0, 0.0, 0.3 ],
+        "Smoothness": 1.0,
+        "Shininess": 10,
+        "RefractionIndex": 1.52
+      }
+    }
+  },
+  "Scene": {
+	"SkyColour": [ 1, 1, 1 ],
+    "Lights": [
+      {
+        "Type": "DIRECTIONAL",
+        "Direction": [ 1, -1, 0 ],
+        "Colour": [ 1, 0, 0 ]
+      },
+      {
+        "Type": "DIRECTIONAL",
+        "Direction": [ -0.5, -1, 0.866025 ],
+        "Colour": [ 0, 1, 0 ]
+      },
+      {
+        "Type": "DIRECTIONAL",
+        "Direction": [ -0.5, -1, -0.866025 ],
+        "Colour": [ 0, 0, 1 ]
+      }
+    ],
+    "Objects": [
+      {
+        "Type": "PLANE",
+        "Material": "Reflective",
+        "Location": [ 0, 0, 0 ],
+        "Normal": [ 0, 1, 0 ],
+		"UVScale": [ 0.5, 0.5 ]
+      },
+	  {
+		"Type": "MESH",
+		"Model": "Bunny",
+		"Material": "Flat",
+		"Location": [ 0,0,15 ]
+	  },
+	  {
+		"Type": "MESH",
+		"Model": "Bunny",
+		"Material": "Glass",
+		"Location": [ -10,0,15 ]
+	  },
+	  {
+		"Type": "MESH",
+		"Model": "Bunny",
+		"Material": "Yellow Glass",
+		"Location": [ 10,0,15 ]
+	  }
+    ]
+  }
+}

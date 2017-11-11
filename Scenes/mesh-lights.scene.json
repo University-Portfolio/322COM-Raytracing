@@ -1,0 +1,91 @@
+{
+  "Assets": {
+    "Models": {
+      "Dragon": {
+        "URL": "Resources/Stanford/dragonn.obj",
+        "Scale": 0.1
+      },
+      "Bunny": {
+        "URL": "Resources/Stanford/bunny.obj",
+        "Scale": 0.1
+      }
+    },
+    "Textures": {
+    },
+    "Materials": {
+      "Reflective": {
+        "Type": "PHYSICAL",
+        "Colour": [ 1.0, 1.0, 1.0, 1.0 ],
+        "Smoothness": 0.5,
+        "Shininess": 100,
+		"Reflectivity": 0.5
+      },
+      "Flat": {
+        "Type": "PHYSICAL",
+        "Colour": [ 0.5, 0.5, 0.5, 1.0 ],
+        "Smoothness": 0.5,
+        "Shininess": 0
+      },
+      "Glass": {
+        "Type": "PHYSICAL",
+        "Colour": [ 1.0, 1.0, 1.0, 0.3 ],
+        "Smoothness": 1.0,
+        "Shininess": 10,
+        "RefractionIndex": 1.52
+      },
+      "Yellow Glass": {
+        "Type": "PHYSICAL",
+        "Colour": [ 1.0, 1.0, 0.0, 0.3 ],
+        "Smoothness": 1.0,
+        "Shininess": 10,
+        "RefractionIndex": 1.52
+      }
+    }
+  },
+  "Scene": {
+	"SkyColour": [ 0.529, 0.808, 0.980 ],
+    "Lights": [
+      {
+        "Type": "DIRECTIONAL",
+        "Direction": [ 1, -1, 0 ],
+        "Colour": [ 1, 0, 0 ]
+      },
+      {
+        "Type": "DIRECTIONAL",
+        "Direction": [ -0.5, -1, 0.866025 ],
+        "Colour": [ 0, 1, 0 ]
+      },
+      {
+        "Type": "DIRECTIONAL",
+        "Direction": [ -0.5, -1, -0.866025 ],
+        "Colour": [ 0, 0, 1 ]
+      }
+    ],
+    "Objects": [
+      {
+        "Type": "PLANE",
+        "Material": "Reflective",
+        "Location": [ 0, 0, 0 ],
+        "Normal": [ 0, 1, 0 ]
+      },
+	  {
+		"Type": "MESH",
+		"Model": "Bunny",
+		"Material": "Flat",
+		"Location": [ 0,0,25 ]
+	  },
+	  {
+		"Type": "MESH",
+		"Model": "Bunny",
+		"Material": "Glass",
+		"Location": [ -15,0,25 ]
+	  },
+	  {
+		"Type": "MESH",
+		"Model": "Bunny",
+		"Material": "Yellow Glass",
+		"Location": [ -15,0,25 ]
+	  }
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "Assets": {
+    "Models": {
+      "Dragon": {
+        "URL": "Resources/Stanford/dragon.obj",
+        "Scale": 0.06
+      }
+    },
+    "Textures": {
+    },
+    "Materials": {
+      "Floor": {
+        "Type": "PHYSICAL",
+        "Colour": [ 0.5, 0.5, 0.5, 1.0 ],
+        "Smoothness": 1,
+        "Shininess": 0,
+		"Reflectivity": 0.5
+      },
+      "Basic": {
+        "Type": "PHYSICAL",
+        "Colour": [ 0.8, 0.8, 0.8, 1.0 ],
+        "Smoothness": 0.5,
+        "Shininess": 100
+      },
+      "Glass": {
+        "Type": "PHYSICAL",
+        "Colour": [ 1.0, 0.0, 0.0, 0.1 ],
+        "Smoothness": 1,
+        "Shininess": 10,
+        "RefractionIndex": 1.52
+      }
+    }
+  },
+  "Scene": {
+	"SkyColour": [ 0.103,0.1,0.1,1 ], 
+    "Lights": [
+      {
+        "Type": "DIRECTIONAL",
+        "Direction": [ 1, -1, 0 ],
+        "Colour": [ 1, 1, 1 ]
+      }
+    ],
+    "Objects": [
+      {
+        "Type": "PLANE",
+        "Material": "Floor",
+        "Location": [ 0, 0, 0 ],
+        "Normal": [ 0, 1, 0 ]
+      },
+	  {
+		"Type": "MESH",
+		"Model": "Dragon",
+		"Material": "Basic",
+		"Location": [ 5,0,10 ]
+	  },
+	  {
+		"Type": "MESH",
+		"Model": "Dragon",
+		"Material": "Glass",
+		"Location": [ -5,0,10 ]
+	  }
+    ]
+  }
+}

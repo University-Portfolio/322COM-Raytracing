@@ -73,12 +73,12 @@ int main(int argc, char** argv)
 	Window::InitAPI();
 
 	LOG("Controls:");
-	LOG("\tWS: \tForward/Back");
-	LOG("\tAD: \tLeft/Right");
-	LOG("\tSpace: \tUp");
-	LOG("\tLCtrl: \tDown");
-	LOG("\tArrows: \t\tLook");
-	LOG("\tLShift: \t\tSpeed up (Sprint)");
+	LOG("\tWS: \t\tForward/Back");
+	LOG("\tAD: \t\tLeft/Right");
+	LOG("\tSpace: \t\tUp");
+	LOG("\tLCtrl: \t\tDown");
+	LOG("\tArrows: \tLook");
+	LOG("\tLShift: \tSpeed up (Sprint)");
 
 
 	g_mainScene = new Scene(4);
@@ -86,14 +86,12 @@ int main(int argc, char** argv)
 	g_camera.SetLocation(vec3(0, 1, 0));
 
 
-	// Attempt to open scene
+	// Attempt to open scene (From input file)
 	if (argc >= 2)
 	{
-		std::string scenePath = argv[1];
-
-		if (!SceneImporter::ImportScene(scenePath, g_mainScene))
+		if (!SceneImporter::ImportScene(argv[1], g_mainScene))
 		{
-			LOG_WARNING("Failed to import '%s', loading default", scenePath.c_str());
+			LOG_WARNING("Failed to import '%s', loading default", argv[1]);
 			SceneImporter::BuildDefaultScene(g_mainScene);
 		}
 	}
@@ -104,8 +102,8 @@ int main(int argc, char** argv)
 	}
 
 
-	//Window window("Raytracing - Samuel Potter", 800, 600, 300);
-	Window window("Raytracing - Samuel Potter", 1280, 720, 300);
+	Window window("Raytracing - Samuel Potter", 800, 600, 300);
+	//Window window("Raytracing - Samuel Potter", 1280, 720, 300);
 	window.MainLoop(Tick);
 	delete g_mainScene;
 

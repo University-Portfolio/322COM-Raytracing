@@ -4,19 +4,11 @@
       "Teapot": {
         "URL": "Resources/teapot.obj",
         "Scale": 0.1
-      },
-      "Teapot Flat": {
-        "URL": "Resources/teapot-flat.obj",
-        "Scale": 0.1
-      },
-      "Dice": {
-        "URL": "Resources/dice.obj",
-        "Scale": 0.1
       }
     },
     "Textures": {
       "Tile": {
-        "URL": "Resources/Tile Test.bmp",
+        "URL": "Resources/OpenGameArt/Stone paving.bmp",
         "Filter": "LINEAR",
         "Wrap": true
       },
@@ -104,8 +96,8 @@
           0
         ],
         "UVScale": [
-          0.1,
-          0.1
+          2,
+          2
         ]
       },
 	  {
@@ -116,73 +108,47 @@
 	  },
 	  {
 		"Type": "MESH",
-		"Model": "Teapot Flat",
+		"Model": "Teapot",
 		"Material": "Ice",
 		"Location": [ -10,1,10 ]
 	  },
 	  {
 		"Type": "MESH",
-		"Model": "Teapot Flat",
+		"Model": "Teapot",
 		"Material": "Diamond",
 		"Location": [ 10,1,10 ]
 	  },
+	  
 	  {
 		"Type": "MESH",
 		"Model": "Teapot",
 		"Material": "Metal",
 		"Location": [ 0,1,15 ]
 	  },
-	  
 	  {
 		"Type": "SPHERE",
 		"Radius": 3.0,
 		"Material": "Glass",
-		"Location": [ 0,3,75 ]
+		"Location": [ 0,3,-25 ]
 	  },
 	  {
 		"Type": "SPHERE",
 		"Radius": 3.0,
 		"Material": "Ice",
-		"Location": [ -10,3,60 ]
+		"Location": [ -10,3,-10 ]
 	  },
 	  {
 		"Type": "SPHERE",
 		"Radius": 3.0,
 		"Material": "Diamond",
-		"Location": [ 10,3,60 ]
+		"Location": [ 10,3,-10 ]
 	  },
 	  {
 		"Type": "SPHERE",
 		"Radius": 3.0,
 		"Material": "Metal",
-		"Location": [ 0,3,65 ]
-	  },
-	  
-	  {
-		"Type": "MESH",
-		"Model": "Dice",
-		"Material": "Glass",
-		"Location": [ 0,3,125 ]
-	  },
-	  {
-		"Type": "MESH",
-		"Model": "Dice",
-		"Material": "Ice",
-		"Location": [ -10,3,110 ]
-	  },
-	  {
-		"Type": "MESH",
-		"Model": "Dice",
-		"Material": "Diamond",
-		"Location": [ 10,3,110 ]
-	  },
-	  {
-		"Type": "MESH",
-		"Model": "Dice",
-		"Material": "Metal",
-		"Location": [ 0,3,115 ]
+		"Location": [ 0,3,-15 ]
 	  }
-	  
     ]
   }
 }

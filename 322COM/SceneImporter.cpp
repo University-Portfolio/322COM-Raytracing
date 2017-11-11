@@ -189,7 +189,7 @@ void SceneImporter::BuildDefaultScene(Scene*& scene)
 	PhysicalMaterial* testMaterial;
 	{
 		Texture* testTex = new Texture("Resources\\Test Texture.bmp");
-		Texture* tileTex = new Texture("Resources\\Tile Test.bmp");
+		Texture* tileTex = new Texture("Resources\\OpenGameArt\\Stone paving.bmp");
 		scene->AddTexture(testTex);
 		scene->AddTexture(tileTex);
 
@@ -251,6 +251,7 @@ void SceneImporter::BuildDefaultScene(Scene*& scene)
 		Object_Plane* plane = new Object_Plane(vec3(0, 0, 0), vec3(0, 1, 0));
 		plane->SetMaterial(tileTexture);
 		plane->SetCullingMode(CullingMode::Backface);
+		plane->SetUVScale(vec2(0.2, 0.2));
 		scene->AddObject(plane);
 	}
 	{
@@ -277,7 +278,7 @@ void SceneImporter::BuildDefaultScene(Scene*& scene)
 	Mesh bunnyMesh;
 	Mesh teapotMesh;
 	Mesh::ImportObj("Resources\\Stanford\\bunny.obj", &bunnyMesh, 0.1f);
-	Mesh::ImportObj("Resources\\Stanford\\dragon.obj", &teapotMesh, 0.1f);
+	Mesh::ImportObj("Resources\\teapot.obj", &teapotMesh, 0.1f);
 	{
 		std::vector<Object_Triangle*> tris = Object_Triangle::BreakMesh(bunnyMesh, vec3(10, 0, 15));
 		for (Object_Triangle* tri : tris)
@@ -309,12 +310,23 @@ bool SceneImporter::ImportScene(const std::string& path, Scene*& scene)
 	LOG("Loading scene from '%s'", path.c_str());
 
 	FILE* file = fopen(path.c_str(), "rb");
+	if (file == nullptr)
+	{
+		LOG_ERROR("Failed to open file");
+		return false;
+	}
 
 	char buffer[65536];
 	rapidjson::FileReadStream is(file, buffer, sizeof(buffer));
 
 	JsonDoc json;
 	json.ParseStream(is);
+
+	if (!json.IsObject())
+	{
+		LOG_ERROR("Failed to parse json (Format invalid)");
+		return false;
+	}
 
 	return ImportScene(json, scene);
 }
