@@ -1,7 +1,6 @@
 All assets located within folders are from the following sources:
 OpenGameArt: 	http://opengameart.org/content/50-free-textures-4-normalmaps?page=2
 Stanford:	http://graphics.stanford.edu/data/3Dscanrep/
-93i:		https://93i.de/p/free-skybox-texture-set/
 
 
 Any other assets have been made by myself.

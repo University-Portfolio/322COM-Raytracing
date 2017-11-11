@@ -4,6 +4,14 @@
       "Teapot": {
         "URL": "Resources/teapot.obj",
         "Scale": 0.1
+      },
+      "Teapot flat": {
+        "URL": "Resources/teapot-flat.obj",
+        "Scale": 0.1
+      },
+      "Dice": {
+        "URL": "Resources/dice.obj",
+        "Scale": 0.1
       }
     },
     "Textures": {
@@ -42,14 +50,14 @@
       },
 	  "Ice": {
         "Type": "PHYSICAL",
-        "Colour": [ 1.0, 0.980, 0.980, 0.5 ],
+        "Colour": [ 1.0, 1.0, 1.0, 0.1 ],
         "Smoothness": 1.0,
         "Shininess": 10,
         "RefractionIndex": 1.31
       },
 	  "Diamond": {
         "Type": "PHYSICAL",
-        "Colour": [ 0.725, 0.949, 1.0, 0.5 ],
+        "Colour": [ 1.0, 1.0, 1.0, 0.1 ],
         "Smoothness": 1.0,
         "Shininess": 10,
         "RefractionIndex": 2.42
@@ -68,37 +76,17 @@
     "Lights": [
       {
         "Type": "DIRECTIONAL",
-        "Direction": [
-          0,
-          -1,
-          0
-        ],
-        "Colour": [
-          1,
-          1,
-          1,
-          1
-        ]
+        "Direction": [ 0.4, -1, 0.4 ],
+        "Colour": [ 1, 1, 1 ]
       }
     ],
     "Objects": [
       {
         "Type": "PLANE",
         "Material": "Floor",
-        "Location": [
-          0,
-          0,
-          0
-        ],
-        "Normal": [
-          0,
-          1,
-          0
-        ],
-        "UVScale": [
-          2,
-          2
-        ]
+        "Location": [ 0, 0, 0 ],
+        "Normal": [ 0, 1, 0],
+        "UVScale": [ 0.1, 0.1 ]
       },
 	  {
 		"Type": "MESH",
@@ -108,46 +96,71 @@
 	  },
 	  {
 		"Type": "MESH",
-		"Model": "Teapot",
+		"Model": "Teapot flat",
 		"Material": "Ice",
 		"Location": [ -10,1,10 ]
 	  },
 	  {
 		"Type": "MESH",
-		"Model": "Teapot",
+		"Model": "Teapot flat",
 		"Material": "Diamond",
 		"Location": [ 10,1,10 ]
 	  },
-	  
 	  {
 		"Type": "MESH",
 		"Model": "Teapot",
 		"Material": "Metal",
 		"Location": [ 0,1,15 ]
 	  },
+	  
+	  {
+		"Type": "MESH",
+		"Model": "Dice",
+		"Material": "Glass",
+		"Location": [ 0,10,25 ]
+	  },
+	  {
+		"Type": "MESH",
+		"Model": "Dice",
+		"Material": "Ice",
+		"Location": [ -10,10,10 ]
+	  },
+	  {
+		"Type": "MESH",
+		"Model": "Dice",
+		"Material": "Diamond",
+		"Location": [ 10,10,10 ]
+	  },
+	  {
+		"Type": "MESH",
+		"Model": "Dice",
+		"Material": "Metal",
+		"Location": [ 0,10,15 ]
+	  },
+	  
 	  {
 		"Type": "SPHERE",
 		"Radius": 3.0,
 		"Material": "Glass",
-		"Location": [ 0,3,-25 ]
+		"Location": [ 0,23,25 ]
 	  },
 	  {
 		"Type": "SPHERE",
 		"Radius": 3.0,
 		"Material": "Ice",
-		"Location": [ -10,3,-10 ]
+		"Location": [ -10,23,10 ]
 	  },
 	  {
 		"Type": "SPHERE",
 		"Radius": 3.0,
 		"Material": "Diamond",
-		"Location": [ 10,3,-10 ]
+		"Location": [ 10,23,10 ]
 	  },
 	  {
 		"Type": "SPHERE",
 		"Radius": 3.0,
 		"Material": "Metal",
-		"Location": [ 0,3,-15 ]
+		"Location": [ 0,23,15 ]
 	  }
     ]
   }
